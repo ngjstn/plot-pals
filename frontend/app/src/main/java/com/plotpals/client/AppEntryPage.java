@@ -99,12 +99,15 @@ public class AppEntryPage extends AppCompatActivity {
         handler.postDelayed(() -> {
             Log.d(TAG, "Account name: " + accountName);
             Log.d(TAG, "Account id token: " + accountIdToken);
+
+            // test api call (DELETE LATER)
             testIdTokenBackendRequest(accountIdToken);
+
             startActivity(temporaryHomepageIntent);
         }, 2000);
     }
 
-    // To test if google id token can be processed in the backend correctly (DELETE FUNCTION LATER)
+    // to test if google id token can be processed in the backend correctly (DELETE FUNCTION LATER)
     private void testIdTokenBackendRequest(String accountIdToken) {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);

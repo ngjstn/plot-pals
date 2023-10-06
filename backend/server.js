@@ -10,6 +10,7 @@ app.use(async (req, res, next) => {
   const authHeader = req.headers.authorization;
   let token;
 
+  // get token
   if (authHeader.startsWith('Bearer ')) {
     token = authHeader.substring(7, authHeader.length);
   } else {

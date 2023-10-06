@@ -103,6 +103,8 @@ public class AppEntryPage extends AppCompatActivity {
             // test api call (DELETE LATER)
             testIdTokenBackendRequest(accountIdToken);
 
+            // send token to next page so that it can be used for the api calls there
+            temporaryHomepageIntent.putExtra("accountIdToken", accountIdToken);
             startActivity(temporaryHomepageIntent);
         }, 2000);
     }

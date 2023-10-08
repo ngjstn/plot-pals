@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,20 +93,26 @@ public class AppEntryPage extends AppCompatActivity {
         if(account == null) {
             return;
         }
-        Intent temporaryHomepageIntent = new Intent(AppEntryPage.this, TemporaryHomepage.class);
-        String accountName = account.getDisplayName();
+        Intent createProfilePageIntent = new Intent(AppEntryPage.this, CreateProfilePage.class);
+        String accountGoogleName = account.getDisplayName();
+        String accountGoogleProfilePictureImageUrl = account.getPhotoUrl().toString();
         String accountIdToken = account.getIdToken();
+
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            Log.d(TAG, "Account name: " + accountName);
+            Log.d(TAG, "Account google name: " + accountGoogleName);
             Log.d(TAG, "Account id token: " + accountIdToken);
 
             // test api call (DELETE LATER)
             testIdTokenBackendRequest(accountIdToken);
 
+            createProfilePageIntent.putExtra("accountGoogleName", accountGoogleName);
+            createProfilePageIntent.putExtra("accountGoogleProfilePictureImageUrl", accountGoogleProfilePictureImageUrl);
+
             // send token to next page so that it can be used for the api calls there
-            temporaryHomepageIntent.putExtra("accountIdToken", accountIdToken);
-            startActivity(temporaryHomepageIntent);
+            createProfilePageIntent.putExtra("accountIdToken", accountIdToken);
+
+            startActivity(createProfilePageIntent);
         }, 2000);
     }
 

@@ -2,4 +2,6 @@
     <string name="app_name">PlotPals</string>
     <string name="temporary_homepage_label">Temporary Homepage</string>
     <string name="server_client_id">188221629259-675olt1lscjefjkllj14cuo801r5eoqv.apps.googleusercontent.com</string>
+    <string name="maps_button_caption">Garden Discovery</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

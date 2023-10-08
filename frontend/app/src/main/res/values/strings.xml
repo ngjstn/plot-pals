@@ -6,8 +6,6 @@
 
     <string name="temporary_homepage_label">Temporary Homepage</string>
 
-    <string name="maps_button_caption">Garden Discovery</string>
-    <string name="title_activity_maps">MapsActivity</string>
 
     <string name="create_profile_title">Create Profile</string>
     <string name="create_profile_description">Set up your PlotPals profile by adding your display name. Your display name can be changed later.</string>
@@ -28,4 +26,18 @@
     <string name="account_settings">Settings</string>
     <string name="account_logout">Logout</string>
 
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps_button_caption">Garden Discovery</string>
+    <string name="garden_name">Garden Name</string>
+    <string name="address">Address</string>
+    <string name="something_r">1234 Something Rd, Richmond, BC - V7E 1R4</string>
+    <string name="contact_inf">Contact Info</string>
+    <string name="contact_nam">Contact Name</string>
+    <string name="some_id">123-456-7890</string>
+    <string name="name_email_">name@email.com</string>
+    <string name="view_forum_">View Forum Board</string>
+    <string name="more_info_j">More Info/Join</string>
+    <string name="search_for_">Search for a Garden</string>
+    <string name="view_on_the">View on the map</string>
+    <string name="title_activity_garden_info_non_member">GardenInfoNonMemberActivity</string>
 </resources>

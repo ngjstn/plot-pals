@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+// TODO: Implement database and backend to create and store profile through UI
 public class CreateProfilePage extends AppCompatActivity {
 
     // These are extras that need to be injected prior to starting current activity

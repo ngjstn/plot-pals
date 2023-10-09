@@ -194,7 +194,7 @@
         app:layout_constraintEnd_toEndOf="@+id/account_profile_button"
         app:layout_constraintStart_toStartOf="@+id/account_profile_button"
         app:layout_constraintTop_toTopOf="@+id/account_profile_button"
-        tools:srcCompat="@drawable/psychiatry" />
+        tools:srcCompat="@drawable/person" />
 
     <ImageView
         android:id="@+id/account_roles_icon"
@@ -206,7 +206,7 @@
         app:layout_constraintEnd_toEndOf="@+id/account_roles_button"
         app:layout_constraintStart_toStartOf="@+id/account_roles_button"
         app:layout_constraintTop_toTopOf="@+id/account_roles_button"
-        tools:srcCompat="@drawable/psychiatry" />
+        tools:srcCompat="@drawable/group" />
 
     <ImageView
         android:id="@+id/account_rating_icon"
@@ -232,7 +232,7 @@
         app:layout_constraintStart_toStartOf="@+id/account_apply_button"
         app:layout_constraintTop_toTopOf="@+id/account_apply_button"
         app:layout_constraintVertical_bias="0.5"
-        tools:srcCompat="@drawable/psychiatry" />
+        tools:srcCompat="@drawable/potted_plant" />
 
     <ImageView
         android:id="@+id/account_settings_icon"
@@ -246,7 +246,7 @@
         app:layout_constraintStart_toStartOf="@+id/account_settings_button"
         app:layout_constraintTop_toTopOf="@+id/account_settings_button"
         app:layout_constraintVertical_bias="0.5"
-        tools:srcCompat="@drawable/psychiatry" />
+        tools:srcCompat="@drawable/settings" />
 
     <ImageView
         android:id="@+id/account_logout_icon"
@@ -260,7 +260,7 @@
         app:layout_constraintStart_toStartOf="@+id/account_logout_button"
         app:layout_constraintTop_toTopOf="@+id/account_logout_button"
         app:layout_constraintVertical_bias="0.5"
-        tools:srcCompat="@drawable/psychiatry" />
+        tools:srcCompat="@drawable/logout" />
 
     <TextView
         android:id="@+id/account_score_text"

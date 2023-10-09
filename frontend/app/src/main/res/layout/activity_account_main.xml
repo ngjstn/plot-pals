@@ -333,7 +333,6 @@
         android:gravity="top"
         android:text="Settings"
         android:textAppearance="@style/label_text"
-
         app:layout_constraintBottom_toBottomOf="@+id/account_settings_button"
         app:layout_constraintEnd_toEndOf="@+id/account_settings_button"
         app:layout_constraintHorizontal_bias="0.132"
@@ -349,7 +348,6 @@
         android:gravity="top"
         android:text="Logout"
         android:textAppearance="@style/label_text"
-
         app:layout_constraintBottom_toBottomOf="@+id/account_logout_button"
         app:layout_constraintEnd_toEndOf="@+id/account_logout_button"
         app:layout_constraintHorizontal_bias="0.132"

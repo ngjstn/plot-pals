@@ -13,4 +13,7 @@
     <string name="create_profile_description">Set up your PlotPals profile by adding your display name. Your display name can be changed later.</string>
     <string name="create_profile_google_login_name_description">Logged in as:</string>
     <string name="create_profile_display_name_text_input_hint">Enter Display Name</string>
+
+    <string name="account_name">Robert Oppenheimer</string>
+
 </resources>

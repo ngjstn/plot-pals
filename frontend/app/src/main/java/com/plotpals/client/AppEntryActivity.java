@@ -100,7 +100,7 @@ public class AppEntryActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             Log.d(TAG, "Account google name: " + accountGoogleName);
             Log.d(TAG, "Account id token: " + accountIdToken);
-
+            Log.d(TAG, "Account userid: " + accountUserId);
             // test api call (DELETE LATER)
             testIdTokenBackendRequest(accountIdToken);
 
@@ -114,7 +114,6 @@ public class AppEntryActivity extends AppCompatActivity {
     // if user already has a profile, then we skip profile creation and head to the activity after it
     private void redirectToProfileCreationOrSkipIt() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        Log.d(TAG, "Account userid: " + googleProfileInformation.getAccountUserId());
         String url = "http://10.0.2.2:8081/profiles?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(

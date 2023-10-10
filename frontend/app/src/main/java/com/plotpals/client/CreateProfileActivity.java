@@ -127,7 +127,6 @@ public class CreateProfileActivity extends AppCompatActivity {
     // will check if user already has profile and, if they do have a profile, then skip profile creation
     private void skipProfileCreationIfUserProfileAlreadyExists() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        Log.d(TAG, "Account userid: " + googleProfileInformation.getAccountUserId());
         String url = "http://10.0.2.2:8081/profiles?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(

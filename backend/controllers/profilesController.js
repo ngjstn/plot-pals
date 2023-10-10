@@ -19,7 +19,7 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
   const { displayName } = req.body;
   const sql = 'INSERT INTO profiles (id, rating, role, displayName) VALUES (?, ?, ?, ?)';
   try {
-    const queryResults = await database.query(sql, [req.uWserId, MAX_RATING, roles.CARETAKER, displayName]);
+    const queryResults = await database.query(sql, [req.userId, MAX_RATING, roles.CARETAKER, displayName]);
     return res.json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);

@@ -14,6 +14,7 @@ import android.widget.Button;
 public class TemporaryHomepage extends AppCompatActivity {
     final static String TAG = "TemporaryHomepage";
     private Button mapsButton;
+    private Button accountButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,13 @@ public class TemporaryHomepage extends AppCompatActivity {
                 Intent mapsIntent = new Intent(TemporaryHomepage.this, MapsActivity.class);
                 startActivity(mapsIntent);
             }
+        });
+
+        accountButton = findViewById(R.id.account_button);
+        accountButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Account Button");
+            Intent accountIntent = new Intent(TemporaryHomepage.this, AccountMainActivity.class);
+            startActivity(accountIntent);
         });
     }
 }

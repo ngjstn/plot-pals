@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountMainActivity">
+
+    <TextView
+        android:id="@+id/account_header_text"
+        android:layout_width="177dp"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:gravity="top"
+        android:text="My Account"
+        android:textAppearance="@style/page_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/account_name_text"
+        android:layout_width="215dp"
+        android:layout_height="33dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="164dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="top"
+        android:text="@string/account_name"
+        android:textAppearance="@style/basic_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/account_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="148dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@mipmap/mugshot" />
+
+    <View
+        android:id="@+id/account_profile_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="277dp"
+        android:background="@drawable/account_button_square"
+        app:layout_constraintEnd_toStartOf="@+id/account_roles_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/account_roles_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="277dp"
+        android:background="@drawable/account_button_square"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/account_rating_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="277dp"
+        android:background="@drawable/account_button_square"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/account_roles_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/account_apply_button"
+        android:layout_width="310dp"
+        android:layout_height="106dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/account_button_big_rectangle"
+        app:layout_constraintBottom_toTopOf="@+id/account_settings_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_roles_button"
+        app:layout_constraintVertical_bias="0.507" />
+
+    <TextView
+        android:id="@+id/account_apply_text"
+        android:layout_width="232dp"
+        android:layout_height="18dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Apply to create new garden"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toEndOf="@+id/account_apply_icon"
+        app:layout_constraintTop_toTopOf="@+id/account_apply_button"
+        app:layout_constraintVertical_bias="0.17" />
+
+    <TextView
+        android:id="@+id/account_apply_text2"
+        android:layout_width="218dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:autoSizeTextType="uniform"
+        android:gravity="top"
+        android:text="Apply to add a new garden to Plotpal's in-app garden management system by filling out this form."
+        android:textAppearance="@style/basic_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toEndOf="@+id/account_apply_icon"
+        app:layout_constraintTop_toBottomOf="@+id/account_apply_text"
+        app:layout_constraintVertical_bias="0.304" />
+
+    <View
+        android:id="@+id/account_settings_button"
+        android:layout_width="310dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="538dp"
+        android:layout_marginBottom="133dp"
+        android:background="@drawable/account_button_small_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/account_logout_button"
+        android:layout_width="310dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/account_button_small_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_settings_button"
+        app:layout_constraintVertical_bias="0.506" />
+
+    <View
+        android:id="@+id/account_score_button"
+        android:layout_width="70dp"
+        android:layout_height="29dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/account_button_mini_rectangle"
+        app:layout_constraintBottom_toTopOf="@+id/account_roles_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toEndOf="@+id/account_pic"
+        app:layout_constraintTop_toBottomOf="@+id/account_name_text"
+        app:layout_constraintVertical_bias="0.472" />
+
+    <ImageView
+        android:id="@+id/account_score_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/account_score_button"
+        app:layout_constraintStart_toStartOf="@+id/account_score_button"
+        app:layout_constraintTop_toTopOf="@+id/account_score_button"
+        app:layout_constraintVertical_bias="0.666"
+        android:src="@drawable/psychiatry" />
+
+    <ImageView
+        android:id="@+id/account_profile_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toTopOf="@+id/account_roles_text"
+        app:layout_constraintEnd_toEndOf="@+id/account_profile_button"
+        app:layout_constraintStart_toStartOf="@+id/account_profile_button"
+        app:layout_constraintTop_toTopOf="@+id/account_profile_button"
+        android:src="@drawable/person" />
+
+    <ImageView
+        android:id="@+id/account_roles_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toTopOf="@+id/account_roles_text"
+        app:layout_constraintEnd_toEndOf="@+id/account_roles_button"
+        app:layout_constraintStart_toStartOf="@+id/account_roles_button"
+        app:layout_constraintTop_toTopOf="@+id/account_roles_button"
+        android:src="@drawable/group" />
+
+    <ImageView
+        android:id="@+id/account_rating_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toTopOf="@+id/account_rating_text"
+        app:layout_constraintEnd_toEndOf="@+id/account_rating_button"
+        app:layout_constraintStart_toStartOf="@+id/account_rating_button"
+        app:layout_constraintTop_toTopOf="@+id/account_rating_button"
+        android:src="@drawable/psychiatry" />
+
+    <ImageView
+        android:id="@+id/account_apply_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="@+id/account_apply_button"
+        app:layout_constraintTop_toTopOf="@+id/account_apply_button"
+        app:layout_constraintVertical_bias="0.5"
+        android:src="@drawable/potted_plant" />
+
+    <ImageView
+        android:id="@+id/account_settings_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toBottomOf="@+id/account_settings_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_settings_button"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="@+id/account_settings_button"
+        app:layout_constraintTop_toTopOf="@+id/account_settings_button"
+        app:layout_constraintVertical_bias="0.5"
+        android:src="@drawable/settings" />
+
+    <ImageView
+        android:id="@+id/account_logout_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toBottomOf="@+id/account_logout_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_logout_button"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="@+id/account_logout_button"
+        app:layout_constraintTop_toTopOf="@+id/account_logout_button"
+        app:layout_constraintVertical_bias="0.5"
+        android:src="@drawable/logout" />
+
+    <TextView
+        android:id="@+id/account_score_text"
+        android:layout_width="32dp"
+        android:layout_height="17dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="6.9"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_score_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_score_button"
+        app:layout_constraintStart_toEndOf="@+id/account_score_icon"
+        app:layout_constraintTop_toTopOf="@+id/account_score_button" />
+
+    <TextView
+        android:id="@+id/account_profile_text"
+        android:layout_width="45dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Profile"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_profile_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_profile_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/account_profile_button"
+        app:layout_constraintTop_toTopOf="@+id/account_profile_button"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <TextView
+        android:id="@+id/account_roles_text"
+        android:layout_width="45dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Roles"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_roles_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_roles_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/account_roles_button"
+        app:layout_constraintTop_toTopOf="@+id/account_roles_button"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <TextView
+        android:id="@+id/account_rating_text"
+        android:layout_width="45dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Rating"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_rating_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_rating_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/account_rating_button"
+        app:layout_constraintTop_toTopOf="@+id/account_rating_button"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <TextView
+        android:id="@+id/account_settings_text"
+        android:layout_width="118dp"
+        android:layout_height="22dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Settings"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_settings_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_settings_button"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toEndOf="@+id/account_settings_icon"
+        app:layout_constraintTop_toTopOf="@+id/account_settings_button" />
+
+    <TextView
+        android:id="@+id/account_logout_text"
+        android:layout_width="118dp"
+        android:layout_height="22dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Logout"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintBottom_toBottomOf="@+id/account_logout_button"
+        app:layout_constraintEnd_toEndOf="@+id/account_logout_button"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toEndOf="@+id/account_logout_icon"
+        app:layout_constraintTop_toTopOf="@+id/account_logout_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,19 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -29,27 +22,31 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.plotpals.client.utils.GoogleProfileInformation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppEntryPage extends AppCompatActivity {
+public class AppEntryActivity extends AppCompatActivity {
 
     SignInButton signInButton;
+
+    GoogleProfileInformation googleProfileInformation;
 
     private GoogleSignInClient mGoogleSignInClient;
 
     private ActivityResultLauncher<Intent> googleSignInActivityResultLauncher;
 
-    final static String TAG = "AppEntryPage";
+    final static String TAG = "AppEntryActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_entry_page);
+        setContentView(R.layout.activity_app_entry);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -90,13 +87,14 @@ public class AppEntryPage extends AppCompatActivity {
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        if(account == null) {
+        if(account == null || account.isExpired()) {
             return;
         }
-        Intent createProfilePageIntent = new Intent(AppEntryPage.this, CreateProfilePage.class);
+
         String accountGoogleName = account.getDisplayName();
         String accountGoogleProfilePictureImageUrl = account.getPhotoUrl().toString();
         String accountIdToken = account.getIdToken();
+        String accountUserId = account.getId();
 
         Handler handler = new Handler();
         handler.postDelayed(() -> {
@@ -106,14 +104,54 @@ public class AppEntryPage extends AppCompatActivity {
             // test api call (DELETE LATER)
             testIdTokenBackendRequest(accountIdToken);
 
-            createProfilePageIntent.putExtra("accountGoogleName", accountGoogleName);
-            createProfilePageIntent.putExtra("accountGoogleProfilePictureImageUrl", accountGoogleProfilePictureImageUrl);
+            googleProfileInformation = new GoogleProfileInformation(accountGoogleName
+                    , accountGoogleProfilePictureImageUrl, accountUserId, accountIdToken);
+            redirectToProfileCreationOrSkipIt();
 
-            // send token to next page so that it can be used for the api calls there
-            createProfilePageIntent.putExtra("accountIdToken", accountIdToken);
+        }, 1000);
+    }
 
-            startActivity(createProfilePageIntent);
-        }, 2000);
+    // if user already has a profile, then we skip profile creation and head to the activity after it
+    private void redirectToProfileCreationOrSkipIt() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        Log.d(TAG, "Account userid: " + googleProfileInformation.getAccountUserId());
+        String url = "http://10.0.2.2:8081/profiles?profileId=" + googleProfileInformation.getAccountUserId();
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for checking user profile:\n" + response.toString(2));
+                        JSONArray fetchedProfile = (JSONArray)response.get("data");
+                        if(fetchedProfile.length() > 0) {
+                            Intent temporaryHomepageIntent = new Intent(AppEntryActivity.this, TemporaryHomepageActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(temporaryHomepageIntent);
+                            startActivity(temporaryHomepageIntent);
+                        } else {
+                            Intent createProfileIntent = new Intent(AppEntryActivity.this, CreateProfileActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(createProfileIntent);
+                            startActivity(createProfileIntent);
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
     }
 
     // to test if google id token can be processed in the backend correctly (DELETE FUNCTION LATER)

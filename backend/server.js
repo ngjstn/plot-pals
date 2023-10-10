@@ -1,6 +1,9 @@
 const { OAuth2Client } = require('google-auth-library');
 const express = require('express');
 const app = express();
+const profilesRouter = require('./routers/profilesRouter');
+const errorHandler = require('./errorHandler');
+const { StatusCodes } = require('http-status-codes');
 
 // middleware to autoformat request to .json format
 app.use(express.json());
@@ -27,25 +30,35 @@ app.use(async (req, res, next) => {
       audience: serverClientId,
     });
     const payload = ticket.getPayload();
-    const userid = payload['sub'];
+    const userId = payload['sub'];
 
     // userid is now accessible through req object
-    req.userid = userid;
-    console.log('User ID: ' + req.userid);
+    req.userId = userId;
+    console.log('User ID: ' + req.userId);
 
     return next();
   } catch (error) {
+    // EXPLANATION NOTE: we create a custom error object here rather than using an error
+    // object caught by the try/catch block
     const invalidAuthorizationHeader = new Error('No valid authorization header');
-    return res.status(403).json({ error: invalidAuthorizationHeader });
+    invalidAuthorizationHeader.status = StatusCodes.FORBIDDEN;
+    next(invalidAuthorizationHeader);
   }
 });
+
+// EXPLANATION NOTE: routes all path that starts with '/profiles'
+app.use('/profiles', profilesRouter);
 
 app.get('/', (req, res) => {
   return res.json({ message: 'Plot Pals :)' });
 });
 
+// error handling
+app.use(errorHandler);
+
 const PORT = 8081;
+
 // start server
-const server = app.listen(PORT, (req, res) => {
+app.listen(PORT, (req, res) => {
   console.log('Server running at port: %s', PORT);
 });

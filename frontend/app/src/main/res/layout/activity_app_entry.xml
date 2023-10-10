@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AppEntryPage">
+    tools:context=".AppEntryActivity">
 
 
     <TextView
-        android:id="@+id/app_entry_page_description_text_view"
+        android:id="@+id/app_entry_description_text_view"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:gravity="start|fill|left"
-        android:text="@string/app_entry_page_description"
+        android:text="@string/app_entry_description"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

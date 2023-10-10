@@ -11,8 +11,8 @@ import android.widget.Button;
 /**
  * Temporary home page to route to feature pages
  */
-public class TemporaryHomepage extends AppCompatActivity {
-    final static String TAG = "TemporaryHomepage";
+public class TemporaryHomepageActivity extends AppCompatActivity {
+    final static String TAG = "TemporaryHomepageActivity";
     private Button mapsButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class TemporaryHomepage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Clicking Google Maps Button");
-                Intent mapsIntent = new Intent(TemporaryHomepage.this, MapsActivity.class);
+                Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
                 startActivity(mapsIntent);
             }
         });

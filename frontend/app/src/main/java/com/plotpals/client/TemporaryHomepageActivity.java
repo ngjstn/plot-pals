@@ -11,8 +11,8 @@ import android.widget.Button;
 /**
  * Temporary home page to route to feature pages
  */
-public class TemporaryHomepage extends AppCompatActivity {
-    final static String TAG = "TemporaryHomepage";
+public class TemporaryHomepageActivity extends AppCompatActivity {
+    final static String TAG = "TemporaryHomepageActivity";
     private Button mapsButton;
     private Button accountButton;
     @Override
@@ -29,7 +29,7 @@ public class TemporaryHomepage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Clicking Google Maps Button");
-                Intent mapsIntent = new Intent(TemporaryHomepage.this, MapsActivity.class);
+                Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
                 startActivity(mapsIntent);
             }
         });
@@ -37,7 +37,7 @@ public class TemporaryHomepage extends AppCompatActivity {
         accountButton = findViewById(R.id.account_button);
         accountButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Account Button");
-            Intent accountIntent = new Intent(TemporaryHomepage.this, AccountMainActivity.class);
+            Intent accountIntent = new Intent(TemporaryHomepageActivity.this, AccountMainActivity.class);
             startActivity(accountIntent);
         });
     }

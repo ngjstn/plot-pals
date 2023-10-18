@@ -16,4 +16,6 @@
 
     <string name="account_name">Robert Oppenheimer</string>
 
+    <string name="homepage_title_placeholder">Good Morning</string>
+
 </resources>

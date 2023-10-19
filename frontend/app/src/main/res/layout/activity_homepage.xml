@@ -13,6 +13,7 @@
         android:layout_marginTop="44dp"
         android:text="@string/homepage_tasks_title"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +26,7 @@
         android:layout_marginTop="64dp"
         android:text="@string/homepage_title_placeholder"
         android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.229"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +37,8 @@
         android:layout_width="350dp"
         android:layout_height="160dp"
         android:layout_marginTop="12dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +51,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/homepage_updates_title"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.089"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,13 +62,15 @@
         android:layout_width="350dp"
         android:layout_height="160dp"
         android:layout_marginTop="12dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homepage_tasks_title_text_view2" />
 
     <ImageView
-        android:id="@+id/homepage_updates_checkmark"
+        android:id="@+id/homepage_updates_forward_arrow_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -74,7 +81,7 @@
         app:srcCompat="@drawable/arrow_forward" />
 
     <ImageView
-        android:id="@+id/homepage_tasks_checkmark"
+        android:id="@+id/homepage_tasks_forward_arrow_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"

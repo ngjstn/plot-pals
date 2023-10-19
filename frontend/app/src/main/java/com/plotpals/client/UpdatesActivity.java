@@ -2,9 +2,11 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,45 +28,53 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomepageActivity extends AppCompatActivity {
+public class UpdatesActivity extends AppCompatActivity {
 
-    final String TAG = "HomepageActivity";
+    final String TAG = "UpdatesActivity";
 
     GoogleProfileInformation googleProfileInformation;
 
-    TextView HomepageTitleTextView;
-
     ListView UpdatesListView;
+
     ArrayList<Update> updatesList;
 
     ArrayAdapter<Update> updatesListAdapter;
 
-    ListView TasksListView;
+    ImageView BackArrowImageView;
 
-    ImageView UpdatesForwardArrowImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homepage);
+        setContentView(R.layout.activity_updates);
         loadExtras();
 
-        UpdatesForwardArrowImageView = findViewById(R.id.homepage_updates_forward_arrow_image_view);
-        UpdatesForwardArrowImageView.setOnClickListener(view -> {
-            Intent UpdatesIntent = new Intent(HomepageActivity.this, UpdatesActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(UpdatesIntent);
-            startActivity(UpdatesIntent);
+        BackArrowImageView = findViewById(R.id.updates_back_arrow_image_view);
+        BackArrowImageView.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
-        HomepageTitleTextView = findViewById(R.id.homepage_title_text_view);
-
-        UpdatesListView = findViewById(R.id.homepage_updates_list_view);
+        UpdatesListView = findViewById(R.id.updates_items_list_view);
         updatesList = new ArrayList<Update>();
-        updatesListAdapter = new ArrayAdapter<Update>(HomepageActivity.this, android.R.layout.simple_list_item_1, updatesList);
-        UpdatesListView.setAdapter(updatesListAdapter);
+        updatesListAdapter = new ArrayAdapter (UpdatesActivity.this, android.R.layout.simple_list_item_2, android.R.id.text1, updatesList)
+        {
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = view.findViewById(android.R.id.text1);
+                TextView text2 = view.findViewById(android.R.id.text2);
+                text1.setText(updatesList.get(position).getTitle());
+                text1.setTypeface(null, Typeface.BOLD);
+                text2.setText(updatesList.get(position).getDescription() + "\n");
 
-        TasksListView = findViewById(R.id.homepage_tasks_list_view);
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                view.setLayoutParams(params);
+                return view;
+            }
+        };
+        UpdatesListView.setAdapter(updatesListAdapter);
     }
+
     @Override
     protected void onStart()
     {
@@ -87,8 +97,8 @@ public class HomepageActivity extends AppCompatActivity {
                         JSONArray fetchedUpdates = (JSONArray)response.get("data");
                         if(fetchedUpdates.length() > 0) {
                             updatesList.clear();
-                            for (int i = 0; i < Math.min(fetchedUpdates.length(), 3); i++) {
-                                JSONObject updateJsonObject = fetchedUpdates.getJSONObject(i);
+                            for (int i = 0; i < fetchedUpdates.length(); i++) {
+                                JSONObject updateJsonObject =fetchedUpdates.getJSONObject(i);
                                 Update update = new Update(updateJsonObject.getInt("id"),
                                         updateJsonObject.getString("userId"),
                                         updateJsonObject.getString("description"),

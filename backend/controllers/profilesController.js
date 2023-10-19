@@ -3,11 +3,11 @@ const { roles, MAX_RATING } = require('../constants/profile');
 
 const getProfiles = async (req, res, next) => {
   const { profileId } = req.query;
-  const sql = profileId ? 'SELECT * FROM profiles WHERE id = ?' : 'SELECT * FROM profiles';
+  const sql = profileId ? 'SELECT * FROM profiles WHERE id=?' : 'SELECT * FROM profiles';
 
   // EXPLANATION NOTE: usually you want to try/catch await functions in your controllers
   try {
-    const queryResults = await database.query(sql, profileId);
+    const queryResults = await database.query(sql, profileId ? [profileId] : null);
     return res.json({ data: queryResults[0] });
   } catch (err) {
     // EXPLANATION NOTE: this forwards error to error handler

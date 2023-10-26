@@ -11,10 +11,9 @@ import android.widget.Button;
 /**
  * Temporary home page to route to feature pages
  */
-public class TemporaryHomepageActivity extends AppCompatActivity {
+public class TemporaryHomepageActivity extends NavBarActivity {
     final static String TAG = "TemporaryHomepageActivity";
     private Button mapsButton;
-    private Button accountButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +33,5 @@ public class TemporaryHomepageActivity extends AppCompatActivity {
             }
         });
 
-        accountButton = findViewById(R.id.account_button);
-        accountButton.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Account Button");
-            Intent accountIntent = new Intent(TemporaryHomepageActivity.this, AccountMainActivity.class);
-            startActivity(accountIntent);
-        });
     }
 }

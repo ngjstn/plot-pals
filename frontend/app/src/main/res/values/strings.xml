@@ -15,5 +15,8 @@
     <string name="create_profile_display_name_text_input_hint">Enter Display Name</string>
 
     <string name="account_name">Robert Oppenheimer</string>
+    <string name="navbar_garden_text">My Garden</string>
+    <string name="navbar_home_text">Home</string>
+    <string name="navbar_account_text">Account</string>
 
 </resources>

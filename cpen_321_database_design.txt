@@ -1,0 +1,30 @@
+TABLES:
+Garden
+Id (int), gardenName (string), address (string), longitude (string), latitude (string), profileId (string, references Profile id column), isApproved (boolean), gardenPicture (BLOB), contactPhoneNumber (string), contactEmail (string), numberOfPlots (int) 
+Report
+Id (int), reporterId (string, references Profile id column), reporteeId (string, references Profile id column) , reason (string), comment (string)
+Profile
+Id (string which comes from google), rating (int with 2 decimals scale 0-5), displayName (string), role (int, based on enum), competence (int)
+Admin Profile
+Id (string which comes from google)
+Plot
+Id (int), gardenId (int, references Garden id), profileId (string, references Profile id column)
+Updates
+Id (int), profileId (string, references Profile id column), description (string), title (string)
+Task
+Id (int), gardenId (int, references Garden id column), plotId (int, references Plot id column),  reward (string), minimumRating (int, scale from 0-5), description (string), assignerId (string, references Profile id column), assigneeId (string, references Profile id column), isCompleted (boolean), assigneeIsProvidedFeedback (Boolean), deadline (DATETIME, YYYY-MM-DD hh:mm:ss format), taskStartTime (DATETIME, YYYY-MM-DD hh:mm:ss format), taskEndTime (DATETIME, YYYY-MM-DD hh:mm:ss format), expectedTaskDurationInHours (int)
+
+NOTES:
+- all table ids THAT ARE INTS (all ids other than Profile Id are automatically incremented by mysql and therefore you will not need to insert a row with ids explicitly added)
+- role ints are based on the following enumeration:
+Caretaker = 0
+PlotOwner = 1
+GardenOwner = 2 
+Admin = 3
+
+
+
+
+
+
+ 

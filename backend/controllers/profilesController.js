@@ -1,5 +1,5 @@
 const { database } = require('../database');
-const { roles, MAX_RATING } = require('../constants/profile');
+const { roles, MAX_RATING, STARTING_COMPETENCE } = require('../constants/profile');
 
 const getProfiles = async (req, res, next) => {
   const { profileId } = req.query;
@@ -17,9 +17,9 @@ const getProfiles = async (req, res, next) => {
 
 const createProfileForAuthenticatedUser = async (req, res, next) => {
   const { displayName } = req.body;
-  const sql = 'INSERT INTO profiles (id, rating, role, displayName) VALUES (?, ?, ?, ?)';
+  const sql = 'INSERT INTO profiles (id, rating, role, displayName, competence) VALUES (?, ?, ?, ?, ?)';
   try {
-    const queryResults = await database.query(sql, [req.userId, MAX_RATING, roles.CARETAKER, displayName]);
+    const queryResults = await database.query(sql, [req.userId, MAX_RATING, roles.CARETAKER, displayName, STARTING_COMPETENCE]);
     return res.json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);

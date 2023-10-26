@@ -5,7 +5,8 @@ const roles = Object.freeze({
   ADMIN: 3,
 });
 
-const MAX_RATING = 100;
+const MAX_RATING = 5;
 const MIN_RATING = 0;
+const STARTING_COMPETENCE = 0;
 
-module.exports = { roles, MAX_RATING, MIN_RATING };
+module.exports = { roles, MAX_RATING, MIN_RATING, STARTING_COMPETENCE };

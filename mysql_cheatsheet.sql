@@ -110,5 +110,14 @@ INSERT INTO updates(
 /* DELETE STATEMENT TEMPLATE */
 /* DELETE FROM table_name WHERE condition; */
 
-
+/* 
+*  JOINS EXAMPLE 
+*  joins are your bestfriend when trying to avoid multiple api calls. Below you will see an
+*  example of querying tasks and adding a column specifying the name of the garden the task is for
+*/
+SELECT
+    tasks.*,
+    gardens.gardenName
+FROM tasks JOIN gardens
+ON tasks.gardenId = gardens.id;
 

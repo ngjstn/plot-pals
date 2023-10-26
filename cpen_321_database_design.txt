@@ -1,6 +1,6 @@
 TABLES:
 Garden
-Id (int), address (string), longitude (string), latitude (string), profileId (string, references Profile id column), isApproved (boolean), gardenPicture (BLOB), contactPhoneNumber (string), contactEmail (string), numberOfPlots (int) 
+Id (int), gardenName (string), address (string), longitude (string), latitude (string), profileId (string, references Profile id column), isApproved (boolean), gardenPicture (BLOB), contactPhoneNumber (string), contactEmail (string), numberOfPlots (int) 
 Report
 Id (int), reporterId (string, references Profile id column), reporteeId (string, references Profile id column) , reason (string), comment (string)
 Profile

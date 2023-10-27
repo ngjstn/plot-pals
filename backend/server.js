@@ -2,6 +2,9 @@ const { OAuth2Client } = require('google-auth-library');
 const express = require('express');
 const app = express();
 const profilesRouter = require('./routers/profilesRouter');
+const updatesRouter = require('./routers/updatesRouter');
+const gardensRouter = require('./routers/gardensRouter');
+const tasksRouter = require('./routers/tasksRouter');
 const errorHandler = require('./errorHandler');
 const { StatusCodes } = require('http-status-codes');
 
@@ -48,6 +51,9 @@ app.use(async (req, res, next) => {
 
 // EXPLANATION NOTE: routes all path that starts with '/profiles'
 app.use('/profiles', profilesRouter);
+app.use('/gardens', gardensRouter);
+app.use('/updates', updatesRouter);
+app.use('/tasks', tasksRouter);
 
 app.get('/', (req, res) => {
   return res.json({ message: 'Plot Pals :)' });

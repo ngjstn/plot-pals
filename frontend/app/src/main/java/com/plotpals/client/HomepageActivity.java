@@ -51,6 +51,8 @@ public class HomepageActivity extends AppCompatActivity {
 
     ImageView UpdatesForwardArrowImageView;
 
+    ImageView TasksForwardArrowImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,13 @@ public class HomepageActivity extends AppCompatActivity {
             Intent UpdatesIntent = new Intent(HomepageActivity.this, UpdatesActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(UpdatesIntent);
             startActivity(UpdatesIntent);
+        });
+
+        TasksForwardArrowImageView = findViewById(R.id.homepage_tasks_forward_arrow_image_view);
+        TasksForwardArrowImageView.setOnClickListener(view -> {
+            Intent TasksIntent = new Intent(HomepageActivity.this, TasksActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(TasksIntent);
+            startActivity(TasksIntent);
         });
 
         HomepageTitleTextView = findViewById(R.id.homepage_title_text_view);

@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".TasksActivity"
+            android:exported="false" />
+        <activity
             android:name=".UpdatesActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

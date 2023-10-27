@@ -123,5 +123,3 @@ SELECT
 FROM tasks JOIN gardens
 ON tasks.gardenId = gardens.id;
 
-UPDATE tasks SET assignerId='103354493506323780957' WHERE id=1;
-

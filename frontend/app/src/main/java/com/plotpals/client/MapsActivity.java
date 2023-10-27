@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.plotpals.client.databinding.ActivityMapsBinding;
+import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.w3c.dom.Text;
 
@@ -60,11 +61,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static double locationLat = 0, locationLong = 0;
     private Integer locationPollRate_ms = 1000;
     private SearchView gardenSearchView;
+    static GoogleProfileInformation googleProfileInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkLocationPermission();
+        loadExtras();
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -74,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        gardenOverlayVisiblility(View.INVISIBLE);
+        gardenOverlayVisiblility(View.GONE);
 
         gardenSearchView = findViewById(R.id.search_garden);
         gardenSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -105,6 +108,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View view) {
                 Log.d(TAG, "More Info/Join button pressed");
                 Toast.makeText(MapsActivity.this, "More Info/Join pressed", Toast.LENGTH_SHORT).show();
+
+                // TODO: intent should be conditional on being a member or non-member. For now, it's default member view.
+                Intent gardenInfo = new Intent(MapsActivity.this, GardenInfoMemberActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfo);
+                startActivity(gardenInfo);
             }
         });
 
@@ -148,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
-                gardenOverlayVisiblility(View.INVISIBLE);
+                gardenOverlayVisiblility(View.GONE);
             }
         });
     }
@@ -275,4 +283,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         findViewById(R.id.more_info_j).setVisibility(visible);
     }
 
+    private void loadExtras() {
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            googleProfileInformation = new GoogleProfileInformation(extras);
+        }
+    }
 }

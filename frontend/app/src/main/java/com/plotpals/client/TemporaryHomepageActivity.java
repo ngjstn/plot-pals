@@ -35,6 +35,13 @@ public class TemporaryHomepageActivity extends NavBarActivity {
         });
 
         activateNavBar();
+        Button mapsButton = findViewById(R.id.maps_button);
+        mapsButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Google Maps Button");
+            Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
+            startActivity(mapsIntent);
+        });
 
     }
 

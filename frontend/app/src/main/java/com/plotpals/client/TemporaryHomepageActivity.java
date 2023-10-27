@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * Temporary home page to route to feature pages
  */
-public class TemporaryHomepageActivity extends AppCompatActivity {
+public class TemporaryHomepageActivity extends NavBarActivity {
     final static String TAG = "TemporaryHomepageActivity";
 
     @Override
@@ -18,7 +18,7 @@ public class TemporaryHomepageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temporary_homepage);
 
-        //ActivateNavBar();
+        ActivateNavBar();
 
         Button mapsButton = findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(view -> {

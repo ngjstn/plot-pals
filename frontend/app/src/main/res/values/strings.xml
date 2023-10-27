@@ -40,4 +40,11 @@
     <string name="search_for_">Search for a Garden</string>
     <string name="view_on_the">View on the map</string>
     <string name="title_activity_garden_info_non_member">GardenInfoNonMemberActivity</string>
+
+    <string name="garden_application_header">New Garden Application</string>
+    <string name="garden_application_instruction">First, please provide us with some information about your new garden. This can be changed
+        at a later time if your application is approved.</string>
+
+    <string name="garden_application_name_input">Garden Name *</string>
+
 </resources>

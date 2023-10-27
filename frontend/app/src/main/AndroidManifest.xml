@@ -52,6 +52,9 @@
             android:name=".NavBarActivity"
             android:exported="false" />
         <activity
+            android:name=".GardenApplicationActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

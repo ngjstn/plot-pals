@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 
 public class MyGardenNoGardenActivity extends NavBarActivity {
-
+    final static String TAG = "MyGardenNoGardenActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

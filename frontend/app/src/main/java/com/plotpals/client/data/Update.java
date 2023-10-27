@@ -1,5 +1,10 @@
 package com.plotpals.client.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.jar.JarException;
+
 /**
  * update object that maps to a row of the database table 'updates'
  */
@@ -17,6 +22,16 @@ public class Update {
         this.userId = userId;
         this.description = description;
         this.title = title;
+    }
+
+    /*
+    * To be used within GET api calls for updates
+    */
+    public Update(JSONObject updateJsonObject) throws JSONException {
+        this(updateJsonObject.getInt("id"),
+                updateJsonObject.getString("userId"),
+                updateJsonObject.getString("description"),
+                updateJsonObject.getString("title"));
     }
 
     public int getId() {

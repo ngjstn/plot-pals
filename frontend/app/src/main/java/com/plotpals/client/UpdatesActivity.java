@@ -99,10 +99,7 @@ public class UpdatesActivity extends AppCompatActivity {
                             updatesList.clear();
                             for (int i = 0; i < fetchedUpdates.length(); i++) {
                                 JSONObject updateJsonObject =fetchedUpdates.getJSONObject(i);
-                                Update update = new Update(updateJsonObject.getInt("id"),
-                                        updateJsonObject.getString("userId"),
-                                        updateJsonObject.getString("description"),
-                                        updateJsonObject.getString("title"));
+                                Update update = new Update(updateJsonObject);
                                 updatesList.add(update);
                             }
 

@@ -57,6 +57,7 @@ INSERT INTO tasks(
 	plotId, 
 	reward, 
 	minimumRating, 
+    title,
 	description, 
 	assignerId, 
 	assigneeId, 
@@ -71,6 +72,7 @@ INSERT INTO tasks(
 	123 /*some plot.id int*/, 
 	'some reward', 
 	4.56 /*some number between 0-5 with 2 decimals*/, 
+    'some title',
 	'some desc', 
 	'{insert some profile.id}', 
 	'{insert some profile.id}', 
@@ -120,4 +122,6 @@ SELECT
     gardens.gardenName
 FROM tasks JOIN gardens
 ON tasks.gardenId = gardens.id;
+
+UPDATE tasks SET assignerId='103354493506323780957' WHERE id=1;
 

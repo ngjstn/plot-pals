@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".AccountMainActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/account_header_text"
         android:layout_width="177dp"
@@ -15,7 +21,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="76dp"
         android:gravity="top"
-        android:text="My Account"
+        android:text="@string/header_account_main"
         android:textAppearance="@style/page_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,9 +49,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="36dp"
         android:layout_marginTop="148dp"
+        android:src="@mipmap/mugshot"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/mugshot" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/account_profile_button"
@@ -89,13 +95,14 @@
         android:layout_height="106dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="385dp"
         android:background="@drawable/account_button_big_rectangle"
         app:layout_constraintBottom_toTopOf="@+id/account_settings_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_roles_button"
-        app:layout_constraintVertical_bias="0.507" />
+        app:layout_constraintEnd_toStartOf="@+id/include"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toEndOf="@+id/include"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/account_apply_text"
@@ -104,7 +111,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Apply to create new garden"
+        android:text="@string/account_apply"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
         app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
@@ -121,7 +128,7 @@
         android:layout_alignParentTop="true"
         android:autoSizeTextType="uniform"
         android:gravity="top"
-        android:text="Apply to add a new garden to Plotpal's in-app garden management system by filling out this form."
+        android:text="@string/account_apply2"
         android:textAppearance="@style/basic_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
         app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
@@ -136,8 +143,10 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="538dp"
-        android:layout_marginBottom="133dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="511dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="160dp"
         android:background="@drawable/account_button_small_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,12 +159,15 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="51dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="81dp"
         android:background="@drawable/account_button_small_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_settings_button"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/account_score_button"
@@ -178,11 +190,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
+        android:src="@drawable/psychiatry"
         app:layout_constraintBottom_toBottomOf="@+id/account_score_button"
         app:layout_constraintStart_toStartOf="@+id/account_score_button"
         app:layout_constraintTop_toTopOf="@+id/account_score_button"
-        app:layout_constraintVertical_bias="0.666"
-        android:src="@drawable/psychiatry" />
+        app:layout_constraintVertical_bias="0.666" />
 
     <ImageView
         android:id="@+id/account_profile_icon"
@@ -190,11 +202,11 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/person"
         app:layout_constraintBottom_toTopOf="@+id/account_roles_text"
         app:layout_constraintEnd_toEndOf="@+id/account_profile_button"
         app:layout_constraintStart_toStartOf="@+id/account_profile_button"
-        app:layout_constraintTop_toTopOf="@+id/account_profile_button"
-        android:src="@drawable/person" />
+        app:layout_constraintTop_toTopOf="@+id/account_profile_button" />
 
     <ImageView
         android:id="@+id/account_roles_icon"
@@ -202,11 +214,11 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/group"
         app:layout_constraintBottom_toTopOf="@+id/account_roles_text"
         app:layout_constraintEnd_toEndOf="@+id/account_roles_button"
         app:layout_constraintStart_toStartOf="@+id/account_roles_button"
-        app:layout_constraintTop_toTopOf="@+id/account_roles_button"
-        android:src="@drawable/group" />
+        app:layout_constraintTop_toTopOf="@+id/account_roles_button" />
 
     <ImageView
         android:id="@+id/account_rating_icon"
@@ -214,11 +226,11 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/psychiatry"
         app:layout_constraintBottom_toTopOf="@+id/account_rating_text"
         app:layout_constraintEnd_toEndOf="@+id/account_rating_button"
         app:layout_constraintStart_toStartOf="@+id/account_rating_button"
-        app:layout_constraintTop_toTopOf="@+id/account_rating_button"
-        android:src="@drawable/psychiatry" />
+        app:layout_constraintTop_toTopOf="@+id/account_rating_button" />
 
     <ImageView
         android:id="@+id/account_apply_icon"
@@ -226,13 +238,13 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/potted_plant"
         app:layout_constraintBottom_toBottomOf="@+id/account_apply_button"
         app:layout_constraintEnd_toEndOf="@+id/account_apply_button"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="@+id/account_apply_button"
         app:layout_constraintTop_toTopOf="@+id/account_apply_button"
-        app:layout_constraintVertical_bias="0.5"
-        android:src="@drawable/potted_plant" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
         android:id="@+id/account_settings_icon"
@@ -240,13 +252,13 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/settings"
         app:layout_constraintBottom_toBottomOf="@+id/account_settings_button"
         app:layout_constraintEnd_toEndOf="@+id/account_settings_button"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="@+id/account_settings_button"
         app:layout_constraintTop_toTopOf="@+id/account_settings_button"
-        app:layout_constraintVertical_bias="0.5"
-        android:src="@drawable/settings" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
         android:id="@+id/account_logout_icon"
@@ -254,13 +266,13 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:src="@drawable/logout"
         app:layout_constraintBottom_toBottomOf="@+id/account_logout_button"
         app:layout_constraintEnd_toEndOf="@+id/account_logout_button"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="@+id/account_logout_button"
         app:layout_constraintTop_toTopOf="@+id/account_logout_button"
-        app:layout_constraintVertical_bias="0.5"
-        android:src="@drawable/logout" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/account_score_text"
@@ -269,7 +281,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="6.9"
+        android:text="@string/account_rating"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_score_button"
         app:layout_constraintEnd_toEndOf="@+id/account_score_button"
@@ -283,7 +295,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Profile"
+        android:text="@string/account_profile"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_profile_button"
         app:layout_constraintEnd_toEndOf="@+id/account_profile_button"
@@ -299,7 +311,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Roles"
+        android:text="@string/account_roles"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_roles_button"
         app:layout_constraintEnd_toEndOf="@+id/account_roles_button"
@@ -315,7 +327,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Rating"
+        android:text="@string/account_rating_text"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_rating_button"
         app:layout_constraintEnd_toEndOf="@+id/account_rating_button"
@@ -331,7 +343,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Settings"
+        android:text="@string/account_settings"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_settings_button"
         app:layout_constraintEnd_toEndOf="@+id/account_settings_button"
@@ -346,7 +358,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-        android:text="Logout"
+        android:text="@string/account_logout"
         android:textAppearance="@style/label_text"
         app:layout_constraintBottom_toBottomOf="@+id/account_logout_button"
         app:layout_constraintEnd_toEndOf="@+id/account_logout_button"

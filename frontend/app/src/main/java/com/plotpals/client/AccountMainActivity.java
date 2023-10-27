@@ -2,8 +2,6 @@ package com.plotpals.client;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class AccountMainActivity extends NavBarActivity {
 
     @Override
@@ -11,6 +9,6 @@ public class AccountMainActivity extends NavBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_main);
 
-        ActivateNavBar();
+        activateNavBar();
     }
 }

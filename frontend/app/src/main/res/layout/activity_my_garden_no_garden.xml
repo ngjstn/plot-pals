@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyGardenNoGardenActivity">
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/activity_nav_bar" />
+
+    <TextView
+        android:id="@+id/my_garden_header_text"
+        android:layout_width="177dp"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:gravity="top"
+        android:text="@string/header_my_garden"
+        android:textAppearance="@style/page_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/maps_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/maps_button_caption"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/my_garden_text"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="304dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/my_garden_no_garden_text"
+        android:textAppearance="@style/basic_text"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/maps_button"
+        app:layout_constraintEnd_toEndOf="@+id/include2"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

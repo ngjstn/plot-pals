@@ -17,9 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".GardenApplicationActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AccountMainActivity"
             android:exported="false" />

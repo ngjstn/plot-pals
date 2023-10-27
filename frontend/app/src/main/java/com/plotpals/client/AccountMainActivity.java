@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Button;
+
 public class AccountMainActivity extends NavBarActivity {
 
     final String TAG = "AccountMainActivity";
@@ -41,6 +44,7 @@ public class AccountMainActivity extends NavBarActivity {
 
     View AccountRolesActivityView;
 
+    private View applyButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,16 @@ public class AccountMainActivity extends NavBarActivity {
                 .placeholder(R.drawable.default_profile_picture)
                 .error(R.drawable.default_profile_picture)
                 .into(AccountProfilePictureImageView);
+
+        applyButton = findViewById(R.id.account_apply_button);
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Clicking Garden App button");
+                Intent gardenAppIntent = new Intent(AccountMainActivity.this, GardenApplicationActivity.class);
+                startActivity(gardenAppIntent);
+            }
+        });
 
         AccountProfileNameTextView = findViewById(R.id.account_name_text_view);
         AccountProfileRatingsTextView = findViewById(R.id.account_ratings_text_view);

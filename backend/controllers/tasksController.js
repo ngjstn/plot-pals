@@ -5,15 +5,15 @@ const getTasksRelatedToAuthorizedUser = async (req, res, next) => {
 
   // We want to get tasks with extra column for garden name
   let sql =
-    'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assigneeId = ? OR assignerId = ?';
+    'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assigneeId = ? OR assignerId = ? ORDER BY id DESC';
   let sqlInput = [req.userId, req.userId];
   if (userIs === 'assignee') {
     sql =
-      'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assigneeId = ?';
+      'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assigneeId = ? ORDER BY id DESC';
     sqlInput = [req.userId];
   } else if (userIs === 'assigner') {
     sql =
-      'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assignerId = ?';
+      'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id WHERE assignerId = ? ORDER BY id DESC';
     sqlInput = [req.userId];
   }
 

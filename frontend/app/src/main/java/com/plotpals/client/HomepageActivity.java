@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class HomepageActivity extends AppCompatActivity {
+public class HomepageActivity extends NavBarActivity {
 
     final String TAG = "HomepageActivity";
 
@@ -57,7 +57,9 @@ public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
         loadExtras();
+        ActivateNavBar();
 
         UpdatesForwardArrowImageView = findViewById(R.id.homepage_updates_forward_arrow_image_view);
         UpdatesForwardArrowImageView.setOnClickListener(view -> {

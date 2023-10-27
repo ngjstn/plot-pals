@@ -1,19 +1,18 @@
 package com.plotpals.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.plotpals.client.utils.GoogleProfileInformation;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 /**
  * Temporary home page to route to feature pages
  */
-public class TemporaryHomepageActivity extends AppCompatActivity {
+public class TemporaryHomepageActivity extends NavBarActivity {
     final static String TAG = "TemporaryHomepageActivity";
 
     GoogleProfileInformation googleProfileInformation;
@@ -39,21 +38,23 @@ public class TemporaryHomepageActivity extends AppCompatActivity {
 
         mapsButton = findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Clicking Google Maps Button");
-                Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
-                startActivity(mapsIntent);
-            }
+          @Override
+          public void onClick(View view) {
+              Log.d(TAG, "Clicking Google Maps Button");
+              Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
+              startActivity(mapsIntent);
+          }
+        });
+        ActivateNavBar();
+        Button mapsButton = findViewById(R.id.maps_button);
+        mapsButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Google Maps Button");
+            Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
+            startActivity(mapsIntent);
         });
 
-        accountButton = findViewById(R.id.account_button);
-        accountButton.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Account Button");
-            Intent accountIntent = new Intent(TemporaryHomepageActivity.this, AccountMainActivity.class);
-            startActivity(accountIntent);
-        });
     }
+
 
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();

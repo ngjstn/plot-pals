@@ -29,12 +29,16 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".NavBarActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AccountMainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

@@ -15,6 +15,18 @@
     <string name="create_profile_display_name_text_input_hint">Enter Display Name</string>
 
     <string name="account_name">Robert Oppenheimer</string>
+    <string name="navbar_garden_text">My Garden</string>
+    <string name="navbar_home_text">Home</string>
+    <string name="navbar_account_text">Account</string>
+    <string name="header_account_main">My Account</string>
+    <string name="account_apply">Apply to create new garden</string>
+    <string name="account_apply2">Apply to add a new garden to Plotpal\'s in-app garden management system by filling out this form.</string>
+    <string name="account_rating">6.9</string>
+    <string name="account_profile">Profile</string>
+    <string name="account_roles">Roles</string>
+    <string name="account_rating_text">Rating</string>
+    <string name="account_settings">Settings</string>
+    <string name="account_logout">Logout</string>
 
     <string name="homepage_title_placeholder">Hey there hot stuff</string>
     <string name="homepage_updates_title">Updates</string>

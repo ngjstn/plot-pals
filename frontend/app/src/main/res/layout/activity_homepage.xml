@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".HomepageActivity">
 
+    <include layout="@layout/activity_nav_bar"/>
+
     <TextView
         android:id="@+id/homepage_tasks_title_text_view2"
         android:layout_width="wrap_content"

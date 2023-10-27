@@ -9,6 +9,6 @@ public class AccountMainActivity extends NavBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_main);
 
-        startNavBar();
+        ActivateNavBar();
     }
 }

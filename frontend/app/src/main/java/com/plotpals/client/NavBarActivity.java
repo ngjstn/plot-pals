@@ -17,7 +17,7 @@ public class NavBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nav_bar);
     }
 
-    protected void startNavBar() {
+    protected void ActivateNavBar() {
         Button homeButton = findViewById(R.id.button_navbar_home);
         homeButton.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Home Button");

@@ -16,7 +16,7 @@ public class TemporaryHomepageActivity extends NavBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temporary_homepage);
 
-        startNavBar();
+        ActivateNavBar();
 
         Button mapsButton = findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(view -> {

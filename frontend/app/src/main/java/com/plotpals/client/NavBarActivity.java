@@ -25,24 +25,25 @@ public class NavBarActivity extends AppCompatActivity {
         Button homeButton = findViewById(R.id.button_navbar_home);
         homeButton.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Home Button");
-            Intent accountIntent = new Intent(NavBarActivity.this, TemporaryHomepageActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(accountIntent);
-            startActivity(accountIntent);
+            Intent intent = new Intent(NavBarActivity.this, HomepageActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
         });
 
         Button gardenButton = findViewById(R.id.button_navbar_garden);
         gardenButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking My Garden Button");
-            Intent accountIntent = new Intent(NavBarActivity.this, MyGardenNoGardenActivity.class);
-            startActivity(accountIntent);
+            Intent intent = new Intent(NavBarActivity.this, MyGardenNoGardenActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
         });
 
         Button accountButton = findViewById(R.id.button_navbar_account);
         accountButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Account Button");
-            Intent accountIntent = new Intent(NavBarActivity.this, AccountMainActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(accountIntent);
-            startActivity(accountIntent);
+            Intent intent = new Intent(NavBarActivity.this, AccountMainActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
         });
     }
 

@@ -126,9 +126,9 @@ public class AppEntryActivity extends AppCompatActivity {
                         Log.d(TAG, "Response for checking user profile:\n" + response.toString(2));
                         JSONArray fetchedProfile = (JSONArray)response.get("data");
                         if(fetchedProfile.length() > 0) {
-                            Intent temporaryHomepageIntent = new Intent(AppEntryActivity.this, TemporaryHomepageActivity.class);
-                            googleProfileInformation.loadGoogleProfileInformationToIntent(temporaryHomepageIntent);
-                            startActivity(temporaryHomepageIntent);
+                            Intent homepageIntent = new Intent(AppEntryActivity.this, HomepageActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(homepageIntent);
+                            startActivity(homepageIntent);
                         } else {
                             Intent createProfileIntent = new Intent(AppEntryActivity.this, CreateProfileActivity.class);
                             googleProfileInformation.loadGoogleProfileInformationToIntent(createProfileIntent);

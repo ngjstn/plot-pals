@@ -20,5 +20,13 @@ public class MyGardenNoGardenActivity extends NavBarActivity {
             Intent mapsIntent = new Intent(MyGardenNoGardenActivity.this, MapsActivity.class);
             startActivity(mapsIntent);
         });
+
+        Button tempButton = findViewById(R.id.temp_button_yes_garden);
+        tempButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Temp Yes Garden Button");
+            Intent mapsIntent = new Intent(MyGardenNoGardenActivity.this, MyGardenYesGardenActivity.class);
+            startActivity(mapsIntent);
+        });
+
     }
 }

@@ -13,7 +13,9 @@ public class GoogleProfileInformation {
     @NonNull
     private String accountUserId;
 
-    // this is the jwt token that will be attached to the authorization header of every api request to server
+    /**
+    * this is the jwt token that will be attached to the authorization header of every api request to server
+    */
     @NonNull
     private String accountIdToken;
 

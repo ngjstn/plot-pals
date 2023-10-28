@@ -8,7 +8,9 @@ enum Role {
     ADMIN,
 }
 
-// profile object that maps to a row of the database table 'profiles'
+/**
+ * profile object that maps to a row of the database table 'profiles'
+ */
 public class Profile {
     private String id;
     private Role role;

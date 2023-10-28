@@ -23,6 +23,18 @@
             android:name=".MyGardenNoGardenActivity"
             android:exported="false" />
         <activity
+            android:name=".TasksActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".UpdatesActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HomepageActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".GardenListView"
             android:exported="false" />
         <activity
@@ -59,7 +71,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AccountMainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

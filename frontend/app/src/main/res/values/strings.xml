@@ -6,7 +6,6 @@
 
     <string name="temporary_homepage_label">Temporary Homepage</string>
 
-
     <string name="create_profile_title">Create Profile</string>
     <string name="create_profile_description">Set up your PlotPals profile by adding your display name. Your display name can be changed later.</string>
     <string name="create_profile_google_login_name_description">Logged in as:</string>
@@ -17,6 +16,7 @@
     <string name="navbar_home_text">Home</string>
     <string name="navbar_account_text">Account</string>
     <string name="header_account_main">My Account</string>
+
     <string name="account_apply">Apply to create new garden</string>
     <string name="account_apply2">Apply to add a new garden to Plotpal\'s in-app garden management system by filling out this form.</string>
     <string name="account_rating">6.9</string>
@@ -25,6 +25,14 @@
     <string name="account_rating_text">Rating</string>
     <string name="account_settings">Settings</string>
     <string name="account_logout">Logout</string>
+
+    <string name="homepage_title_placeholder">Hey there hot stuff</string>
+    <string name="homepage_updates_title">Updates</string>
+    <string name="homepage_tasks_title">My Tasks</string>
+
+    <string name="updates_title">Updates</string>
+
+    <string name="tasks_title">Tasks</string>
 
     <string name="title_activity_maps">MapsActivity</string>
     <string name="maps_button_caption">Find a Garden</string>

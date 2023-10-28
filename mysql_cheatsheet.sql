@@ -13,6 +13,7 @@
 
 /*INSTRUCTIONS TO SHOW DATA INSIDE TABLES*/
 SELECT * FROM profiles;
+SELECT * FROM roles;
 SELECT * FROM gardens;
 SELECT * FROM plots;
 SELECT * FROM tasks;
@@ -21,6 +22,16 @@ SELECT * FROM reports;
 SELECT * FROM updates;
 
 /* INSERT STATEMENTS TEMPLATE TO INITIALIZE TEST DATA FOR NON-PROFILE TABLES */
+INSERT INTO roles(
+	profileId, 
+    gardenId,
+    roleNum
+) VALUES (
+	'{insert some Profile.id here}',
+    123 /* Some Garden.id here */,
+    0 /* Some role number here ( SEE NOTES ON cpen_321_database_design.txt for the role enums) */
+);
+
 INSERT INTO gardens(
 	address, 
     longitude, 
@@ -57,6 +68,7 @@ INSERT INTO tasks(
 	plotId, 
 	reward, 
 	minimumRating, 
+    title,
 	description, 
 	assignerId, 
 	assigneeId, 
@@ -71,6 +83,7 @@ INSERT INTO tasks(
 	123 /*some plot.id int*/, 
 	'some reward', 
 	4.56 /*some number between 0-5 with 2 decimals*/, 
+    'some title',
 	'some desc', 
 	'{insert some profile.id}', 
 	'{insert some profile.id}', 

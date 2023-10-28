@@ -21,7 +21,7 @@ public class NavBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nav_bar);
         loadExtras();
     }
-    protected void ActivateNavBar() {
+    protected void activateNavBar() {
         Button homeButton = findViewById(R.id.button_navbar_home);
         homeButton.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Home Button");
@@ -30,13 +30,12 @@ public class NavBarActivity extends AppCompatActivity {
             startActivity(accountIntent);
         });
 
-        //uncomment when garden home page is done
-        //Button gardenButton = findViewById(R.id.button_navbar_garden);
-        //gardenButton.setOnClickListener(view -> {
-        //    Log.d(TAG, "Clicking My Garden Button");
-        //    Intent accountIntent = new Intent(NavBarActivity.this, GardenMainActivity.class);
-        //    startActivity(accountIntent);
-        //});
+        Button gardenButton = findViewById(R.id.button_navbar_garden);
+        gardenButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking My Garden Button");
+            Intent accountIntent = new Intent(NavBarActivity.this, MyGardenNoGardenActivity.class);
+            startActivity(accountIntent);
+        });
 
         Button accountButton = findViewById(R.id.button_navbar_account);
         accountButton.setOnClickListener(view -> {

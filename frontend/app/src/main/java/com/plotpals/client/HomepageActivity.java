@@ -59,7 +59,7 @@ public class HomepageActivity extends NavBarActivity {
         setContentView(R.layout.activity_homepage);
 
         loadExtras();
-        ActivateNavBar();
+        activateNavBar();
 
         UpdatesForwardArrowImageView = findViewById(R.id.homepage_updates_forward_arrow_image_view);
         UpdatesForwardArrowImageView.setOnClickListener(view -> {

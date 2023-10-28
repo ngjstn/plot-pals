@@ -28,7 +28,6 @@ public class AccountMainActivity extends NavBarActivity {
             }
         });
 
-
         ActivateNavBar();
     }
 }

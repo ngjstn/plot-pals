@@ -6,17 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".MyGardenNoGardenActivity">
 
-    <include layout="@layout/activity_nav_bar" />
+    <include
+        android:id="@+id/include3"
+        layout="@layout/activity_nav_bar"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <View
-        android:id="@+id/account_apply_button2"
-        android:layout_width="310dp"
-        android:layout_height="106dp"
+        android:id="@+id/view2"
+        android:layout_width="306dp"
+        android:layout_height="187dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/account_button_big_rectangle"
-        tools:layout_editor_absoluteX="50dp"
-        tools:layout_editor_absoluteY="156dp" />
+        android:layout_marginTop="56dp"
+        android:background="@drawable/my_garden_big_rectangle"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_garden_header_text"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="306dp"
+        android:layout_height="144dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="204dp"
+        android:background="@drawable/my_garden_normal_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="465dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="429dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="141dp"
+        android:layout_height="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="@string/garden_name"
+        android:textAppearance="@style/label_text_big"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.122" />
 
     <ImageView
         android:id="@+id/my_garden_plus_button"
@@ -44,5 +98,44 @@
         android:textAppearance="@style/page_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="141dp"
+        android:layout_height="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="@string/garden_name"
+        android:textAppearance="@style/label_text_big"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.122" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="255dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="219dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="95dp"
+        android:layout_height="36dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="291dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

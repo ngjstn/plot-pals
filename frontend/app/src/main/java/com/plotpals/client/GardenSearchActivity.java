@@ -43,6 +43,7 @@ public class GardenSearchActivity extends AppCompatActivity {
         searchView.setQueryHint("Search for a Garden");
 
         Bundle extras = getIntent().getExtras();
+        assert extras != null;
         String initQuery = extras.getString("initQuery");
         searchGarden(initQuery);
 

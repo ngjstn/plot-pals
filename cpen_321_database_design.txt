@@ -4,7 +4,7 @@ Id (int), gardenName (string), address (string), longitude (string), latitude (s
 Report
 Id (int), reporterId (string, references Profile id column), reporteeId (string, references Profile id column) , reason (string), comment (string)
 Profile
-Id (string which comes from google), rating (int with 2 decimals scale 0-5), displayName (string), role (int, based on enum), competence (int)
+Id (string which comes from google), rating (int with 2 decimals scale 0-5), displayName (string), competence (int)
 Admin Profile
 Id (string which comes from google)
 Plot

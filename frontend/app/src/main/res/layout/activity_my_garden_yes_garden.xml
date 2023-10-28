@@ -8,4 +8,41 @@
 
     <include layout="@layout/activity_nav_bar" />
 
+    <View
+        android:id="@+id/account_apply_button2"
+        android:layout_width="310dp"
+        android:layout_height="106dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/account_button_big_rectangle"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <ImageView
+        android:id="@+id/my_garden_plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/my_garden_header_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114"
+        app:srcCompat="@drawable/add" />
+
+    <TextView
+        android:id="@+id/my_garden_header_text"
+        android:layout_width="177dp"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:gravity="top"
+        android:text="@string/header_my_garden"
+        android:textAppearance="@style/page_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

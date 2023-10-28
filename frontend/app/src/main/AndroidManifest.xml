@@ -23,6 +23,9 @@
             android:name=".MyGardenNoGardenActivity"
             android:exported="false" />
         <activity
+            android:name=".MyGardenYesGardenActivity"
+            android:exported="false" />
+        <activity
             android:name=".TasksActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>

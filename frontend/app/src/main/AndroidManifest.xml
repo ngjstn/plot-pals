@@ -68,6 +68,9 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".GardenApplicationConfirmActivity"
+            android:exported="false" />
+        <activity
             android:name=".GardenListView"
             android:exported="false" />
         <activity
@@ -97,6 +100,9 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".NavBarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GardenApplicationActivity"
             android:exported="false" />
         <activity
             android:name=".CreateProfileActivity"

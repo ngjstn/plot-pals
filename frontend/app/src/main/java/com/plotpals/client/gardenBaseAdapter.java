@@ -1,7 +1,5 @@
 package com.plotpals.client;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +51,7 @@ public class gardenBaseAdapter extends BaseAdapter {
 //        View gardenImg = view.findViewById(R.id.textView_garden);
 //        gardenImg.setBackground(listImages[i]);
 
-        view.findViewById(R.id.rectangle_4).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.forum_board_divider1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, String.format("View on map pressed for %s", listGarden.get(i)));

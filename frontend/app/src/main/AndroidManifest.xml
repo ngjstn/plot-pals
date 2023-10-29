@@ -22,7 +22,8 @@
         <activity
             android:name=".RolesActivity"
             android:exported="false"
-            android:label="Roles Activity" />
+            android:label="Roles Activity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ProfileActivity"
             android:exported="false"

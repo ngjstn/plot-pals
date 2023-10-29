@@ -1,7 +1,10 @@
 package com.plotpals.client.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 // roles enum, note that the ordinal values of the roles matter
-enum Role {
+enum RoleEnum {
     CARETAKER,
     PLOT_OWNER,
     GARDEN_OWNER,
@@ -13,30 +16,37 @@ enum Role {
  */
 public class Profile {
     private String id;
-    private Role role;
-    private int rating;
-    private String display_name;
+    private double rating;
 
-    public Profile(String id, Role role, int rating, String display_name) {
+    private String displayName;
+
+    private int competence;
+
+    public Profile(String id, double rating, String displayName, int competence) {
         this.id = id;
-        this.role = role;
         this.rating = rating;
-        this.display_name = display_name;
+        this.displayName = displayName;
+        this.competence = competence;
+    }
+
+    public Profile(JSONObject profileJsonObject) throws JSONException {
+        this(
+                profileJsonObject.getString("id"),
+                profileJsonObject.getDouble("rating"),
+                profileJsonObject.getString("displayName"),
+                profileJsonObject.getInt("competence")
+                );
     }
 
     public String getId() {
         return id;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public String getDisplay_name() {
-        return display_name;
+    public String getDisplayName() {
+        return displayName;
     }
 }

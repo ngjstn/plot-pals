@@ -108,6 +108,8 @@ public class HomepageActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Obtaining updates");
                         JSONArray fetchedUpdates = (JSONArray)response.get("data");
+
+                        /* Populate updateList with fetched updates and notify the UpdatesListView UI to display the fetched task*/
                         if(fetchedUpdates.length() > 0) {
                             updatesList.clear();
                             for (int i = 0; i < Math.min(fetchedUpdates.length(), 3); i++) {
@@ -150,6 +152,8 @@ public class HomepageActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Obtaining tasks");
                         JSONArray fetchedTasks = (JSONArray)response.get("data");
+
+                        /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
                         if(fetchedTasks.length() > 0) {
                             tasksList.clear();
                             for (int i = 0; i < Math.min(fetchedTasks.length(), 3); i++) {

@@ -114,7 +114,7 @@ public class AppEntryActivity extends AppCompatActivity {
     // if user already has a profile, then we skip profile creation and head to the activity after it
     private void redirectToProfileCreationOrSkipIt() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

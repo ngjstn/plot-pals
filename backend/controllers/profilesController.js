@@ -1,9 +1,11 @@
 const { database } = require('../database');
 const { roles, MAX_RATING, STARTING_COMPETENCE } = require('../constants/profile');
 
-const getProfiles = async (req, res, next) => {
+const getAllProfiles = async (req, res, next) => {
   const { profileId } = req.query;
-  const sql = profileId ? 'SELECT * FROM profiles WHERE id=?' : 'SELECT * FROM profiles';
+  const sql = profileId
+    ? 'SELECT * FROM profiles WHERE id=? ORDER BY displayName'
+    : 'SELECT * FROM profiles ORDER BY displayName';
 
   // EXPLANATION NOTE: usually you want to try/catch await functions in your controllers
   try {
@@ -19,7 +21,13 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
   const { displayName } = req.body;
   const sql = 'INSERT INTO profiles (id, rating, role, displayName, competence) VALUES (?, ?, ?, ?, ?)';
   try {
-    const queryResults = await database.query(sql, [req.userId, MAX_RATING, roles.CARETAKER, displayName, STARTING_COMPETENCE]);
+    const queryResults = await database.query(sql, [
+      req.userId,
+      MAX_RATING,
+      roles.CARETAKER,
+      displayName,
+      STARTING_COMPETENCE,
+    ]);
     return res.json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
@@ -27,6 +35,6 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
 };
 
 module.exports = {
-  getProfiles,
+  getAllProfiles,
   createProfileForAuthenticatedUser,
 };

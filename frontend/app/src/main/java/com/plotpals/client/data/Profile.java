@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * profile object that maps to a row of the database table 'profiles'
+ * Profile object that maps to a row of the database table 'profiles'
  */
 public class Profile {
     private String id;
@@ -40,5 +40,9 @@ public class Profile {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public int getCompetence() {
+        return competence;
     }
 }

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 /**
- * task object that maps to entries of 'tasks' table
+ * Task object that maps to entries of 'tasks' table
  */
 public class Task {
     private int id;

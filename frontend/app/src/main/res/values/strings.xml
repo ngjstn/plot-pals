@@ -35,7 +35,7 @@
     <string name="tasks_title">Tasks</string>
 
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="maps_button_caption">Garden Discovery</string>
+    <string name="maps_button_caption">Find a Garden</string>
     <string name="garden_name">Garden Name</string>
     <string name="address">Address</string>
     <string name="something_r">1234 Something Rd, Richmond, BC - V7E 1R4</string>
@@ -48,4 +48,17 @@
     <string name="search_for_">Search for a Garden</string>
     <string name="view_on_the">View on the map</string>
     <string name="title_activity_garden_info_non_member">GardenInfoNonMemberActivity</string>
+    <string name="general_inf">General Information</string>
+    <string name="additional_">Additional Information</string>
+    <string name="forum_board">Forum Board</string>
+    <string name="join">Join</string>
+    <string name="my_membersh">My Membership</string>
+    <string name="my_plot_">My plot:</string>
+    <string name="my_role_s_">My role(s):</string>
+    <string name="plot">N/A</string>
+    <string name="plot_owner">Plot Owner</string>
+    <string name="caretaker">Caretaker</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="header_my_garden">My Garden</string>
+    <string name="my_garden_no_garden_text">You are not part of a garden yet. Join one to get started!</string>
 </resources>

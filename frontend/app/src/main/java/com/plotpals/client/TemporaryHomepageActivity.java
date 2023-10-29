@@ -8,7 +8,6 @@ import android.widget.Button;
 import com.plotpals.client.utils.GoogleProfileInformation;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 /**
  * Temporary home page to route to feature pages
  */
@@ -17,8 +16,7 @@ public class TemporaryHomepageActivity extends NavBarActivity {
 
     GoogleProfileInformation googleProfileInformation;
     private Button actualHomepageButton;
-    private Button mapsButton;
-    private Button accountButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +34,12 @@ public class TemporaryHomepageActivity extends NavBarActivity {
             startActivity(homepageIntent);
         });
 
-        mapsButton = findViewById(R.id.maps_button);
-        mapsButton.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              Log.d(TAG, "Clicking Google Maps Button");
-              Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
-              startActivity(mapsIntent);
-          }
-        });
-        ActivateNavBar();
+        activateNavBar();
         Button mapsButton = findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Google Maps Button");
             Intent mapsIntent = new Intent(TemporaryHomepageActivity.this, MapsActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
             startActivity(mapsIntent);
         });
 

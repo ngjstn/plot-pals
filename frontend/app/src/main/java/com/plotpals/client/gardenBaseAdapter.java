@@ -64,6 +64,7 @@ public class gardenBaseAdapter extends BaseAdapter {
                 searchActivity.startActivity(mapsIntent);
             }
         });
+
         return view;
     }
 }

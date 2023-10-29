@@ -32,6 +32,14 @@
             android:exported="false"
             android:label="Ratings Activity"/>
         <activity
+            android:name=".GardenInfoMemberActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".MyGardenNoGardenActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".TasksActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -42,6 +50,10 @@
         <activity
             android:name=".HomepageActivity"
             android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GardenInfoNonMemberActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GardenListView"

@@ -46,7 +46,8 @@ public class AccountMainActivity extends NavBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_main);
         loadExtras();
-        ActivateNavBar();
+
+        activateNavBar();
 
         AccountProfileActivityView = findViewById(R.id.account_profile_button_view);
         AccountProfileActivityView.setOnClickListener(view -> {

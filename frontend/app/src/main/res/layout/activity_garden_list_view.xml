@@ -51,7 +51,7 @@
         app:layout_constraintVertical_bias="0.327" />
 
     <Button
-        android:id="@+id/forum_board_divider1"
+        android:id="@+id/rectangle_4"
         android:layout_width="130dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
@@ -75,11 +75,11 @@
         android:text="@string/view_on_the"
         android:textAppearance="@style/view_on_the"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/forum_board_divider1"
-        app:layout_constraintEnd_toEndOf="@+id/forum_board_divider1"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangle_4"
+        app:layout_constraintEnd_toEndOf="@+id/rectangle_4"
         app:layout_constraintHorizontal_bias="0.548"
-        app:layout_constraintStart_toStartOf="@+id/forum_board_divider1"
-        app:layout_constraintTop_toTopOf="@+id/forum_board_divider1"
+        app:layout_constraintStart_toStartOf="@+id/rectangle_4"
+        app:layout_constraintTop_toTopOf="@+id/rectangle_4"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView

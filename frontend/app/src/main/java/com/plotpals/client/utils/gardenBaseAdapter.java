@@ -15,7 +15,6 @@ import com.plotpals.client.MapsActivity;
 import com.plotpals.client.R;
 import com.plotpals.client.data.Garden;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class gardenBaseAdapter extends BaseAdapter {
@@ -61,7 +60,7 @@ public class gardenBaseAdapter extends BaseAdapter {
 //        View gardenImg = view.findViewById(R.id.textView_garden);
 //        gardenImg.setBackground(listImages[i]);
 
-        view.findViewById(R.id.forum_board_divider1).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.rectangle_4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()));

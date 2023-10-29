@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -15,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
@@ -32,6 +34,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
     ListView TasksListView;
     ArrayAdapter<Task> tasksListAdapter;
     static GoogleProfileInformation googleProfileInformation;
+    String gardenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,16 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            googleProfileInformation = new GoogleProfileInformation(extras);
+            googleProfileInformation = new GoogleProfileInformation(
+                    extras.getString("accountGoogleName"),
+                    extras.getString("accountGoogleProfilePictureImageUrl"),
+                    extras.getString("accountUserId"),
+                    extras.getString("accountIdToken")
+            );
+
+            gardenName = extras.getString("gardenName");
+            TextView gardenNameTextView = findViewById(R.id.garden_name);
+            gardenNameTextView.setText(gardenName);
         }
     }
 }

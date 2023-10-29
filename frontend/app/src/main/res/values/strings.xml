@@ -45,6 +45,10 @@
     <string name="garden_application_instruction">First, please provide us with some information about your new garden. This can be changed
         at a later time if your application is approved.</string>
 
-    <string name="garden_application_name_input">Garden Name *</string>
+    <string name="garden_application_input_name">Garden Name</string>
+    <string name="garden_application_input_address">Garden Address</string>
+    <string name="garden_application_input_plots">Number of Garden Plots</string>
+    <string name="garden_application_input_contact">Contact Information</string>
+    <string name="garden_application_default_name">Placeholder</string>
 
 </resources>

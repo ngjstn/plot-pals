@@ -4,12 +4,14 @@ const {
   getTasksRelatedToAuthorizedUserByGardenId,
 } = require('../controllers/tasksController');
 
+const authMiddleware = require('../authMiddleware');
+
 const router = express.Router();
 
 // accepts query parameter userIs
-router.get('/', getTasksRelatedToAuthorizedUser);
+router.get('/', authMiddleware, getTasksRelatedToAuthorizedUser);
 
 // accepts query parameter userIs
-router.get('/:gardenId', getTasksRelatedToAuthorizedUserByGardenId);
+router.get('/:gardenId', authMiddleware, getTasksRelatedToAuthorizedUserByGardenId);
 
 module.exports = router;

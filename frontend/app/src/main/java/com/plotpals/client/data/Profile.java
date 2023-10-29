@@ -3,14 +3,6 @@ package com.plotpals.client.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// roles enum, note that the ordinal values of the roles matter
-enum RoleEnum {
-    CARETAKER,
-    PLOT_OWNER,
-    GARDEN_OWNER,
-    ADMIN,
-}
-
 /**
  * profile object that maps to a row of the database table 'profiles'
  */

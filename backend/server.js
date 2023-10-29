@@ -5,6 +5,7 @@ const updatesRouter = require('./routers/updatesRouter');
 const gardensRouter = require('./routers/gardensRouter');
 const tasksRouter = require('./routers/tasksRouter');
 const devRouter = require('./routers/devRouter');
+const rolesRouter = require('./routers/rolesRouter');
 const errorHandler = require('./errorHandler');
 
 // middleware to autoformat request to .json format
@@ -18,6 +19,7 @@ app.use('/profiles', profilesRouter);
 app.use('/gardens', gardensRouter);
 app.use('/updates', updatesRouter);
 app.use('/tasks', tasksRouter);
+app.use('/roles', rolesRouter);
 
 app.get('/', (req, res) => {
   return res.json({ message: 'Plot Pals :)' });

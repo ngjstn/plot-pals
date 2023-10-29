@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.jar.JarException;
 
 /**
- * update object that maps to a row of the database table 'updates'
+ * Update object that maps to a row of the database table 'updates'
  */
 public class Update {
     private int id;

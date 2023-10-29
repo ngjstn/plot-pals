@@ -15,7 +15,8 @@ const getAllGardens = async (req, res, next) => {
 };
 
 const getGardensForAuthorizedUser = async (req, res, next) => {
-  const sql = 'SELECT * FROM gardens WHERE gardenOwnerId=? ORDER BY gardenName';
+  const sql =
+    'SELECT gardens.*, profiles.displayName AS gardenOwnerName, roles.roleNum AS roleNumOfCurrentAuthorizedUserInGarden FROM gardens JOIN roles JOIN profiles WHERE (roles.profileId = ? AND roles.profileId = profiles.id AND roles.gardenId = gardens.id) ORDER BY gardenName';
 
   try {
     const queryResults = await database.query(sql, [req.userId]);

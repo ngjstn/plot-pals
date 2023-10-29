@@ -15,10 +15,7 @@ public class MyGardenNoGardenActivity extends NavBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_garden_no_garden);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            googleProfileInformation = new GoogleProfileInformation(extras);
-        }
+        loadExtras();
 
         activateNavBar();
         Button mapsButton = findViewById(R.id.maps_button);
@@ -28,5 +25,25 @@ public class MyGardenNoGardenActivity extends NavBarActivity {
             googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
             startActivity(mapsIntent);
         });
+
+        Button tempButton = findViewById(R.id.temp_button_yes_garden);
+        tempButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Temp Yes Garden Button");
+            Intent intent = new Intent(MyGardenNoGardenActivity.this, MyGardenYesGardenActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
+        });
+
+    }
+
+    /**
+     * load extras forwarded from previous activity
+     */
+    private void loadExtras() {
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            googleProfileInformation = new GoogleProfileInformation(extras);
+        }
     }
 }

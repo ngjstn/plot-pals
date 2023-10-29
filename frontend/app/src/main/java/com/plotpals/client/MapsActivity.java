@@ -13,7 +13,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Camera;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -33,23 +37,38 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.databinding.ActivityMapsBinding;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
@@ -62,7 +81,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Integer locationPollRate_ms = 1000;
     private SearchView gardenSearchView;
     static GoogleProfileInformation googleProfileInformation;
-
+    private List<Garden> gardenList = new ArrayList<>();
+    private HashMap<Marker, Garden> gardenMarkerMap = new HashMap<>();
+    private Garden currentGardenSelected;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onQueryTextSubmit(String s) {
                 Intent gardenSearchIntent = new Intent(MapsActivity.this, GardenSearchActivity.class);
                 gardenSearchIntent.putExtra("initQuery", s);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(gardenSearchIntent);
                 startActivity(gardenSearchIntent);
                 return false;
             }
@@ -112,6 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: intent should be conditional on being a member or non-member. For now, it's default member view.
                 Intent gardenInfo = new Intent(MapsActivity.this, GardenInfoMemberActivity.class);
                 googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfo);
+                gardenInfo.putExtra("gardenName", currentGardenSelected.getGardenName());
                 startActivity(gardenInfo);
             }
         });
@@ -146,9 +170,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-
         LatLng currentLocation = new LatLng(locationLat, locationLong);
-        mapsMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.format("Marker in %s", locationCityName)));
+        drawCurrentLocationMarker();
+        requestGardens();
+//        mapsMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.format("Marker in %s", locationCityName)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
 
         googleMap.setOnMarkerClickListener(this);
@@ -173,15 +198,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationLong = location.getLongitude();
 
         // parse for city name using current location
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            locationCityName = addresses.get(0).getLocality();
-            Log.d(TAG, String.format("Current City: %s, Lat: %f, Long: %f", locationCityName, locationLat, locationLong));
-        } catch (IOException e) {
-            Log.d(TAG, String.format("Can't find Geocoder locality: %f", e));
-//            throw new RuntimeException(e);
-        }
+//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//        try {
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//            locationCityName = addresses.get(0).getLocality();
+//            Log.d(TAG, String.format("Current City: %s, Lat: %f, Long: %f", locationCityName, locationLat, locationLong));
+//        } catch (IOException e) {
+//            Log.d(TAG, String.format("Can't find Geocoder locality: %f", e));
+//            //            throw new RuntimeException(e);
+//        }
 
         Log.d(TAG, String.format("Lat: %f, Long: %f", locationLat, locationLong));
         LatLng currentLocation = new LatLng(locationLat, locationLong);
@@ -190,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         }
         mapsMarker.setPosition(currentLocation);
-        mapsMarker.setTitle(String.format("Marker in %s", locationCityName));
+//        mapsMarker.setTitle(String.format("Marker in %s", locationCityName));
     }
 
 
@@ -258,10 +283,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
+        // clicking the current location marker shouldn't update the overlay
+        if (marker.equals(mapsMarker))
+        {
+            gardenOverlayVisiblility(View.GONE);
+            return false;
+        }
+        Garden garden = gardenMarkerMap.get(marker);
+        assert garden != null;
+        currentGardenSelected = garden;
+        updateGardenOverlayContent(garden);
         gardenOverlayVisiblility(View.VISIBLE);
         return false;
     }
-
 
     private void gardenOverlayVisiblility(int visible) {
         findViewById(R.id.shadow_rectangle_1).setVisibility(visible);
@@ -283,11 +317,102 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         findViewById(R.id.more_info_j).setVisibility(visible);
     }
 
+    private void updateGardenOverlayContent(Garden garden) {
+        TextView gardenName = findViewById(R.id.garden_name);
+        TextView address = findViewById(R.id.something_r);
+//        TextView contactName = findViewById(R.id.contact_nam);
+        TextView contactEmail = findViewById(R.id.name_email_);
+        TextView contactPhone = findViewById(R.id.some_id);
+
+        gardenName.setText(garden.getGardenName());
+        address.setText(garden.getAddress());
+//        contactName.setText(garden.getContactName());
+        contactEmail.setText(garden.getContactEmail());
+        contactPhone.setText(garden.getContactPhoneNumber());
+    }
+
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();
 
-        if (extras != null) {
+        if (extras != null && googleProfileInformation == null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
         }
+    }
+
+    private void drawGardenLocationMarker(Garden garden) {
+        Drawable greenMarker = getResources().getDrawable(R.drawable.location_marker_green);
+        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(greenMarker);
+
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(garden.getLocation())
+                .title(garden.getGardenName())
+                .icon(markerIcon)
+        );
+        gardenMarkerMap.put(marker, garden);
+    }
+    
+    private void drawCurrentLocationMarker() {
+        Drawable redMarker = getResources().getDrawable(R.drawable.location_marker_red);
+        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(redMarker);
+
+        LatLng currentLocation = new LatLng(locationLat, locationLong);
+        mapsMarker = mMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("Current Location")
+                .icon(markerIcon)
+        );
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private void requestGardens() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8081/gardens/";
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            (JSONObject response) -> {
+                try {
+                    Log.d(TAG, "Obtaining gardens");
+                    JSONArray fetchedGardens = (JSONArray)response.get("data");
+                    if (fetchedGardens.length() > 0) {
+                        gardenList.clear();
+                        for (int i =0; i < Math.min(fetchedGardens.length(), 3); i++) {
+                            JSONObject updateGardenObject = fetchedGardens.getJSONObject(i);
+                            Garden garden = new Garden(updateGardenObject);
+                            gardenList.add(garden);
+                            drawGardenLocationMarker(garden);
+                        }
+                        Bundle extras = getIntent().getExtras();
+                        if (extras != null) {
+                            Garden selectedFromSearch = gardenList.get(extras.getInt("moveToSelectedIndex"));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(selectedFromSearch.getLocation()));
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, e.toString());
+                }
+            },
+            (VolleyError e) -> {
+                Log.d(TAG, e.toString());
+            }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+        volleyQueue.add(jsonObjectRequest);
     }
 }

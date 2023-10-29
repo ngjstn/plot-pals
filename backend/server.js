@@ -5,6 +5,7 @@ const profilesRouter = require('./routers/profilesRouter');
 const updatesRouter = require('./routers/updatesRouter');
 const gardensRouter = require('./routers/gardensRouter');
 const tasksRouter = require('./routers/tasksRouter');
+const rolesRouter = require('./routers/rolesRouter');
 const errorHandler = require('./errorHandler');
 const { StatusCodes } = require('http-status-codes');
 
@@ -54,6 +55,7 @@ app.use('/profiles', profilesRouter);
 app.use('/gardens', gardensRouter);
 app.use('/updates', updatesRouter);
 app.use('/tasks', tasksRouter);
+app.use('/roles', rolesRouter);
 
 app.get('/', (req, res) => {
   return res.json({ message: 'Plot Pals :)' });

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class GardenApplicationActivity extends AppCompatActivity {
@@ -15,29 +16,13 @@ public class GardenApplicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garden_application);
-
-        // Create an instance of your Fragment (FragGAInfoPage)
-        Fragment fragGAInfoPage = new FragGAInfoPage();
-        Fragment fragGAContactPage = new FragGAContactPage();
-
-
-        // Get the FragmentManager and begin a transaction
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction initTransaction = fragmentManager.beginTransaction();
-
-        // Add the fragment to the container (R.id.fragment_container_view)
-        initTransaction.add(R.id.fragment_container_view, fragGAInfoPage);
-
-        // Commit the transaction
-        initTransaction.commit();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction contTransaction = fragmentManager.beginTransaction();
-                contTransaction.replace(R.id.fragment_container_view, fragGAContactPage);
-                contTransaction.commit();
+
             }
         });
 

@@ -25,6 +25,14 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
             googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
             startActivity(mapsIntent);
         });
+
+        Button forumButton = findViewById(R.id.my_garden_1_forum);
+        forumButton.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Forum Button");
+            Intent intent = new Intent(MyGardenYesGardenActivity.this, ForumBoardMainActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
+        });
         
     }
 

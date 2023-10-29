@@ -5,11 +5,14 @@ const profilesRouter = require('./routers/profilesRouter');
 const updatesRouter = require('./routers/updatesRouter');
 const gardensRouter = require('./routers/gardensRouter');
 const tasksRouter = require('./routers/tasksRouter');
+const devRouter = require('./routers/devRouter');
 const errorHandler = require('./errorHandler');
 const { StatusCodes } = require('http-status-codes');
 
 // middleware to autoformat request to .json format
 app.use(express.json());
+
+app.use('/dev', devRouter);
 
 // middleware to authenticate user
 app.use(async (req, res, next) => {
@@ -51,6 +54,7 @@ app.use(async (req, res, next) => {
 
 // EXPLANATION NOTE: routes all path that starts with '/profiles'
 app.use('/profiles', profilesRouter);
+
 app.use('/gardens', gardensRouter);
 app.use('/updates', updatesRouter);
 app.use('/tasks', tasksRouter);

@@ -1,8 +1,10 @@
 const { database } = require('../database');
 
-const getGardens = async (req, res, next) => {
+const getAllGardens = async (req, res, next) => {
   const { gardenId } = req.query;
-  const sql = gardenId ? 'SELECT * FROM gardens WHERE id=?' : 'SELECT * FROM gardens';
+  const sql = gardenId
+    ? 'SELECT * FROM gardens WHERE id=? ORDER BY gardenName'
+    : 'SELECT * FROM gardens ORDER BY gardenName';
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
@@ -12,6 +14,85 @@ const getGardens = async (req, res, next) => {
   }
 };
 
+const getGardensForAuthorizedUser = async (req, res, next) => {
+  const sql = 'SELECT * FROM gardens WHERE gardenOwnerId=? ORDER BY gardenName';
+
+  try {
+    const queryResults = await database.query(sql, [req.userId]);
+    return res.json({ data: queryResults[0] });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const deleteGardenDev = async (req, res, next) => {
+  const { gardenId } = req.params;
+  const sql = 'DELETE FROM gardens WHERE id=?';
+
+  try {
+    const queryResults = await database.query(sql, [gardenId]);
+    return res.json({ data: queryResults[0] });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const createGardenDev = async (req, res, next) => {
+  const {
+    longitude,
+    latitude,
+    gardenOwnerId,
+    isApproved,
+    gardenPicture,
+    contactPhoneNumber,
+    contactEmail,
+    numberOfPlots,
+    gardenName,
+  } = req.body;
+  const sql = `INSERT INTO gardens(
+    address, 
+      longitude, 
+      latitude, 
+      gardenOwnerId, 
+      isApproved, 
+      gardenPicture, 
+      contactPhoneNumber, 
+      contactEmail, 
+      numberOfPlots, 
+      gardenName
+  ) VALUES (
+      ?,
+      ?,
+      ?,
+      ?,
+      ?,
+      ?,
+      ?,
+      ?,
+      ?
+  ); `;
+
+  try {
+    const queryResults = await database.query(sql, [
+      longitude,
+      latitude,
+      gardenOwnerId,
+      isApproved,
+      gardenPicture,
+      contactPhoneNumber,
+      contactEmail,
+      numberOfPlots,
+      gardenName,
+    ]);
+    return res.json({ data: queryResults[0] });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
-  getGardens,
+  getAllGardens,
+  getGardensForAuthorizedUser,
+  createGardenDev,
+  deleteGardenDev,
 };

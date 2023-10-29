@@ -39,8 +39,15 @@ public class ForumBoardMainActivity extends NavBarActivity {
         plus.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Plus Sign");
             // TODO: make invisible when clicked elsewhere
-            newPostText.setVisibility(View.VISIBLE);
-            newTaskText.setVisibility(View.VISIBLE);
+            newPostText.setVisibility(newPostText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            newTaskText.setVisibility(newTaskText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        });
+
+        newPostText.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking New Post");
+            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewPostActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
         });
 
     }

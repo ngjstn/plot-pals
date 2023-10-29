@@ -17,30 +17,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/garden_plot_label"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:id="@+id/confirm_application_header"
+        android:layout_width="169dp"
+        android:layout_height="72dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="60dp"
         android:gravity="top"
-        android:text="@string/garden_application_input_plots"
-        android:textAppearance="@style/label_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/garden_contact_label"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="420dp"
-        android:gravity="top"
-        android:text="@string/garden_application_input_contact"
-        android:textAppearance="@style/label_text"
+        android:text="@string/garden_application_confirm_header"
+        android:textAppearance="@style/page_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,48 +40,6 @@
         android:layout_marginTop="168dp"
         android:gravity="top"
         android:text="@string/garden_application_input_name"
-        android:textAppearance="@style/label_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/garden_contact_phone_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="492dp"
-        android:gravity="top"
-        android:text="@string/garden_application_placeholder"
-        android:textAppearance="@style/label_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/garden_plot_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="372dp"
-        android:gravity="top"
-        android:text="@string/garden_application_placeholder"
-        android:textAppearance="@style/label_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/garden_contact_email_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="536dp"
-        android:gravity="top"
-        android:text="@string/garden_application_placeholder"
         android:textAppearance="@style/label_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -143,6 +87,48 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/garden_plot_label"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="340dp"
+        android:gravity="top"
+        android:text="@string/garden_application_input_plots"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/garden_plot_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="372dp"
+        android:gravity="top"
+        android:text="@string/garden_application_placeholder"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/garden_contact_label"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="420dp"
+        android:gravity="top"
+        android:text="@string/garden_application_input_contact"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/garden_contact_name_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
@@ -157,16 +143,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/confirm_application_header"
-        android:layout_width="169dp"
-        android:layout_height="72dp"
+        android:id="@+id/garden_contact_phone_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="492dp"
         android:gravity="top"
-        android:text="@string/garden_application_confirm_header"
-        android:textAppearance="@style/page_header"
+        android:text="@string/garden_application_placeholder"
+        android:textAppearance="@style/label_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/garden_contact_email_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="536dp"
+        android:gravity="top"
+        android:text="@string/garden_application_placeholder"
+        android:textAppearance="@style/label_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

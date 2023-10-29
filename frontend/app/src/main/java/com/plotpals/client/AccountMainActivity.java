@@ -87,8 +87,8 @@ public class AccountMainActivity extends NavBarActivity {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "Clicking Garden App button");
                 Intent gardenAppIntent = new Intent(AccountMainActivity.this, GardenApplicationActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(gardenAppIntent);
                 startActivity(gardenAppIntent);
             }
         });

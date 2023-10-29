@@ -98,7 +98,7 @@
                 android:inputType="text" />
 
             <TextView
-                android:id="@+id/garden_contact_name"
+                android:id="@+id/garden_contact_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

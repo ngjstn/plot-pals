@@ -3,7 +3,9 @@ package com.plotpals.client.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// roles enum, note that the ordinal values of the roles matter
+/**
+ * Make note that the ordinal values of the roles matter
+ */
 enum RoleEnum {
     CARETAKER {
         public String toString() {
@@ -27,6 +29,9 @@ enum RoleEnum {
     },
 }
 
+/**
+ * Role object that maps to a row of the database table 'roles'
+ */
 public class Role {
     private String profileId;
 
@@ -34,13 +39,18 @@ public class Role {
 
     private RoleEnum roleNum;
 
+    /* The following are not part of gardens table but can be added to role object if needed */
+
     private String gardenName;
 
-    public Role(String profileId, int gardenId, RoleEnum roleNum, String gardenName) {
+    private String gardenMemberName;
+
+    public Role(String profileId, int gardenId, RoleEnum roleNum, String gardenName, String gardenMemberName) {
         this.profileId = profileId;
         this.gardenId = gardenId;
         this.roleNum = roleNum;
         this.gardenName = gardenName;
+        this.gardenMemberName = gardenMemberName;
     }
 
     public Role(JSONObject rolesJsonObject) throws JSONException {
@@ -48,7 +58,8 @@ public class Role {
                 rolesJsonObject.getString("profileId"),
                 rolesJsonObject.getInt("gardenId"),
                 RoleEnum.values()[rolesJsonObject.getInt("roleNum")],
-                rolesJsonObject.optString("gardenName", null)
+                rolesJsonObject.optString("gardenName", null),
+                rolesJsonObject.optString("gardenMemberName", null)
         );
     }
 
@@ -69,4 +80,7 @@ public class Role {
         return gardenName;
     }
 
+    public String getGardenMemberName() {
+        return gardenMemberName;
+    }
 }

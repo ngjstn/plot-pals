@@ -1,12 +1,12 @@
 const express = require('express');
-const { getProfiles, createProfileForAuthenticatedUser } = require('../controllers/profilesController');
+const { getAllProfiles, createProfileForAuthenticatedUser } = require('../controllers/profilesController');
+const authMiddleware = require('../authMiddleware');
 
 const router = express.Router();
 
 // accepts query parameter profileId
-// EXPLANATION NOTE: this router for example will accept all requests of route '/profiles' or '/profiles?profileId={some profile id}'
-router.get('/', getProfiles);
+router.get('/all', authMiddleware, getAllProfiles);
 
-router.post('/', createProfileForAuthenticatedUser);
+router.post('/', authMiddleware, createProfileForAuthenticatedUser);
 
 module.exports = router;

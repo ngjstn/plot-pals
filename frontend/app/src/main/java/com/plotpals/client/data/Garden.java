@@ -9,6 +9,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+/**
+ * Garden object that maps to a row of the database table 'gardens'
+ */
 public class Garden implements Serializable {
     private int id;
     private String address;
@@ -17,10 +20,17 @@ public class Garden implements Serializable {
     private boolean isApproved;
     private String contactPhoneNumber; 
     private String contactEmail;
-    private int numberOfPlots; 
-    private String gardenName; 
+    private int numberOfPlots;
+    private String gardenName;
 
-    public Garden(int id, String address, String longitude, String latitude, String gardenOwnderId, int isApproved, String contactPhoneNumber, String contactEmail, int numberOfPlots, String gardenName) {
+    /* The following are not part of gardens table but can be added to garden object if needed */
+
+    private String gardenOwnerName;
+
+    private RoleEnum roleNumOfCurrentAuthorizedUserInGarden;
+
+
+    public Garden(int id, String address, String longitude, String latitude, String gardenOwnderId, int isApproved, String contactPhoneNumber, String contactEmail, int numberOfPlots, String gardenName, String gardenOwnerName, RoleEnum roleNumOfCurrentAuthorizedUserInGarden) {
         this.id = id;
         this.address = address;
         this.location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
@@ -30,6 +40,8 @@ public class Garden implements Serializable {
         this.contactEmail = contactEmail;
         this.numberOfPlots = numberOfPlots;
         this.gardenName = gardenName;
+        this.gardenOwnerName = gardenOwnerName;
+        this.roleNumOfCurrentAuthorizedUserInGarden = roleNumOfCurrentAuthorizedUserInGarden;
     }
 
     public Garden(JSONObject gardenJsonObject) throws JSONException {
@@ -42,8 +54,16 @@ public class Garden implements Serializable {
                 gardenJsonObject.getString("contactPhoneNumber"),
                 gardenJsonObject.getString("contactEmail"),
                 gardenJsonObject.getInt("numberOfPlots"),
-                gardenJsonObject.getString("gardenName")
+                gardenJsonObject.getString("gardenName"),
+                gardenJsonObject.optString("gardenOwnerName", null),
+                null
         );
+
+        int roleNumOfCurrentAuthorizedUserInGardenAsInt = gardenJsonObject.optInt("roleNumOfCurrentAuthorizedUserInGarden", -1);
+
+        if (roleNumOfCurrentAuthorizedUserInGardenAsInt != -1) {
+            this.roleNumOfCurrentAuthorizedUserInGarden = RoleEnum.values()[roleNumOfCurrentAuthorizedUserInGardenAsInt];
+        }
     }
 
     public void loadGardenInfoToIntent(Intent intent) {
@@ -63,10 +83,20 @@ public class Garden implements Serializable {
     public String getAddress() { return address; }
     public LatLng getLocation() { return location; }
     public String getGardenOwnerId() { return gardenOwnerId; }
-    public boolean getIsApproved() { return isApproved; }
+    public boolean isApproved() {
+        return isApproved;
+    }
     public String getContactPhoneNumber() { return contactPhoneNumber; }
     public String getContactEmail() { return contactEmail; }
     public int getNumberOfPlots() { return numberOfPlots; }
     public String getGardenName() { return gardenName; }
+
+    public String getGardenOwnerName() {
+        return gardenOwnerName;
+    }
+
+    public RoleEnum getRoleNumOfCurrentAuthorizedUserInGarden() {
+        return roleNumOfCurrentAuthorizedUserInGarden;
+    }
 
 }

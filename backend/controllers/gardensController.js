@@ -3,8 +3,8 @@ const { database } = require('../database');
 const getAllGardens = async (req, res, next) => {
   const { gardenId } = req.query;
   const sql = gardenId
-    ? 'SELECT * FROM gardens WHERE id=? ORDER BY gardenName'
-    : 'SELECT * FROM gardens ORDER BY gardenName';
+    ? 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id WHERE id = ? ORDER BY gardenName'
+    : 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id ORDER BY gardenName';
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);

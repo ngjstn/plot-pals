@@ -72,6 +72,8 @@
     <string name="garden_application_input_address">Garden Address</string>
     <string name="garden_application_input_plots">Number of Garden Plots</string>
     <string name="garden_application_input_contact">Contact Information</string>
-    <string name="garden_application_default_name">Placeholder</string>
+    <string name="garden_application_placeholder">Placeholder</string>
+
+    <string name="garden_application_confirm_header">Confirm Application</string>
 
 </resources>

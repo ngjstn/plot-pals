@@ -20,6 +20,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".RolesActivity"
+            android:exported="false"
+            android:label="Roles Activity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="Profile Activity"/>
+        <activity
+            android:name=".RatingsActivity"
+            android:exported="false"
+            android:label="Ratings Activity"/>
+        <activity
             android:name=".GardenInfoMemberActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -34,7 +46,7 @@
         <activity
             android:name=".TasksActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdatesActivity"
             android:exported="true"
@@ -49,7 +61,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GardenListView"
-            android:exported="false"  />
+            android:exported="false" />
         <activity
             android:name=".GardenSearchActivity"
             android:exported="false" />

@@ -50,6 +50,13 @@ public class ForumBoardMainActivity extends NavBarActivity {
             startActivity(intent);
         });
 
+        newTaskText.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking New Task");
+            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewTaskActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
+        });
+
     }
 
     /**

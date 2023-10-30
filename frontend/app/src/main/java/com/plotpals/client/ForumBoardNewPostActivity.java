@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 public class ForumBoardNewPostActivity extends NavBarActivity {
-
+    final static String TAG = "ForumBoardNewPostActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

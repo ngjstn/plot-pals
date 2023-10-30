@@ -2,7 +2,6 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
-import com.plotpals.client.data.Update;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
@@ -29,13 +27,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminHomepageActivity extends AppCompatActivity {
+public class GardenApplicationsActivity extends AppCompatActivity {
 
-    final String TAG = "AdminHomepageActivity";
+    final String TAG = "GardenApplicationsActivity";
 
     GoogleProfileInformation googleProfileInformation;
 
-    ImageView GardenApplicationsForwardArrow;
+    ImageView BackArrowImageView;
 
     ListView GardenApplicationsListView;
     ArrayList<Garden> gardenApplicationsList;
@@ -45,19 +43,17 @@ public class AdminHomepageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_homepage);
+        setContentView(R.layout.activity_garden_applications);
         loadExtras();
 
-        GardenApplicationsForwardArrow = findViewById(R.id.admin_homepage_garden_applications_forward_arrow);
-        GardenApplicationsForwardArrow.setOnClickListener(view -> {
-            Intent GardenApplicationsActivityIntent = new Intent(AdminHomepageActivity.this, GardenApplicationsActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(GardenApplicationsActivityIntent);
-            startActivity(GardenApplicationsActivityIntent);
+        BackArrowImageView = findViewById(R.id.garden_applications_back_arrow);
+        BackArrowImageView.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
-        GardenApplicationsListView = findViewById(R.id.admin_homepage_garden_applications_list_view);
+        GardenApplicationsListView = findViewById(R.id.garden_applications_items_list_view);
         gardenApplicationsList = new ArrayList<Garden>();
-        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(AdminHomepageActivity.this, android.R.layout.simple_list_item_1, gardenApplicationsList){
+        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(GardenApplicationsActivity.this, android.R.layout.simple_list_item_1, gardenApplicationsList){
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -94,7 +90,7 @@ public class AdminHomepageActivity extends AppCompatActivity {
                         if(fetchedGardens.length() > 0) {
                             gardenApplicationsList.clear();
                             int i = 0;
-                            while(gardenApplicationsList.size() < 3 && i < fetchedGardens.length()) {
+                            while(i < fetchedGardens.length()) {
                                 JSONObject gardenJSONObject = fetchedGardens.getJSONObject(i);
                                 Garden garden = new Garden(gardenJSONObject);
 

@@ -38,6 +38,8 @@
 
     <string name="tasks_title">Tasks</string>
 
+    <string name="gardenApplications_title">Garden Applications</string>
+
     <string name="title_activity_maps">MapsActivity</string>
     <string name="maps_button_caption">Find a Garden</string>
     <string name="garden_name">Garden Name</string>

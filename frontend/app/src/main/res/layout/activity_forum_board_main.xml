@@ -6,11 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MyGardenNoGardenActivity">
 
+
     <include
         android:id="@+id/include4"
         layout="@layout/activity_nav_bar"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
+
+
+    <TextView
+        android:id="@+id/forum_board_stamp2"
+        android:layout_width="25dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="370dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="top"
+        android:text="7"
+        android:textAppearance="@style/basic_text"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/forum_board_divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_divider1"
+        tools:gravity="left|center_vertical" />
 
     <View
         android:id="@+id/forum_board_divider2"
@@ -34,7 +54,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:gravity="left|center_vertical"
-        android:text="Task"
+        android:text="Post"
         android:textAppearance="@style/basic_text"
         android:textColor="@color/plotpals_grey"
         android:textSize="12dp"
@@ -132,26 +152,15 @@
         android:id="@+id/forum_board_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/include4"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.124"
-        app:srcCompat="@drawable/arrow_back_ios_new" />
-
-    <ImageView
-        android:id="@+id/forum_board_plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="335dp"
+        android:layout_marginBottom="619dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.114"
-        app:srcCompat="@drawable/add" />
+        app:srcCompat="@drawable/arrow_back_ios_new" />
 
     <TextView
         android:id="@+id/textView2"
@@ -166,6 +175,31 @@
         android:textAppearance="@style/page_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/forum_board_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114"
+        app:srcCompat="@drawable/add" />
+
+    <ImageView
+        android:id="@+id/forum_board_plus2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="343dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/forum_board_divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_divider1"
+        app:srcCompat="@drawable/comment" />
 
     <TextView
         android:id="@+id/forum_board_new_post"

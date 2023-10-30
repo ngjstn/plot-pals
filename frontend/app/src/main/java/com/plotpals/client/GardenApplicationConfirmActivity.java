@@ -3,20 +3,26 @@ package com.plotpals.client;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.utils.GoogleProfileInformation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GardenApplicationConfirmActivity extends AppCompatActivity {
+    final static String TAG = "GardenAppliConfActivity";
     GoogleProfileInformation googleProfileInformation;
     private Button confirmButton;
     private String gardenName;
@@ -85,7 +91,17 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,
             url,
-            // uh
+            new JSONObject(params),
+            (JSONObject response) -> {
+                try {
+                    Log.d(TAG, "Response for submitting form: \n" + response.toString());
+                    
+                } catch (JSONException e) {
+
+                }
+            },
+            (VolleyError e) -> {
+            }
         ) {
             @Override
             public Map<String, String> getHeaders() {
@@ -93,7 +109,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
                 headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
                 return headers;
         }
-         */
+        */
     };
 
     private void loadExtras() {

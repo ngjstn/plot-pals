@@ -1,9 +1,11 @@
 const express = require('express');
-const { getGardens } = require('../controllers/gardensController');
+const { getGardens, createGardenApplication } = require('../controllers/gardensController');
 
 const router = express.Router();
 
 // accepts query parameter gardenId
 router.get('/', getGardens);
+
+router.post('/', createGardenApplication);
 
 module.exports = router;

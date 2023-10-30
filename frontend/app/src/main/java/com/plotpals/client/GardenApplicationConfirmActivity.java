@@ -37,6 +37,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
     private TextView gardenContactNameDisplay;
     private TextView gardenPhoneDisplay;
     private TextView gardenEmailDisplay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +69,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // sendGardenInformation();
-                finish();
+                sendGardenInformation();
             }
         });
     }
@@ -85,33 +85,36 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         params.put("gardenPhone", gardenPhone);
         params.put("gardenEmail", gardenEmail);
 
-        String url = "http://10.0.2.2:8081/garden_applications";
+        String url = "http://10.0.2.2:8081/gardens";
 
-        /*
         Request<?> jsonObjectRequest = new JsonObjectRequest(
-            Request.Method.POST,
-            url,
-            new JSONObject(params),
-            (JSONObject response) -> {
-                try {
-                    Log.d(TAG, "Response for submitting form: \n" + response.toString());
-                    
-                } catch (JSONException e) {
-
+                Request.Method.POST,
+                url,
+                new JSONObject(params),
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for submitting form: \n" + response.getString("success"));
+                        // confirmation toast
+                        finish();
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
                 }
-            },
-            (VolleyError e) -> {
-            }
         ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
                 return headers;
-        }
-        */
-    };
+            }
+        };
 
+        volleyQueue.add(jsonObjectRequest);
+
+    }
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();
 

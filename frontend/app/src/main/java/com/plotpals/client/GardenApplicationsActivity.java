@@ -53,12 +53,14 @@ public class GardenApplicationsActivity extends AppCompatActivity {
 
         GardenApplicationsListView = findViewById(R.id.garden_applications_items_list_view);
         gardenApplicationsList = new ArrayList<Garden>();
-        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(GardenApplicationsActivity.this, android.R.layout.simple_list_item_1, gardenApplicationsList){
+        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(GardenApplicationsActivity.this, R.layout.activity_single_text_with_forward_arrow_list_view, gardenApplicationsList){
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
                 text.setText("\"" + gardenApplicationsList.get(position).getGardenName() + "\" Application" );
+
+                ImageView forwardArrow = view.findViewById(R.id.list_forward_arrow);
                 return view;
             }
         };

@@ -59,13 +59,15 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                 else {
                     Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-//                    Toast.makeText(ForumBoardNewTaskActivity.this, "------- Posted task -------" +
-//                            "\nTitle: " + titleText.getText().toString() +
-//                            "\nDescription: " + bodyText.getText().toString() +
-//                            "\nMinimum Rating: " + minRatingBar.getRating() +
-//                            "\nExpected Duration: " + expectedDaysText.getText().toString() +
-//                            "\nDeadline: " + deadlineText.getText().toString() +
-//                            "\nReward: " + rewardText.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted (no backend)", Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG,"------- Posted task -------" +
+                            "\nTitle: " + titleText.getText().toString() +
+                            "\nDescription: " + bodyText.getText().toString() +
+                            "\nMinimum Rating: " + minRatingBar.getRating() +
+                            "\nExpected Duration: " + expectedDaysText.getText().toString() +
+                            "\nDeadline: " + deadlineText.getText().toString() +
+                            "\nReward: " + rewardText.getText().toString());
 
                     startActivity(intent);
                 }

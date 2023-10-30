@@ -21,7 +21,8 @@
         tools:targetApi="31">
         <activity
             android:name=".GardenApplicationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ForumBoardMainActivity"
             android:exported="false"
@@ -69,7 +70,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GardenApplicationConfirmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".GardenListView"
             android:exported="false" />
@@ -100,9 +102,6 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".NavBarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GardenApplicationActivity"
             android:exported="false" />
         <activity
             android:name=".CreateProfileActivity"

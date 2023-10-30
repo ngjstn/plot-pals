@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="276dp"
         android:layout_marginTop="68dp"
-        android:text="Button"
+        android:text="Submit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +50,7 @@
                 android:id="@+id/garden_name_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
                 android:text="@string/garden_application_input_name"
                 android:textAppearance="@style/label_text" />
 
@@ -62,11 +63,21 @@
                 android:inputType="text" />
 
             <TextView
+                android:id="@+id/garden_name_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/garden_address_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
                 android:gravity="top"
                 android:text="@string/garden_application_input_address"
                 android:textAppearance="@style/label_text" />
@@ -80,11 +91,24 @@
                 android:inputType="text" />
 
             <TextView
+                android:id="@+id/garden_address_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/garden_num_plots_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
                 android:gravity="top"
                 android:text="@string/garden_application_input_plots"
                 android:textAppearance="@style/label_text" />
@@ -93,14 +117,28 @@
                 android:id="@+id/garden_num_plots_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:ems="10"
                 android:hint="New garden individual plots"
                 android:inputType="text" />
 
             <TextView
+                android:id="@+id/garden_num_plots_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/garden_contact_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:gravity="top"
@@ -111,6 +149,8 @@
                 android:id="@+id/garden_contact_name_loaded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:gravity="top"
@@ -125,6 +165,17 @@
                 android:hint="Phone number (optional)"
                 android:inputType="text" />
 
+            <TextView
+                android:id="@+id/garden_phone_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
             <EditText
                 android:id="@+id/garden_email_address_input"
                 android:layout_width="match_parent"
@@ -132,6 +183,17 @@
                 android:ems="10"
                 android:hint="Email address (optional)"
                 android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_email_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
 
         </LinearLayout>
 

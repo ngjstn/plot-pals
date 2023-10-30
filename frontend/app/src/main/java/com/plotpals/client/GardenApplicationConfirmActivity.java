@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GardenApplicationConfirmActivity extends AppCompatActivity {
     GoogleProfileInformation googleProfileInformation;
@@ -78,7 +81,20 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
 
         String url = "http://10.0.2.2:8081/garden_applications";
 
-    }
+        /*
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+            Request.Method.POST,
+            url,
+            // uh
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+        }
+         */
+    };
 
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();

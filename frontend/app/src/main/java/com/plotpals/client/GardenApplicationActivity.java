@@ -29,6 +29,11 @@ public class GardenApplicationActivity extends AppCompatActivity {
     private EditText gardenPhone;
     private EditText gardenEmail;
     private TextView contactName;
+    private TextView nameError;
+    private TextView addressError;
+    private TextView plotsError;
+    private TextView phoneError;
+    private TextView emailError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,12 @@ public class GardenApplicationActivity extends AppCompatActivity {
         gardenPhone = findViewById(R.id.garden_phone_number_input);
         gardenEmail = findViewById(R.id.garden_email_address_input);
 
+        nameError = findViewById(R.id.garden_name_error);
+        addressError = findViewById(R.id.garden_address_error);
+        plotsError = findViewById(R.id.garden_num_plots_error);
+        phoneError = findViewById(R.id.garden_phone_error);
+        emailError = findViewById(R.id.garden_email_error);
+
         nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +70,7 @@ public class GardenApplicationActivity extends AppCompatActivity {
                     gardenAppConfIntent.putExtra("gardenContactName", googleProfileInformation.getAccountGoogleName());
                     gardenAppConfIntent.putExtra("gardenPhone", gardenPhone.getText().toString());
                     gardenAppConfIntent.putExtra("gardenEmail", gardenEmail.getText().toString());
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(gardenAppConfIntent);
                     startActivity(gardenAppConfIntent);
                     finish();
                 }
@@ -67,23 +79,42 @@ public class GardenApplicationActivity extends AppCompatActivity {
     }
 
     private boolean parseGardenInformation() {
+        boolean checkStatus = true;
+
+        // reset view states
+        nameError.setVisibility(View.GONE);
+        addressError.setVisibility(View.GONE);
+        plotsError.setVisibility(View.GONE);
+        phoneError.setVisibility(View.GONE);
+        emailError.setVisibility(View.GONE);
+
         // check that all inputs aren't empty
         if(gardenName.getText().toString().length() == 0) {
-            return false;
+            nameError.setText("Garden name cannot be empty");
+            nameError.setVisibility(View.VISIBLE);
+            checkStatus = false;
         }
         if(gardenAddress.getText().toString().length() == 0) {
-            return false;
+            addressError.setText("Garden address cannot be empty");
+            addressError.setVisibility(View.VISIBLE);
+            checkStatus = false;
         }
         if(gardenPlots.getText().toString().length() == 0) {
-            return false;
+            plotsError.setText("Number of plots cannot be empty");
+            plotsError.setVisibility(View.VISIBLE);
+            checkStatus = false;
         }
         if(gardenPhone.getText().toString().length() == 0) {
-            return false;
+            phoneError.setText("Phone number cannot be empty");
+            phoneError.setVisibility(View.VISIBLE);
+            checkStatus = false;
         }
         if(gardenEmail.getText().toString().length() == 0) {
-            return false;
+            emailError.setText("Email address cannot be empty");
+            emailError.setVisibility(View.VISIBLE);
+            checkStatus = false;
         }
-        return true;
+        return checkStatus;
     }
 
     private void loadExtras() {

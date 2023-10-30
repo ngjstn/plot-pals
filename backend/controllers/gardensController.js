@@ -95,22 +95,37 @@ const createGardenDev = async (req, res, next) => {
 
 const createGardenApplication = async (req, res, next) => {
   // const {gardenName, gardenAddress, gardenPlots, gardenPhone, gardenEmail} = req.body;
+  const sql = `INSERT INTO gardens (address, longitude, latitude, gardenOwnerId, 
+    isApproved, gardenPicture, contactPhoneNumber, contactEmail, numberOfPlots, gardenName)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  let lat = 0;
+  let long = 0;
+  let gardenAddress = '5431 Lackner Crescent';
 
   try {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+    const latlong = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
       params: {
-        address: '24%20Sussex%20Drive%20Ottawa%20ON',
+        address: gardenAddress,
         key: process.env.GOOGLE_MAPS_API_KEY,
       }
-    }).then( function (response) {
-      lat = response.data.results[0].geometry.location.lat;
-      lng = response.data.results[0].geometry.location.lng;
-      console.log(lat, lng);
     });
+    lat = latlong.data.results[0].geometry.location.lat;
+    long = latlong.data.results[0].geometry.location.lng;
+  } catch (error) {
+    console.log(error);
+  }
 
+  console.log(lat, long);
+
+  try {
+    const queryResults = await database.query(sql, ['5431 Lackner Crescent', long, lat, req.userId, 0, NULL, '1234567890', 'test@test', 10, 'test']);
+    return res.json({ success: queryResults[0].affectedRows > 0});
   } catch (err) {
+    console.log(err);
     return next(err);
   }
+
 };
 
 module.exports = {

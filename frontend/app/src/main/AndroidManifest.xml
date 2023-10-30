@@ -23,9 +23,6 @@
             android:name=".GardenApplicationActivity"
             android:exported="false" />
         <activity
-            android:name=".GardenApplicationActivity"
-            android:exported="false" />
-        <activity
             android:name=".ForumBoardMainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -82,6 +79,10 @@
             android:name=".GardenInfoNonMemberActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GardenApplicationConfirmActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".GardenListView"
             android:exported="false" />

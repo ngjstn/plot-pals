@@ -4,32 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Make note that the ordinal values of the roles matter
- */
-enum RoleEnum {
-    CARETAKER {
-        public String toString() {
-            return "Caretaker";
-        }
-    },
-    PLOT_OWNER {
-        public String toString() {
-            return "Plot Owner";
-        }
-    },
-    GARDEN_OWNER {
-        public String toString() {
-            return "Garden Owner";
-        }
-    },
-    ADMIN {
-        public String toString() {
-            return "Admin";
-        }
-    },
-}
-
-/**
  * Role object that maps to a row of the database table 'roles'
  */
 public class Role {

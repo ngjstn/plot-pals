@@ -102,6 +102,10 @@ const createGardenApplication = async (req, res, next) => {
   let lat = 0;
   let long = 0;
   let gardenAddress = '5431 Lackner Crescent';
+  let gardenPhone = '1234567890';
+  let gardenEmail = 'test@test';
+  let gardenName = 'test';
+  let gardenPlots = 10;
 
   try {
     const latlong = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
@@ -114,17 +118,19 @@ const createGardenApplication = async (req, res, next) => {
     long = latlong.data.results[0].geometry.location.lng;
   } catch (error) {
     console.log(error);
+    return next(error);
   }
 
   console.log(lat, long);
 
   try {
-    const queryResults = await database.query(sql, ['5431 Lackner Crescent', long, lat, req.userId, 0, NULL, '1234567890', 'test@test', 10, 'test']);
-    return res.json({ success: queryResults[0].affectedRows > 0});
+    await database.query(sql, [gardenAddress, long, lat, req.userId, 0, NULL, gardenPhone, gardenEmail, gardenPlots, gardenName]);
   } catch (err) {
     console.log(err);
     return next(err);
   }
+
+  // search for garden -> reqID, id with largest number
 
 };
 

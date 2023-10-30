@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GardenInfoNonMemberActivity">
+    tools:context=".ManageGardenActivity">
 
     <View
         android:id="@+id/image_rec"
@@ -61,7 +61,7 @@
         android:elevation="4dp"
         android:fontFamily="@font/inter_bold"
         android:gravity="top"
-        android:text="@string/garden_name"
+        android:text="@string/manage_garden_text"
         android:textAppearance="@style/garden_name"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,6 +70,20 @@
         app:layout_constraintStart_toEndOf="@+id/arrow_back_"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.031" />
+
+    <View
+        android:id="@+id/edit_pencil"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/edit_pencil"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.131" />
 
     <TextView
         android:id="@+id/contact_inf"
@@ -171,20 +185,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.386" />
 
-    <View
-        android:id="@+id/rectangle_4"
-        android:layout_width="415dp"
-        android:layout_height="4dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#D9D9D9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.463" />
-
     <TextView
         android:id="@+id/some_id"
         android:layout_width="83dp"
@@ -234,89 +234,61 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.316" />
 
+    <View
+        android:id="@+id/rectangle_9"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#D9D9D9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.548" />
+
+    <ImageView
+        android:id="@+id/members_forward_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52"
+        app:srcCompat="@drawable/arrow_forward" />
+
     <TextView
-        android:id="@+id/additional_"
-        android:layout_width="220dp"
+        android:id="@+id/garden_members_text"
+        android:layout_width="200dp"
         android:layout_height="24dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:fontFamily="@font/inter_semibold"
         android:gravity="top"
-        android:text="@string/additional_"
-        android:textAppearance="@style/additional_"
+        android:text="@string/garden_members_text"
+        android:textAppearance="@style/general_inf"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.512" />
+        app:layout_constraintVertical_bias="0.519" />
 
-    <TextView
-        android:id="@+id/view_forum_"
-        android:layout_width="143.93dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="3dp"
-        android:elevation="4dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/view_forum_"
-        android:textAppearance="@style/view_forum_"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangle_2"
-        app:layout_constraintEnd_toEndOf="@+id/rectangle_2"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="@+id/rectangle_2"
-        app:layout_constraintTop_toTopOf="@+id/rectangle_2"
-        app:layout_constraintVertical_bias="0.466" />
-
-    <TextView
-        android:id="@+id/join"
-        android:layout_width="33dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="2dp"
-        android:elevation="4dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/join"
-        android:textAppearance="@style/join"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangle_5_"
-        app:layout_constraintEnd_toEndOf="@+id/rectangle_5_"
-        app:layout_constraintHorizontal_bias="0.446"
-        app:layout_constraintStart_toStartOf="@+id/rectangle_5_"
-        app:layout_constraintTop_toTopOf="@+id/rectangle_5_"
-        app:layout_constraintVertical_bias="0.666" />
-
-    <Button
-        android:id="@+id/rectangle_2"
-        android:layout_width="170dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/rectangle_2"
+    <ListView
+        android:id="@+id/members_list_view"
+        android:layout_width="300dp"
+        android:layout_height="260dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.91" />
-
-    <Button
-        android:id="@+id/rectangle_5_"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/rectangle_5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.782"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.91" />
+        app:layout_constraintVertical_bias="0.853" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

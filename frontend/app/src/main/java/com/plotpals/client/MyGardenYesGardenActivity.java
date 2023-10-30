@@ -33,7 +33,13 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
             startActivity(intent);
         });
-        
+
+        findViewById(R.id.my_garden_1_manage).setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Manage Button");
+            Intent intent = new Intent(MyGardenYesGardenActivity.this, ManageGardenActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
+        });
     }
 
     /**

@@ -28,6 +28,18 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
+            android:name=".CurrentMembersActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".EditGardenActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManageGardenActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ForumBoardMainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -35,7 +47,7 @@
             android:name=".RolesActivity"
             android:exported="false"
             android:label="Roles Activity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".ProfileActivity"
             android:exported="false"

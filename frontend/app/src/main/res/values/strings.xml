@@ -61,6 +61,12 @@
     <string name="my_tasks">My Tasks</string>
     <string name="header_my_garden">My Garden</string>
     <string name="my_garden_no_garden_text">You are not part of a garden yet. Join one to get started!</string>
-
+    <string name="manage_garden_text">Manage Garden</string>
+    <string name="garden_members_text">Garden Members</string>
+    <string name="edit_garden_text">Edit Garden</string>
+    <string name="garden_name_body">Garden Name:</string>
+    <string name="garden_address_body">Garden Address:</string>
+    <string name="plot_number_body">Number of Garden Plots:</string>
+    <string name="contact_info_body">Contact Info:</string>
     <string name="roles_title">Roles</string>
 </resources>

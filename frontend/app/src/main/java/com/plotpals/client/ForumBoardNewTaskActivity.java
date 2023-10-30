@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -50,12 +49,17 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
 
                 // Check if date is after today
                 if (LocalDate.now().isAfter(date)) {
-                    Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString()+"Please enter a valid deadline", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString() + "Please enter a valid deadline", Toast.LENGTH_SHORT).show();
 
-                // Check if title & description exist
+                    // Check if date is after today
+                } else if (expectedDaysText.getText().toString().trim().equals("")) {
+                    Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString()+"Please enter an expected duration", Toast.LENGTH_SHORT).show();
+
+                        // Check if title & description exist
                 } else if (titleText.getText().toString().trim().equals("") ||
                         bodyText.getText().toString().trim().equals("")) {
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Please enter a Title/Body", Toast.LENGTH_SHORT).show();}
+
                 else {
                     Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(intent);

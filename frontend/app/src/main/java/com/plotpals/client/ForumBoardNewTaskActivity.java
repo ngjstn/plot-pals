@@ -49,11 +49,11 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
 
                 // Check if date is after today
                 if (LocalDate.now().isAfter(date)) {
-                    Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString() + "Please enter a valid deadline", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumBoardNewTaskActivity.this, "Please enter a valid deadline", Toast.LENGTH_SHORT).show();
 
                     // Check if date is after today
                 } else if (expectedDaysText.getText().toString().trim().equals("")) {
-                    Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString()+"Please enter an expected duration", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumBoardNewTaskActivity.this, "Please enter an expected duration", Toast.LENGTH_SHORT).show();
 
                         // Check if title & description exist
                 } else if (titleText.getText().toString().trim().equals("") ||

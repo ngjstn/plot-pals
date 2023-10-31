@@ -34,6 +34,8 @@ public class AccountMainActivity extends NavBarActivity {
 
     ImageView AccountProfilePictureImageView;
 
+    View AccountAdminModeView;
+
     TextView AccountProfileNameTextView;
 
     TextView AccountProfileRatingsTextView;
@@ -52,6 +54,13 @@ public class AccountMainActivity extends NavBarActivity {
         loadExtras();
 
         activateNavBar();
+
+        AccountAdminModeView = findViewById(R.id.account_admin_mode_button);
+        AccountAdminModeView.setOnClickListener(view -> {
+            Intent AdminHomepageIntent = new Intent(AccountMainActivity.this, AdminHomepageActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(AdminHomepageIntent);
+            startActivity(AdminHomepageIntent);
+        });
 
         AccountProfileActivityView = findViewById(R.id.account_profile_button_view);
         AccountProfileActivityView.setOnClickListener(view -> {

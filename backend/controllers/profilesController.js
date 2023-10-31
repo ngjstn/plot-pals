@@ -3,9 +3,7 @@ const { roles, MAX_RATING, STARTING_COMPETENCE } = require('../constants/profile
 
 const getAllProfiles = async (req, res, next) => {
   const { profileId } = req.query;
-  const sql = profileId
-    ? 'SELECT * FROM profiles WHERE id=? ORDER BY displayName'
-    : 'SELECT * FROM profiles ORDER BY displayName';
+  const sql = profileId ? 'SELECT * FROM profiles WHERE id=?' : 'SELECT * FROM profiles';
 
   // EXPLANATION NOTE: usually you want to try/catch await functions in your controllers
   try {

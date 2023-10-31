@@ -35,6 +35,18 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".SingleGardenApplicationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GardenApplicationsActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminHomepageActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ForumBoardNewTaskActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -16,6 +16,7 @@ SELECT * FROM profiles;
 SELECT * FROM roles;
 SELECT * FROM gardens;
 SELECT * FROM plots;
+SELECT * FROM posts;
 SELECT * FROM tasks;
 SELECT * FROM admin_profiles;
 SELECT * FROM reports;
@@ -64,17 +65,28 @@ INSERT INTO plots(
 	'{insert some profile.id}'
 );
 
+INSERT INTO posts (
+	title,
+    description,
+    taskId,
+    assignerId, 
+    postGardenId
+) VALUES (
+	"some title",
+    "some description",
+    123 /* insert some tasks.id or null if post is not a task */,
+    "{some profiles.id}" /* Id of person who creates post/task, references profiles.id */,
+    123 /* insert some garden.id */
+    
+);
+
 INSERT INTO tasks(
 	plotId, 
 	reward, 
 	minimumRating, 
-    title,
-	description, 
-	assignerId, 
 	assigneeId, 
 	isCompleted, 
 	assigneeIsProvidedFeedback, 
-	gardenId, 
 	deadlineDate, 
 	taskStartTime, 
 	taskEndTime, 
@@ -83,13 +95,9 @@ INSERT INTO tasks(
 	123 /*some plot.id int*/, 
 	'some reward', 
 	4.56 /*some number between 0-5 with 2 decimals*/, 
-    'some title',
-	'some desc', 
-	'{insert some profile.id}', 
 	'{insert some profile.id}', 
 	false, 
 	false, 
-	123 /*some garden id*/, 
 	'2023-04-01 10:00:00' /*YYYY-MM-DD*/, 
 	'2023-01-01 10:00:00' /*YYYY-MM-DD*/, 
 	'2023-03-01 10:00:00' /*YYYY-MM-DD*/, 
@@ -196,4 +204,28 @@ INSERT INTO gardens(
     12 /*any int you want*/, 
     'garden for extra gardening'
 ); 
+
+INSERT INTO posts (
+	title,
+    description,
+    taskId
+) VALUES (
+	"this is a task",
+    "this is a task description",
+    2 /* insert some tasks.id or null if post is not a task */
+);
+
+INSERT INTO posts (
+	title,
+    description,
+    taskId
+) VALUES (
+	"this is a post ",
+    "this is a just a post description",
+    NULL /* insert some tasks.id or null if post is not a task */
+);
+
+UPDATE posts SET assignerId='102251803449216000773' WHERE id = 3;
+SELECT * FROM tasks;
+SELECT * FROM posts;
 

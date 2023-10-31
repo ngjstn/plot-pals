@@ -13,17 +13,10 @@ public class Task {
 
     private int plotId;
 
-    private int gardenId;
 
     private String reward;
 
     private double minimumRating;
-
-    private String title;
-
-    private String description;
-
-    private String assignerId;
 
     private String assigneeId;
 
@@ -45,12 +38,8 @@ public class Task {
 
     public Task(int id,
                 int plotId,
-                int gardenId,
                 String reward,
                 double minimumRating,
-                String title,
-                String description,
-                String assignerId,
                 String assigneeId,
                 boolean isCompleted,
                 boolean assigneeIsProvidedFeedback,
@@ -61,12 +50,8 @@ public class Task {
                 String gardenName ) {
         this.id = id;
         this.plotId = plotId;
-        this.gardenId = gardenId;
         this.reward = reward;
         this.minimumRating = minimumRating;
-        this.title = title;
-        this.description = description;
-        this.assignerId = assignerId;
         this.assigneeId = assigneeId;
         this.isCompleted = isCompleted;
         this.assigneeIsProvidedFeedback = assigneeIsProvidedFeedback;
@@ -81,14 +66,10 @@ public class Task {
      * To be used within GET api calls for tasks
      */
     public Task(JSONObject taskJsonObject) throws JSONException {
-        this(taskJsonObject.getInt("id"),
+        this(taskJsonObject.getInt("taskId"),
                 taskJsonObject.optInt("plotId", -1),
-                taskJsonObject.getInt("gardenId"),
                 taskJsonObject.getString("reward"),
                 taskJsonObject.getDouble("minimumRating"),
-                taskJsonObject.getString("title"),
-                taskJsonObject.getString("description"),
-                taskJsonObject.getString("assignerId"),
                 taskJsonObject.optString("assigneeId", null),
                 taskJsonObject.getInt("isCompleted") == 1,
                 taskJsonObject.getInt("assigneeIsProvidedFeedback") == 1,
@@ -109,9 +90,6 @@ public class Task {
         return plotId;
     }
 
-    public int getGardenId() {
-        return gardenId;
-    }
 
     public String getReward() {
         return reward;
@@ -119,18 +97,6 @@ public class Task {
 
     public double getMinimumRating() {
         return minimumRating;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAssignerId() {
-        return assignerId;
     }
 
     public String getAssigneeId() {
@@ -165,11 +131,4 @@ public class Task {
         return gardenName;
     }
 
-    @Override
-    public String toString() {
-        if(gardenName == null) {
-            return this.title;
-        }
-        return this.gardenName + " - " + this.title;
-    }
 }

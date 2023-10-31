@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.data.Update;
 import com.plotpals.client.utils.GoogleProfileInformation;
@@ -37,9 +38,9 @@ public class TasksActivity extends AppCompatActivity {
 
     ListView TasksListView;
 
-    ArrayList<Task> tasksList;
+    ArrayList<Post> tasksList;
 
-    ArrayAdapter<Task> tasksListAdapter;
+    ArrayAdapter<Post> tasksListAdapter;
 
     ImageView BackArrowImageView;
 
@@ -56,17 +57,17 @@ public class TasksActivity extends AppCompatActivity {
         });
 
         TasksListView = findViewById(R.id.tasks_items_list_view);
-        tasksList = new ArrayList<Task>();
+        tasksList = new ArrayList<Post>();
         tasksListAdapter = new ArrayAdapter (TasksActivity.this, android.R.layout.simple_list_item_2, android.R.id.text1, tasksList)
         {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = view.findViewById(android.R.id.text1);
                 TextView text2 = view.findViewById(android.R.id.text2);
-                text1.setText(tasksList.get(position).toString());
+                text1.setText(tasksList.get(position).getTask().getGardenName() + " - " + tasksList.get(position).getTitle());
                 text1.setTypeface(null, Typeface.BOLD);
 
-                if (tasksList.get(position).isCompleted() == true) {
+                if (tasksList.get(position).getTask().isCompleted() == true) {
                     text2.setText("Status: Completed" + "\n");
                 } else {
                     text2.setText("Status: In progress" + "\n");
@@ -90,7 +91,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/tasks/";
+        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -99,14 +100,14 @@ public class TasksActivity extends AppCompatActivity {
 
                 (JSONObject response) -> {
                     try {
-                        Log.d(TAG, "Obtaining tasks");
-                        JSONArray fetchedTasks = (JSONArray)response.get("data");
-                        if(fetchedTasks.length() > 0) {
+                        Log.d(TAG, "Obtaining task posts");
+                        JSONArray fetchedTaskPosts = (JSONArray)response.get("data");
+                        if(fetchedTaskPosts.length() > 0) {
                             tasksList.clear();
-                            for (int i = 0; i < fetchedTasks.length(); i++) {
-                                JSONObject tasksJSONObject = fetchedTasks.getJSONObject(i);
-                                Task task = new Task(tasksJSONObject);
-                                tasksList.add(task);
+                            for (int i = 0; i < fetchedTaskPosts.length(); i++) {
+                                JSONObject taskPostJSONObject = fetchedTaskPosts.getJSONObject(i);
+                                Post taskPost = new Post(taskPostJSONObject);
+                                tasksList.add(taskPost);
                             }
 
                             tasksListAdapter.notifyDataSetChanged();

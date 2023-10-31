@@ -28,73 +28,8 @@ const getGardensForAuthorizedUser = async (req, res, next) => {
   }
 };
 
-const deleteGardenDev = async (req, res, next) => {
-  const { gardenId } = req.params;
-  const sql = 'DELETE FROM gardens WHERE id=?';
-
-  try {
-    const queryResults = await database.query(sql, [gardenId]);
-    return res.json({ data: queryResults[0] });
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const createGardenDev = async (req, res, next) => {
-  const {
-    longitude,
-    latitude,
-    gardenOwnerId,
-    isApproved,
-    gardenPicture,
-    contactPhoneNumber,
-    contactEmail,
-    numberOfPlots,
-    gardenName,
-  } = req.body;
-  const sql = `INSERT INTO gardens(
-    address, 
-      longitude, 
-      latitude, 
-      gardenOwnerId, 
-      isApproved, 
-      gardenPicture, 
-      contactPhoneNumber, 
-      contactEmail, 
-      numberOfPlots, 
-      gardenName
-  ) VALUES (
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?
-  ); `;
-
-  try {
-    const queryResults = await database.query(sql, [
-      longitude,
-      latitude,
-      gardenOwnerId,
-      isApproved,
-      gardenPicture,
-      contactPhoneNumber,
-      contactEmail,
-      numberOfPlots,
-      gardenName,
-    ]);
-    return res.json({ data: queryResults[0] });
-  } catch (err) {
-    return next(err);
-  }
-};
-
 const createGardenApplication = async (req, res, next) => {
-  const {gardenName, gardenAddress, gardenPlots, gardenPhone, gardenEmail} = req.body;
+  const { gardenName, gardenAddress, gardenPlots, gardenPhone, gardenEmail } = req.body;
 
   console.log(req.userId);
 
@@ -107,7 +42,7 @@ const createGardenApplication = async (req, res, next) => {
       params: {
         address: gardenAddress,
         key: process.env.GOOGLE_MAPS_API_KEY,
-      }
+      },
     });
     lat = latlong.data.results[0].geometry.location.lat;
     long = latlong.data.results[0].geometry.location.lng;
@@ -120,7 +55,18 @@ const createGardenApplication = async (req, res, next) => {
     const sqlInsertGardens = `INSERT INTO gardens (address, longitude, latitude, gardenOwnerId, 
       isApproved, gardenPicture, contactPhoneNumber, contactEmail, numberOfPlots, gardenName)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    await database.query(sqlInsertGardens, [gardenAddress, long, lat, req.userId, 0, null, gardenPhone, gardenEmail, gardenPlots, gardenName]);
+    await database.query(sqlInsertGardens, [
+      gardenAddress,
+      long,
+      lat,
+      req.userId,
+      0,
+      null,
+      gardenPhone,
+      gardenEmail,
+      gardenPlots,
+      gardenName,
+    ]);
   } catch (err) {
     console.log(err);
     return next(err);
@@ -149,7 +95,5 @@ const createGardenApplication = async (req, res, next) => {
 module.exports = {
   getAllGardens,
   getGardensForAuthorizedUser,
-  createGardenDev,
-  deleteGardenDev,
   createGardenApplication,
 };

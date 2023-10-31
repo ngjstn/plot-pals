@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.data.Update;
 import com.plotpals.client.utils.GoogleProfileInformation;
@@ -45,9 +48,9 @@ public class HomepageActivity extends NavBarActivity {
 
     ListView TasksListView;
 
-    ArrayList<Task> tasksList;
+    ArrayList<Post> tasksList;
 
-    ArrayAdapter<Task> tasksListAdapter;
+    ArrayAdapter<Post> tasksListAdapter;
 
     ImageView UpdatesForwardArrowImageView;
 
@@ -83,8 +86,15 @@ public class HomepageActivity extends NavBarActivity {
         UpdatesListView.setAdapter(updatesListAdapter);
 
         TasksListView = findViewById(R.id.homepage_tasks_list_view);
-        tasksList = new ArrayList<Task>();
-        tasksListAdapter = new ArrayAdapter<Task>(HomepageActivity.this, android.R.layout.simple_list_item_1, tasksList);
+        tasksList = new ArrayList<Post>();
+        tasksListAdapter = new ArrayAdapter<Post>(HomepageActivity.this, android.R.layout.simple_list_item_1, tasksList){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = view.findViewById(android.R.id.text1);
+                text1.setText(tasksList.get(position).getTask().getGardenName() + " - " + tasksList.get(position).getTitle());
+                return view;
+            }
+        };
         TasksListView.setAdapter(tasksListAdapter);
     }
     @Override
@@ -141,7 +151,7 @@ public class HomepageActivity extends NavBarActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/tasks?userIs=assignee";
+        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -150,16 +160,16 @@ public class HomepageActivity extends NavBarActivity {
 
                 (JSONObject response) -> {
                     try {
-                        Log.d(TAG, "Obtaining tasks");
-                        JSONArray fetchedTasks = (JSONArray)response.get("data");
+                        Log.d(TAG, "Obtaining task posts");
+                        JSONArray fetchedTaskPosts = (JSONArray)response.get("data");
 
                         /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
-                        if(fetchedTasks.length() > 0) {
+                        if(fetchedTaskPosts.length() > 0) {
                             tasksList.clear();
-                            for (int i = 0; i < Math.min(fetchedTasks.length(), 3); i++) {
-                                JSONObject taskJsonObject = fetchedTasks.getJSONObject(i);
-                                Task task = new Task(taskJsonObject);
-                                tasksList.add(task);
+                            for (int i = 0; i < Math.min(fetchedTaskPosts.length(), 3); i++) {
+                                JSONObject taskPostJsonObject = fetchedTaskPosts.getJSONObject(i);
+                                Post taskPost = new Post(taskPostJsonObject);
+                                tasksList.add(taskPost);
                             }
 
                             tasksListAdapter.notifyDataSetChanged();

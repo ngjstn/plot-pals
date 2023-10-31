@@ -57,6 +57,14 @@ public class ForumBoardMainActivity extends NavBarActivity {
             startActivity(intent);
         });
 
+        TextView title = findViewById(R.id.forum_board_title1);
+        title.setOnClickListener(view -> {
+            Log.d(TAG, "Clicking Post Title");
+            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewPostActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            startActivity(intent);
+        });
+
     }
 
     /**

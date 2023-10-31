@@ -52,7 +52,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:gravity="left|center_vertical"
-        android:text="Post"
+        android:text="Task"
         android:textAppearance="@style/basic_text"
         android:textColor="@color/plotpals_grey"
         android:textSize="12dp"

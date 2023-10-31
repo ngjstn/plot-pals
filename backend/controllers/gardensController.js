@@ -5,7 +5,7 @@ require('dotenv').config();
 const getAllGardens = async (req, res, next) => {
   const { gardenId } = req.query;
   const sql = gardenId
-    ? 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id WHERE id = ? ORDER BY gardenName'
+    ? 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id WHERE gardens.id = ? ORDER BY gardenName'
     : 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id ORDER BY gardenName';
 
   try {

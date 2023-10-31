@@ -19,12 +19,18 @@
         android:theme="@style/Theme.Client"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".GardenApplicationActivity"
+        <activity
+            android:name=".ForumBoardViewTaskActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".GardenApplicationConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GardenApplicationActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GardenApplicationConfirmActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForumBoardViewPostActivity"
             android:exported="false"
@@ -137,6 +143,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -147,7 +154,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

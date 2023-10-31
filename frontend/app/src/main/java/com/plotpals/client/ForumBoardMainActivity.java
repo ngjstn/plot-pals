@@ -59,8 +59,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
 
         TextView title = findViewById(R.id.forum_board_title1);
         title.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Post Title");
-            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewPostActivity.class);
+            Log.d(TAG, "Clicking Task Title");
+            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
             startActivity(intent);
         });

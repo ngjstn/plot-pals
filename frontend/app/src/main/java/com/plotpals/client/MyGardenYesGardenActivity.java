@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
@@ -79,11 +80,12 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
                             JSONObject garden = fetchedGardens.getJSONObject(i);
                             Log.d(TAG, "Account User ID: " + googleProfileInformation.getAccountUserId());
                             Log.d(TAG, "Owner User ID: " + garden.getString("gardenOwnerId"));
+                            Garden gardenObj = new Garden(garden);
                             if (googleProfileInformation.getAccountUserId().equals(garden.getString("gardenOwnerId"))) {
-                                addManagedGarden(garden.getString("gardenName"), 0);
+                                addManagedGarden(garden.getString("gardenName"), gardenObj);
                                 upperManagedGardens++;
                             } else {
-                                addGarden(garden.getString("gardenName"), 0);
+                                addGarden(garden.getString("gardenName"), gardenObj);
                                 upperGardens++;
                             }
                         }
@@ -108,7 +110,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         volleyQueue.add(jsonObjectRequest);
     }
 
-    private void addManagedGarden(String name, int id) {
+    private void addManagedGarden(String name, Garden garden) {
         // Set view
         RelativeLayout layout = findViewById(R.id.my_garden_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -122,9 +124,9 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         Button forumButton = managedGardenView.findViewById(R.id.my_garden_managed_forum_button);
         setForumButton(forumButton, 0);
         Button manageButton = managedGardenView.findViewById(R.id.my_garden_managed_manage_button);
-        setManageButton(manageButton, 0);
+        setManageButton(manageButton, garden);
         Button membersButton = managedGardenView.findViewById(R.id.my_garden_managed_members_button);
-        setMembersButton(membersButton, 0);
+        setMembersButton(membersButton, garden);
 
         // Set Garden Name
         TextView textView = managedGardenView.findViewById(R.id.my_garden_managed_name);
@@ -133,7 +135,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         layout.addView(managedGardenView);
     }
 
-    private void addGarden(String name, int id) {
+    private void addGarden(String name, Garden garden) {
         // Set view
         RelativeLayout layout = findViewById(R.id.my_garden_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -147,7 +149,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         Button forumButton = gardenView.findViewById(R.id.my_garden_forum_button);
         setForumButton(forumButton, 0);
         Button membersButton = gardenView.findViewById(R.id.my_garden_members_button);
-        setMembersButton(membersButton, 0);
+        setMembersButton(membersButton, garden);
 
         // Set Garden Name
         TextView textView = gardenView.findViewById(R.id.my_garden_name);
@@ -170,20 +172,23 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         });
     }
 
-    private void setManageButton(Button manageButton, int id) {
+    private void setManageButton(Button manageButton, Garden garden) {
         manageButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Manage Button");
             Intent intent = new Intent(MyGardenYesGardenActivity.this, ManageGardenActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", garden.getId());
             startActivity(intent);
         });
     }
 
-    private void setMembersButton(Button membersButton, int id) {
+    private void setMembersButton(Button membersButton, Garden garden) {
         membersButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Members Button");
             Intent intent = new Intent(MyGardenYesGardenActivity.this, CurrentMembersActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", garden.getId());
+            intent.putExtra("CameFromMyGardenYes", true);
             startActivity(intent);
         });
     }

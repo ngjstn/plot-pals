@@ -15,7 +15,6 @@ app.use('/dev', devRouter);
 
 // EXPLANATION NOTE: routes all path that starts with '/profiles'
 app.use('/profiles', profilesRouter);
-
 app.use('/gardens', gardensRouter);
 app.use('/updates', updatesRouter);
 app.use('/tasks', tasksRouter);

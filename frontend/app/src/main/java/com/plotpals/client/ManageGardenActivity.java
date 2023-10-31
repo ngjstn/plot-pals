@@ -181,13 +181,11 @@ public class ManageGardenActivity extends AppCompatActivity {
     }
 
     private void updateGardenOverlayContent(Garden garden) {
-        TextView gardenName = findViewById(R.id.garden_name);
         TextView address = findViewById(R.id.something_r);
         TextView contactName = findViewById(R.id.contact_nam);
         TextView contactEmail = findViewById(R.id.name_email_);
         TextView contactPhone = findViewById(R.id.some_id);
 
-        gardenName.setText(garden.getGardenName());
         address.setText(garden.getAddress());
         contactName.setText(garden.getGardenOwnerName());
         contactEmail.setText(garden.getContactEmail());

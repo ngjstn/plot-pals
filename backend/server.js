@@ -5,6 +5,7 @@ const updatesRouter = require('./routers/updatesRouter');
 const gardensRouter = require('./routers/gardensRouter');
 const postsAndtasksRouter = require('./routers/postsAndtasksRouter');
 const rolesRouter = require('./routers/rolesRouter');
+const adminProfilesRouter = require('./routers/adminProfilesRouter');
 const errorHandler = require('./errorHandler');
 
 // middleware to autoformat request to .json format
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // EXPLANATION NOTE: routes all path that starts with '/profiles'
 app.use('/profiles', profilesRouter);
+app.use('/adminProfiles', adminProfilesRouter);
 app.use('/gardens', gardensRouter);
 app.use('/updates', updatesRouter);
 app.use('/posts', postsAndtasksRouter);

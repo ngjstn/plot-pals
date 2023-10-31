@@ -119,7 +119,7 @@ public class HomepageActivity extends NavBarActivity {
                         Log.d(TAG, "Obtaining updates");
                         JSONArray fetchedUpdates = (JSONArray)response.get("data");
 
-                        /* Populate updateList with fetched updates and notify the UpdatesListView UI to display the fetched task*/
+                        /* Populate updateList with fetched updates and notify the UpdatesListView UI to display the fetched update */
                         if(fetchedUpdates.length() > 0) {
                             updatesList.clear();
                             for (int i = 0; i < Math.min(fetchedUpdates.length(), 3); i++) {

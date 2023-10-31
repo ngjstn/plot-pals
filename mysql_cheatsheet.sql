@@ -139,6 +139,26 @@ ON tasks.gardenId = gardens.id;
 */
 UPDATE tasks SET assignerId='108353760268997269925', assigneeId='108438399361533648066' where tasks.id = 1;
 
+UPDATE roles SET roleNum=1 WHERE profileId = '108438399361533648066' AND gardenId = 1;
+
+INSERT INTO plots(
+	gardenId, 
+	plotOwnerId
+) VALUES (
+	3, 
+	'102251803449216000773'
+);
+
+INSERT INTO roles(
+	profileId, 
+    gardenId,
+    roleNum
+) VALUES (
+	'108353760268997269925',
+    4 /* Some Garden.id here */,
+    0 /* Some role number here ( SEE NOTES ON cpen_321_database_design.txt for the role enums) */
+);
+
 INSERT INTO tasks(
 	plotId, 
 	reward, 
@@ -171,7 +191,7 @@ INSERT INTO tasks(
 	100 /*some int*/
 );
 
-UPDATE gardens SET longitude=-122.0852, latitude=37.4221 WHERE id=3;
+UPDATE roles SET gardenOwnerId='108438399361533648066' WHERE id=4;
 
 INSERT INTO gardens(
 	address, 

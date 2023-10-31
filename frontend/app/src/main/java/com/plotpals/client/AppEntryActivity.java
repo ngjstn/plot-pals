@@ -106,12 +106,57 @@ public class AppEntryActivity extends AppCompatActivity {
 
             googleProfileInformation = new GoogleProfileInformation(accountGoogleName
                     , accountGoogleProfilePictureImageUrl, accountUserId, accountIdToken);
-            redirectToProfileCreationOrSkipIt();
+            checkIfUserIsAdminAndRedirect();
 
         }, 1000);
     }
 
-    // if user already has a profile, then we skip profile creation and head to the activity after it
+    /**
+     * Redirects admins to a admin-only homepage otherwise proceed with profile creation
+     */
+    private void checkIfUserIsAdminAndRedirect() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8081/adminProfiles/all?profileId=" + googleProfileInformation.getAccountUserId();;
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for checking admin profile:\n" + response.toString(2));
+                        JSONArray fetchedAdminProfiles = (JSONArray)response.get("data");
+                        if(fetchedAdminProfiles.length() > 0) {
+                            Intent adminHomepageIntent = new Intent(AppEntryActivity.this, AdminHomepageActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(adminHomepageIntent);
+                            startActivity(adminHomepageIntent);
+                        } else {
+                            redirectToProfileCreationOrSkipIt();
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+
+    /**
+     * if user already has a profile, then we skip profile creation and head to the activity after it
+     */
     private void redirectToProfileCreationOrSkipIt() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();

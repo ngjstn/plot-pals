@@ -1,7 +1,8 @@
 const { database } = require('../database');
 
 const getAllTasks = async (req, res, next) => {
-  let sql = 'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id';
+  let sql =
+    'SELECT tasks.*, gardens.gardenName FROM tasks JOIN gardens ON tasks.gardenId = gardens.id ORDER BY id DESC';
 
   try {
     const queryResults = await database.query(sql);

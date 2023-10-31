@@ -23,7 +23,7 @@
     <string name="account_profile">Profile</string>
     <string name="account_roles">Roles</string>
     <string name="account_rating_text">Rating</string>
-    <string name="account_settings">Settings</string>
+    <string name="account_admin_mode">Access Admin Pages</string>
     <string name="account_logout">Logout</string>
 
     <string name="homepage_title_placeholder">Hey there hot stuff</string>

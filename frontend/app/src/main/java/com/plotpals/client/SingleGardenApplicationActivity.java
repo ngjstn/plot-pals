@@ -2,11 +2,13 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +32,8 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
     GoogleProfileInformation googleProfileInformation;
 
     ImageView BackArrowImageView;
+
+    ImageView ApprovalImageView;
 
     TextView ApplicationTitleTextView;
 
@@ -67,6 +71,11 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
         NumPlotsTextView = findViewById(R.id.single_garden_application_number_of_plots_text_view);
         ContactNumberTextView = findViewById(R.id.single_garden_application_phone_number_text_view);
         ContactEmailTextView = findViewById(R.id.single_garden_application_email_text_view);
+
+        ApprovalImageView = findViewById(R.id.single_garden_application_approved_image_view);
+        ApprovalImageView.setOnClickListener(view -> {
+            approveGardenApplication();
+        });
     }
 
     @Override
@@ -110,6 +119,48 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
 
 
 
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void approveGardenApplication() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
+        HashMap<String, Boolean> params = new HashMap<>();
+        params.put("isApproved", true);
+
+        String url = "http://10.0.2.2:8081/gardens/" + gardenIdForApplication;
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                new JSONObject(params),
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for approving application: \n" + response.toString());
+                        boolean isGardenApplicationApprovalSuccessful = (boolean)response.get("success");
+                        if(isGardenApplicationApprovalSuccessful) {
+                            Intent gardenApplicationsIntent = new Intent(SingleGardenApplicationActivity.this, GardenApplicationsActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(gardenApplicationsIntent);
+                            startActivity(gardenApplicationsIntent);
+                        } else {
+                            Toast.makeText(SingleGardenApplicationActivity.this, "Failed to approve garden application", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }

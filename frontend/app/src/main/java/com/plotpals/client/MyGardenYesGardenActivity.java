@@ -78,14 +78,15 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
                         // loop and add every garden
                         for (int i = 0; i < fetchedGardens.length(); i++) {
                             JSONObject garden = fetchedGardens.getJSONObject(i);
-                            Log.d(TAG, "Account User ID: " + googleProfileInformation.getAccountUserId());
-                            Log.d(TAG, "Owner User ID: " + garden.getString("gardenOwnerId"));
                             Garden gardenObj = new Garden(garden);
-                            if (googleProfileInformation.getAccountUserId().equals(garden.getString("gardenOwnerId"))) {
-                                addManagedGarden(garden.getString("gardenName"), gardenObj);
+                            Log.d(TAG, "Account User ID: " + googleProfileInformation.getAccountUserId());
+                            Log.d(TAG, "Owner User ID: " + gardenObj.getGardenOwnerId());
+
+                            if (googleProfileInformation.getAccountUserId().equals(gardenObj.getGardenOwnerId())) {
+                                addManagedGarden(gardenObj);
                                 upperManagedGardens++;
                             } else {
-                                addGarden(garden.getString("gardenName"), gardenObj);
+                                addGarden(gardenObj);
                                 upperGardens++;
                             }
                         }
@@ -110,7 +111,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         volleyQueue.add(jsonObjectRequest);
     }
 
-    private void addManagedGarden(String name, Garden garden) {
+    private void addManagedGarden(Garden garden) {
         // Set view
         RelativeLayout layout = findViewById(R.id.my_garden_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -130,12 +131,12 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
         // Set Garden Name
         TextView textView = managedGardenView.findViewById(R.id.my_garden_managed_name);
-        textView.setText(name);
+        textView.setText(garden.getGardenName());
 
         layout.addView(managedGardenView);
     }
 
-    private void addGarden(String name, Garden garden) {
+    private void addGarden(Garden garden) {
         // Set view
         RelativeLayout layout = findViewById(R.id.my_garden_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -153,7 +154,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
         // Set Garden Name
         TextView textView = gardenView.findViewById(R.id.my_garden_name);
-        textView.setText(name);
+        textView.setText(garden.getGardenName());
 
         layout.addView(gardenView);
     }

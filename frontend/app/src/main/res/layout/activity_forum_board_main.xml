@@ -105,7 +105,8 @@
         app:layout_constraintStart_toStartOf="@+id/include4"
         app:layout_constraintTop_toBottomOf="@+id/forum_board_divider1">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/forum_board_scrollview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

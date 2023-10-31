@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/forum_board_task_preview_title"
-        android:layout_width="141dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/forum_board_task_preview_description"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/forum_board_task_preview_author"
-        android:layout_width="52dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -64,7 +64,7 @@
 
     <TextView
         android:id="@+id/forum_board_task_preview_stamp"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -72,7 +72,7 @@
         android:text="Timestamp"
         android:textAppearance="@style/basic_text"
         android:textSize="12dp"
-        app:layout_constraintStart_toEndOf="@+id/forum_board_task_preview_author"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_task_preview_title"
         app:layout_constraintTop_toBottomOf="@+id/forum_board_task_preview_type"
         tools:gravity="left|center_vertical" />
 

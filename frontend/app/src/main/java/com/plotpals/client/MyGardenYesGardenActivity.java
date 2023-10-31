@@ -123,7 +123,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
         // Link buttons
         Button forumButton = managedGardenView.findViewById(R.id.my_garden_managed_forum_button);
-        setForumButton(forumButton, 0);
+        setForumButton(forumButton, garden);
         Button manageButton = managedGardenView.findViewById(R.id.my_garden_managed_manage_button);
         setManageButton(manageButton, garden);
         Button membersButton = managedGardenView.findViewById(R.id.my_garden_managed_members_button);
@@ -148,7 +148,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
         // Link buttons
         Button forumButton = gardenView.findViewById(R.id.my_garden_forum_button);
-        setForumButton(forumButton, 0);
+        setForumButton(forumButton, garden);
         Button membersButton = gardenView.findViewById(R.id.my_garden_members_button);
         setMembersButton(membersButton, garden);
 
@@ -164,11 +164,13 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         margins.setMargins(margins.leftMargin, margins.topMargin + upperManagedGardens * 580 + upperGardens * 470, margins.rightMargin, margins.bottomMargin);
     }
 
-    private void setForumButton(Button forumButton, int id) {
+    private void setForumButton(Button forumButton, Garden garden) {
         forumButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Forum Button");
             Intent intent = new Intent(MyGardenYesGardenActivity.this, ForumBoardMainActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", garden.getId());
+            intent.putExtra("gardenName", garden.getGardenName());
             startActivity(intent);
         });
     }

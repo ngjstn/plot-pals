@@ -64,7 +64,7 @@ public class TasksActivity extends AppCompatActivity {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = view.findViewById(android.R.id.text1);
                 TextView text2 = view.findViewById(android.R.id.text2);
-                text1.setText(tasksList.get(position).getTask().getGardenName() + " - " + tasksList.get(position).getTitle());
+                text1.setText(tasksList.get(position).getGardenName() + " - " + tasksList.get(position).getTitle());
                 text1.setTypeface(null, Typeface.BOLD);
 
                 if (tasksList.get(position).getTask().isCompleted() == true) {

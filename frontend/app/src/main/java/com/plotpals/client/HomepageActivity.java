@@ -91,7 +91,7 @@ public class HomepageActivity extends NavBarActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = view.findViewById(android.R.id.text1);
-                text1.setText(tasksList.get(position).getTask().getGardenName() + " - " + tasksList.get(position).getTitle());
+                text1.setText(tasksList.get(position).getGardenName() + " - " + tasksList.get(position).getTitle());
                 return view;
             }
         };

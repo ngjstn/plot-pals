@@ -16,13 +16,20 @@ public class Post {
 
     private Task task;
 
-    public Post(int id, String title, String description, String assignerId, int postGardenId, Task task) {
+    /* Entries that are not in the posts table but still would be useful */
+    private String gardenName;
+
+    private String assignerName;
+
+    public Post(int id, String title, String description, String assignerId, int postGardenId, Task task, String gardenName, String assignerName) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.assignerId = assignerId;
         this.postGardenId = postGardenId;
         this.task = task;
+        this.gardenName = gardenName;
+        this.assignerName = assignerName;
     }
 
     public Post(JSONObject postJsonObject) throws JSONException {
@@ -31,7 +38,9 @@ public class Post {
                 postJsonObject.getString("description"),
                 postJsonObject.getString("assignerId"),
                 postJsonObject.getInt("postGardenId"),
-                null
+                null,
+                postJsonObject.optString("gardenName", null),
+                postJsonObject.optString("assignerName", null)
         );
 
         /**
@@ -64,5 +73,13 @@ public class Post {
 
     public Task getTask() {
         return task;
+    }
+
+    public String getGardenName() {
+        return gardenName;
+    }
+
+    public String getAssignerName() {
+        return assignerName;
     }
 }

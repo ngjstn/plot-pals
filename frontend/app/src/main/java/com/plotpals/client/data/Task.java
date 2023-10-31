@@ -32,9 +32,8 @@ public class Task {
 
     private int expectedTaskDurationInHours;
 
-    /* The following are not part of tasks table but can be added to task object if needed */
-
-    private String gardenName;
+    /* Entries that are not in the tasks table but still would be useful */
+    private String assigneeName;
 
     public Task(int id,
                 int plotId,
@@ -47,7 +46,7 @@ public class Task {
                 String taskStartTime,
                 String taskEndTime,
                 int expectedTaskDurationInHours,
-                String gardenName ) {
+                String assigneeName) {
         this.id = id;
         this.plotId = plotId;
         this.reward = reward;
@@ -59,7 +58,7 @@ public class Task {
         this.taskStartTime = taskStartTime;
         this.taskEndTime = taskEndTime;
         this.expectedTaskDurationInHours = expectedTaskDurationInHours;
-        this.gardenName = gardenName;
+        this.assigneeName = assigneeName;
     }
 
     /*
@@ -77,7 +76,7 @@ public class Task {
                 taskJsonObject.optString("taskStartTime", null),
                 taskJsonObject.optString("taskEndTime", null),
                 taskJsonObject.getInt("expectedTaskDurationInHours"),
-                taskJsonObject.optString("gardenName", null)
+                taskJsonObject.optString("assigneeName", null)
         );
     }
 
@@ -127,8 +126,7 @@ public class Task {
         return expectedTaskDurationInHours;
     }
 
-    public String getGardenName() {
-        return gardenName;
+    public String getAssigneeName() {
+        return assigneeName;
     }
-
 }

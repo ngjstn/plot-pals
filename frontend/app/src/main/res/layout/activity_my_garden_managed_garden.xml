@@ -57,20 +57,21 @@
         app:layout_constraintTop_toTopOf="@+id/my_garden_big_view" />
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="141dp"
+        android:id="@+id/my_garden_managed_name"
+        android:layout_width="280dp"
         android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:autoSizeTextType="uniform"
         android:gravity="top"
         android:text="@string/garden_name"
         android:textAppearance="@style/label_text_big"
         app:layout_constraintBottom_toBottomOf="@+id/my_garden_big_view"
         app:layout_constraintEnd_toEndOf="@+id/my_garden_big_view"
-        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toStartOf="@+id/my_garden_big_view"
         app:layout_constraintTop_toTopOf="@+id/my_garden_big_view"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintVertical_bias="0.103" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

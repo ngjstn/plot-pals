@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +22,7 @@ import com.plotpals.client.utils.GoogleProfileInformation;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,6 +124,10 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         Button manageButton = managedGardenView.findViewById(R.id.my_garden_managed_manage_button);
         setManageButton(manageButton, 0);
 
+        // Set Garden Name
+        TextView textView = managedGardenView.findViewById(R.id.my_garden_managed_name);
+        textView.setText(name);
+
         layout.addView(managedGardenView);
     }
 
@@ -139,12 +145,16 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         Button forumButton = gardenView.findViewById(R.id.my_garden_forum_button);
         setForumButton(forumButton, 0);
 
+        // Set Garden Name
+        TextView textView = gardenView.findViewById(R.id.my_garden_name);
+        textView.setText(name);
+
         layout.addView(gardenView);
     }
 
     private void defineMargins (View v, int upperManagedGardens, int upperGardens) {
         ViewGroup.MarginLayoutParams margins = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-        margins.setMargins(margins.leftMargin, margins.topMargin + upperManagedGardens * 540 + upperGardens * 430, margins.rightMargin, margins.bottomMargin);
+        margins.setMargins(margins.leftMargin, margins.topMargin + upperManagedGardens * 580 + upperGardens * 470, margins.rightMargin, margins.bottomMargin);
     }
 
     private void setForumButton(Button forumButton, int id) {

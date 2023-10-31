@@ -40,6 +40,15 @@
 
     <string name="gardenApplications_title">Garden Applications</string>
 
+    <string name="single_garden_application_title_placeholder">Application []</string>
+    <string name="single_garden_application_submitted_by_text">Submitted by: </string>
+    <string name="single_garden_application_garden_name_title">Garden Name</string>
+    <string name="single_garden_application_garden_address_title">Garden Address</string>
+    <string name="single_garden_application_number_of_plots_title">Number of Plots</string>
+    <string name="single_garden_application_contact_information_title">Contact Information</string>
+    <string name="single_garden_application_approved_title">Approve</string>
+
+
     <string name="title_activity_maps">MapsActivity</string>
     <string name="maps_button_caption">Find a Garden</string>
     <string name="garden_name">Garden Name</string>

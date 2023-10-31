@@ -2,8 +2,11 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -53,15 +56,23 @@ public class GardenApplicationsActivity extends AppCompatActivity {
 
         GardenApplicationsListView = findViewById(R.id.garden_applications_items_list_view);
         gardenApplicationsList = new ArrayList<Garden>();
-        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(GardenApplicationsActivity.this, R.layout.activity_single_text_with_forward_arrow_list_view, gardenApplicationsList){
+        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(GardenApplicationsActivity.this, android.R.layout.simple_list_item_1, gardenApplicationsList){
 
             public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView text = (TextView) view.findViewById(android.R.id.text1);
-                text.setText("\"" + gardenApplicationsList.get(position).getGardenName() + "\" Application" );
+                LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.activity_single_text_with_forward_arrow_list_view, parent, false);
 
-                ImageView forwardArrow = view.findViewById(R.id.list_forward_arrow);
-                return view;
+                TextView listTextView = convertView.findViewById(R.id.list_text_view);
+                ImageView listImageView = convertView.findViewById(R.id.list_forward_arrow);
+                listImageView.setOnClickListener(view -> {
+                    Intent SingleGardenApplicationIntent = new Intent(GardenApplicationsActivity.this, SingleGardenApplicationActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(SingleGardenApplicationIntent);
+                    SingleGardenApplicationIntent.putExtra("gardenId", gardenApplicationsList.get(position).getId());
+                    startActivity(SingleGardenApplicationIntent);
+                });
+
+                listTextView.setText("\"" + gardenApplicationsList.get(position).getGardenName() + "\"" + " [" + gardenApplicationsList.get(position).getId() + "]");
+                return convertView;
             }
         };
         GardenApplicationsListView.setAdapter(gardenApplicationsListAdapter);
@@ -76,7 +87,7 @@ public class GardenApplicationsActivity extends AppCompatActivity {
 
     private void requestGardenApplications() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -91,18 +102,11 @@ public class GardenApplicationsActivity extends AppCompatActivity {
                         /* Populate gardenApplicationsList with fetched and filtered gardens and notify the GardenApplications UI to display the fetched gardenApplications */
                         if(fetchedGardens.length() > 0) {
                             gardenApplicationsList.clear();
-                            int i = 0;
-                            while(i < fetchedGardens.length()) {
+                            for(int i = 0; i < fetchedGardens.length(); i++) {
                                 JSONObject gardenJSONObject = fetchedGardens.getJSONObject(i);
                                 Garden garden = new Garden(gardenJSONObject);
-
-                                /* We consider gardens that are unapproved to be the same as garden applications */
-                                if (garden.isApproved() == false){
-                                    gardenApplicationsList.add(garden);
-                                }
-                                i++;
+                                gardenApplicationsList.add(garden);
                             }
-
                             gardenApplicationsListAdapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {

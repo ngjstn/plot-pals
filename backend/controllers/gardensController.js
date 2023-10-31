@@ -1,10 +1,18 @@
 const { database } = require('../database');
 
 const getAllGardens = async (req, res, next) => {
-  const { gardenId } = req.query;
+  const { gardenId, isApproved } = req.query;
+
+  let isApprovedConditionString = '';
+
+  if (isApproved === 'true') {
+    isApprovedConditionString = 'AND gardens.isApproved = true';
+  } else if (isApproved === 'false') {
+    isApprovedConditionString = 'AND gardens.isApproved = false';
+  }
   const sql = gardenId
-    ? 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id WHERE id = ? ORDER BY id DESC'
-    : 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id ORDER BY id DESC';
+    ? `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.id = ? AND gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`
+    : `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`;
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
@@ -89,6 +97,32 @@ const createGardenDev = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
+};
+
+const updateGarden = async (req, res) => {
+  const {
+    longitude,
+    latitude,
+    gardenOwnerId,
+    isApproved,
+    gardenPicture,
+    contactPhoneNumber,
+    contactEmail,
+    numberOfPlots,
+    gardenName,
+  } = req.body;
+
+  const listOfChangableFields = [
+    'longitude',
+    'latitude',
+    'gardenOwnerId',
+    'isApproved',
+    'gardenPicture',
+    'contactPhoneNumber',
+    'contactEmail',
+    'numberOfPlots',
+    'gardenName',
+  ];
 };
 
 module.exports = {

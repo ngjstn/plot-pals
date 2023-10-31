@@ -78,7 +78,7 @@ public class AdminHomepageActivity extends AppCompatActivity {
 
     private void requestGardenApplications() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -93,18 +93,11 @@ public class AdminHomepageActivity extends AppCompatActivity {
                         /* Populate gardenApplicationsList with fetched and filtered gardens and notify the GardenApplications UI to display the fetched gardenApplications */
                         if(fetchedGardens.length() > 0) {
                             gardenApplicationsList.clear();
-                            int i = 0;
-                            while(gardenApplicationsList.size() < 3 && i < fetchedGardens.length()) {
+                            for(int i = 0; i < Math.min(fetchedGardens.length(), 3); i++) {
                                 JSONObject gardenJSONObject = fetchedGardens.getJSONObject(i);
                                 Garden garden = new Garden(gardenJSONObject);
-
-                                /* We consider gardens that are unapproved to be the same as garden applications */
-                                if (garden.isApproved() == false){
-                                    gardenApplicationsList.add(garden);
-                                }
-                                i++;
+                                gardenApplicationsList.add(garden);
                             }
-
                             gardenApplicationsListAdapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {

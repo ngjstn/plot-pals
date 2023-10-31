@@ -30,11 +30,11 @@ public class Garden implements Serializable {
     private RoleEnum roleNumOfCurrentAuthorizedUserInGarden;
 
 
-    public Garden(int id, String address, String longitude, String latitude, String gardenOwnderId, int isApproved, String contactPhoneNumber, String contactEmail, int numberOfPlots, String gardenName, String gardenOwnerName, RoleEnum roleNumOfCurrentAuthorizedUserInGarden) {
+    public Garden(int id, String address, String longitude, String latitude, String gardenOwnerId, int isApproved, String contactPhoneNumber, String contactEmail, int numberOfPlots, String gardenName, String gardenOwnerName, RoleEnum roleNumOfCurrentAuthorizedUserInGarden) {
         this.id = id;
         this.address = address;
         this.location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        this.gardenOwnerId = gardenOwnderId;
+        this.gardenOwnerId = gardenOwnerId;
         this.isApproved = isApproved == 1;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;

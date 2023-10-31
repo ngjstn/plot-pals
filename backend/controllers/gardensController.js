@@ -14,13 +14,8 @@ const getAllGardens = async (req, res, next) => {
     isApprovedConditionString = 'AND gardens.isApproved = false';
   }
   const sql = gardenId
-<<<<<<< HEAD
     ? `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.id = ? AND gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`
     : `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`;
-=======
-    ? 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id WHERE gardens.id = ? ORDER BY gardenName'
-    : 'SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles ON gardens.gardenOwnerId = profiles.id ORDER BY gardenName';
->>>>>>> 3f3adce22c21ce9dd660a2bc6f218d8eb8e8789f
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
@@ -151,6 +146,10 @@ const updateGarden = async (req, res, next) => {
     const queryResults = await database.query(sql, sqlInput);
     return res.json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
+    return next(err);
+  }
+};
+
 const createGardenApplication = async (req, res, next) => {
   const {gardenName, gardenAddress, gardenPlots, gardenPhone, gardenEmail} = req.body;
 

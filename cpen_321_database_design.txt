@@ -12,7 +12,9 @@ Id (int), gardenId (int, references Garden id), profileId (string, references Pr
 Updates
 Id (int), profileId (string, references Profile id column), description (string), title (string)
 Tasks
-Id (int), gardenId (int, references Garden id column), plotId (int, references Plot id column),  reward (string), minimumRating (int, scale from 0-5), title (string), description (string), assignerId (string, references Profile id column), assigneeId (string, references Profile id column), isCompleted (boolean), assigneeIsProvidedFeedback (Boolean), deadline (DATETIME, YYYY-MM-DD hh:mm:ss format), taskStartTime (DATETIME, YYYY-MM-DD hh:mm:ss format), taskEndTime (DATETIME, YYYY-MM-DD hh:mm:ss format), expectedTaskDurationInHours (int)
+Id (int), plotId (int, references Plot id column), reward (string), minimumRating (int, scale from 0-5), assigneeId (string, references Profile id column), isCompleted (boolean), assigneeIsProvidedFeedback (Boolean), deadline (DATETIME, YYYY-MM-DD hh:mm:ss format), taskStartTime (DATETIME, YYYY-MM-DD hh:mm:ss format), taskEndTime (DATETIME, YYYY-MM-DD hh:mm:ss format), expectedTaskDurationInHours (int)
+Posts
+Id (int), postGardenId (int, references Gardens id column), taskId (int, references Tasks id column), title (string), description (string), assignerId (string, references Profile id column)
 Roles
 profileId (string, references Profile id column), gardenId (references Garden id column), roleNum (int, based on enum specified in the NOTES section)
 

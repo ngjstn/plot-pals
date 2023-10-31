@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GardenApplicationActivity">
+
+    <TextView
+        android:id="@+id/garden_application_header"
+        android:layout_width="183dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="56dp"
+        android:gravity="top"
+        android:text="@string/garden_application_header"
+        android:textAppearance="@style/page_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="68dp"
+        android:text="Submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/garden_application_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/garden_name_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:text="@string/garden_application_input_name"
+                android:textAppearance="@style/label_text" />
+
+            <EditText
+                android:id="@+id/garden_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="New garden name"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_name_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/garden_address_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
+                android:gravity="top"
+                android:text="@string/garden_application_input_address"
+                android:textAppearance="@style/label_text" />
+
+            <EditText
+                android:id="@+id/garden_address_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="New garden address"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_address_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/garden_num_plots_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
+                android:gravity="top"
+                android:text="@string/garden_application_input_plots"
+                android:textAppearance="@style/label_text" />
+
+            <EditText
+                android:id="@+id/garden_num_plots_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:ems="10"
+                android:hint="New garden individual plots"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_num_plots_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/garden_contact_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="4dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_input_contact"
+                android:textAppearance="@style/label_text" />
+
+            <TextView
+                android:id="@+id/garden_contact_name_loaded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text" />
+
+            <EditText
+                android:id="@+id/garden_phone_number_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Phone number"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_phone_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/garden_email_address_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Email address"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/garden_email_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:text="@string/garden_application_placeholder"
+                android:textAppearance="@style/label_text"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

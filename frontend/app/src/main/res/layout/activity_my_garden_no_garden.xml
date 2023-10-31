@@ -10,18 +10,6 @@
         android:id="@+id/include2"
         layout="@layout/activity_nav_bar" />
 
-    <Button
-        android:id="@+id/temp_button_yes_garden"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="yes garden page (temp)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
-
     <TextView
         android:id="@+id/my_garden_header_text"
         android:layout_width="177dp"

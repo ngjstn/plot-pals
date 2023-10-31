@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.142" />
 
     <Button
-        android:id="@+id/my_garden_2_member"
+        android:id="@+id/my_garden_members_button"
         android:layout_width="125dp"
         android:layout_height="36dp"
         android:autoSizeTextType="uniform"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.917"
         app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/my_garden_2_member"
+        app:layout_constraintTop_toBottomOf="@+id/my_garden_members_button"
         app:layout_constraintVertical_bias="0.333" />
 
 

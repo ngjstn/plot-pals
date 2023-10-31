@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Button;
+
 public class AccountMainActivity extends NavBarActivity {
 
     final String TAG = "AccountMainActivity";
@@ -30,6 +33,8 @@ public class AccountMainActivity extends NavBarActivity {
     GoogleProfileInformation googleProfileInformation;
 
     ImageView AccountProfilePictureImageView;
+
+    View AccountAdminModeView;
 
     TextView AccountProfileNameTextView;
 
@@ -41,6 +46,7 @@ public class AccountMainActivity extends NavBarActivity {
 
     View AccountRolesActivityView;
 
+    private View applyButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,13 @@ public class AccountMainActivity extends NavBarActivity {
         loadExtras();
 
         activateNavBar();
+
+        AccountAdminModeView = findViewById(R.id.account_admin_mode_button);
+        AccountAdminModeView.setOnClickListener(view -> {
+            Intent AdminHomepageIntent = new Intent(AccountMainActivity.this, AdminHomepageActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(AdminHomepageIntent);
+            startActivity(AdminHomepageIntent);
+        });
 
         AccountProfileActivityView = findViewById(R.id.account_profile_button_view);
         AccountProfileActivityView.setOnClickListener(view -> {
@@ -79,6 +92,16 @@ public class AccountMainActivity extends NavBarActivity {
                 .error(R.drawable.default_profile_picture)
                 .into(AccountProfilePictureImageView);
 
+        applyButton = findViewById(R.id.account_apply_button);
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gardenAppIntent = new Intent(AccountMainActivity.this, GardenApplicationActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(gardenAppIntent);
+                startActivity(gardenAppIntent);
+            }
+        });
+
         AccountProfileNameTextView = findViewById(R.id.account_name_text_view);
         AccountProfileRatingsTextView = findViewById(R.id.account_ratings_text_view);
         requestProfileInformation();
@@ -86,7 +109,7 @@ public class AccountMainActivity extends NavBarActivity {
 
     private void requestProfileInformation() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

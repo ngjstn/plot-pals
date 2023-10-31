@@ -23,16 +23,31 @@
     <string name="account_profile">Profile</string>
     <string name="account_roles">Roles</string>
     <string name="account_rating_text">Rating</string>
-    <string name="account_settings">Settings</string>
+    <string name="account_admin_mode">Access Admin Pages</string>
     <string name="account_logout">Logout</string>
 
     <string name="homepage_title_placeholder">Hey there hot stuff</string>
     <string name="homepage_updates_title">Updates</string>
     <string name="homepage_tasks_title">My Tasks</string>
 
+    <string name="admin_homepage_title">Admin Mode</string>
+    <string name="admin_homepage_garden_applications_title">Garden Applications</string>
+    <string name="admin_homepage_reports_title">Reports</string>
+
     <string name="updates_title">Updates</string>
 
     <string name="tasks_title">Tasks</string>
+
+    <string name="gardenApplications_title">Garden Applications</string>
+
+    <string name="single_garden_application_title_placeholder">Application []</string>
+    <string name="single_garden_application_submitted_by_text">Submitted by: </string>
+    <string name="single_garden_application_garden_name_title">Garden Name</string>
+    <string name="single_garden_application_garden_address_title">Garden Address</string>
+    <string name="single_garden_application_number_of_plots_title">Number of Plots</string>
+    <string name="single_garden_application_contact_information_title">Contact Information</string>
+    <string name="single_garden_application_approved_title">Approve</string>
+
 
     <string name="title_activity_maps">MapsActivity</string>
     <string name="maps_button_caption">Find a Garden</string>
@@ -69,4 +84,17 @@
     <string name="plot_number_body">Number of Garden Plots:</string>
     <string name="contact_info_body">Contact Info:</string>
     <string name="roles_title">Roles</string>
+
+    <string name="garden_application_header">New Garden Application</string>
+    <string name="garden_application_instruction">First, please provide us with some information about your new garden. This can be changed
+        at a later time if your application is approved.</string>
+
+    <string name="garden_application_input_name">Garden Name</string>
+    <string name="garden_application_input_address">Garden Address</string>
+    <string name="garden_application_input_plots">Number of Garden Plots</string>
+    <string name="garden_application_input_contact">Contact Information</string>
+    <string name="garden_application_placeholder">Placeholder</string>
+
+    <string name="garden_application_confirm_header">Confirm Application</string>
+
 </resources>

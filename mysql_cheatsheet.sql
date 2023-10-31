@@ -16,6 +16,7 @@ SELECT * FROM profiles;
 SELECT * FROM roles;
 SELECT * FROM gardens;
 SELECT * FROM plots;
+SELECT * FROM posts;
 SELECT * FROM tasks;
 SELECT * FROM admin_profiles;
 SELECT * FROM reports;
@@ -64,17 +65,28 @@ INSERT INTO plots(
 	'{insert some profile.id}'
 );
 
+INSERT INTO posts (
+	title,
+    description,
+    taskId,
+    assignerId, 
+    postGardenId
+) VALUES (
+	"some title",
+    "some description",
+    123 /* insert some tasks.id or null if post is not a task */,
+    "{some profiles.id}" /* Id of person who creates post/task, references profiles.id */,
+    123 /* insert some garden.id */
+    
+);
+
 INSERT INTO tasks(
 	plotId, 
 	reward, 
 	minimumRating, 
-    title,
-	description, 
-	assignerId, 
 	assigneeId, 
 	isCompleted, 
 	assigneeIsProvidedFeedback, 
-	gardenId, 
 	deadlineDate, 
 	taskStartTime, 
 	taskEndTime, 
@@ -83,13 +95,9 @@ INSERT INTO tasks(
 	123 /*some plot.id int*/, 
 	'some reward', 
 	4.56 /*some number between 0-5 with 2 decimals*/, 
-    'some title',
-	'some desc', 
-	'{insert some profile.id}', 
 	'{insert some profile.id}', 
 	false, 
 	false, 
-	123 /*some garden id*/, 
 	'2023-04-01 10:00:00' /*YYYY-MM-DD*/, 
 	'2023-01-01 10:00:00' /*YYYY-MM-DD*/, 
 	'2023-03-01 10:00:00' /*YYYY-MM-DD*/, 
@@ -133,67 +141,3 @@ SELECT
     gardens.gardenName
 FROM tasks JOIN gardens
 ON tasks.gardenId = gardens.id;
-
-/*
-* Some commands I ran in the past
-*/
-UPDATE tasks SET assignerId='108353760268997269925', assigneeId='108438399361533648066' where tasks.id = 1;
-
-INSERT INTO tasks(
-	plotId, 
-	reward, 
-	minimumRating, 
-    title,
-	description, 
-	assignerId, 
-	assigneeId, 
-	isCompleted, 
-	assigneeIsProvidedFeedback, 
-	gardenId, 
-	deadlineDate, 
-	taskStartTime, 
-	taskEndTime, 
-	expectedTaskDurationInHours
-) VALUES (
-	2 /*some plot.id int*/, 
-	'a potato', 
-	4.16 /*some number between 0-5 with 2 decimals*/, 
-    'test task 123',
-	'some desc', 
-	'108438399361533648066', 
-	'108353760268997269925', 
-	false, 
-	false, 
-	1 /*some garden id*/, 
-	'2023-04-01 10:00:00' /*YYYY-MM-DD*/, 
-	'2023-01-01 10:00:00' /*YYYY-MM-DD*/, 
-	'2023-03-01 10:00:00' /*YYYY-MM-DD*/, 
-	100 /*some int*/
-);
-
-UPDATE gardens SET longitude=-122.0852, latitude=37.4221 WHERE id=3;
-
-INSERT INTO gardens(
-	address, 
-    longitude, 
-    latitude, 
-    gardenOwnerId, 
-    isApproved, 
-    gardenPicture, 
-    contactPhoneNumber, 
-    contactEmail, 
-    numberOfPlots, 
-    gardenName
-) VALUES (
-    'address foobar', 
-    -122.0859 /*some longitude with 4 decimals*/, 
-    37.4219 /*some latitude with 4 decimals*/, 
-    '103354493506323780957', 
-    false, 
-    NULL /*deal with pictures later*/, 
-    '7786513472', 
-    'fizzbuzz@gmail.com',
-    12 /*any int you want*/, 
-    'garden for extra gardening'
-); 
-

@@ -2,7 +2,7 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Typeface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.data.Post;
-import com.plotpals.client.data.Task;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Update;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
@@ -30,68 +29,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TasksActivity extends AppCompatActivity {
+public class AdminHomepageActivity extends AppCompatActivity {
 
-    final String TAG = "TasksActivity";
+    final String TAG = "AdminHomepageActivity";
 
     GoogleProfileInformation googleProfileInformation;
 
-    ListView TasksListView;
+    ImageView GardenApplicationsForwardArrow;
 
-    ArrayList<Post> tasksList;
+    ListView GardenApplicationsListView;
+    ArrayList<Garden> gardenApplicationsList;
 
-    ArrayAdapter<Post> tasksListAdapter;
-
-    ImageView BackArrowImageView;
-
+    ArrayAdapter<Garden> gardenApplicationsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks);
+        setContentView(R.layout.activity_admin_homepage);
         loadExtras();
 
-        BackArrowImageView = findViewById(R.id.tasks_back_arrow_image_view);
-        BackArrowImageView.setOnClickListener(view -> {
-            getOnBackPressedDispatcher().onBackPressed();
+        GardenApplicationsForwardArrow = findViewById(R.id.admin_homepage_garden_applications_forward_arrow);
+        GardenApplicationsForwardArrow.setOnClickListener(view -> {
+            Intent GardenApplicationsActivityIntent = new Intent(AdminHomepageActivity.this, GardenApplicationsActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(GardenApplicationsActivityIntent);
+            startActivity(GardenApplicationsActivityIntent);
         });
 
-        TasksListView = findViewById(R.id.tasks_items_list_view);
-        tasksList = new ArrayList<Post>();
-        tasksListAdapter = new ArrayAdapter (TasksActivity.this, android.R.layout.simple_list_item_2, android.R.id.text1, tasksList)
-        {
+        GardenApplicationsListView = findViewById(R.id.admin_homepage_garden_applications_list_view);
+        gardenApplicationsList = new ArrayList<Garden>();
+        gardenApplicationsListAdapter = new ArrayAdapter<Garden>(AdminHomepageActivity.this, android.R.layout.simple_list_item_1, gardenApplicationsList){
+
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView text1 = view.findViewById(android.R.id.text1);
-                TextView text2 = view.findViewById(android.R.id.text2);
-                text1.setText(tasksList.get(position).getGardenName() + " - " + tasksList.get(position).getTitle());
-                text1.setTypeface(null, Typeface.BOLD);
-
-                if (tasksList.get(position).getTask().isCompleted() == true) {
-                    text2.setText("Status: Completed" + "\n");
-                } else {
-                    text2.setText("Status: In progress" + "\n");
-                }
-
-                ViewGroup.LayoutParams params = view.getLayoutParams();
-                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                view.setLayoutParams(params);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                text.setText("\"" + gardenApplicationsList.get(position).getGardenName() + "\" Application" );
                 return view;
             }
         };
-        TasksListView.setAdapter(tasksListAdapter);
+        GardenApplicationsListView.setAdapter(gardenApplicationsListAdapter);
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
-        requestTasks();
+        requestGardenApplications();
     }
 
-    private void requestTasks() {
+    private void requestGardenApplications() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -100,17 +87,18 @@ public class TasksActivity extends AppCompatActivity {
 
                 (JSONObject response) -> {
                     try {
-                        Log.d(TAG, "Obtaining task posts");
-                        JSONArray fetchedTaskPosts = (JSONArray)response.get("data");
-                        if(fetchedTaskPosts.length() > 0) {
-                            tasksList.clear();
-                            for (int i = 0; i < fetchedTaskPosts.length(); i++) {
-                                JSONObject taskPostJSONObject = fetchedTaskPosts.getJSONObject(i);
-                                Post taskPost = new Post(taskPostJSONObject);
-                                tasksList.add(taskPost);
-                            }
+                        Log.d(TAG, "Obtaining gardens");
+                        JSONArray fetchedGardens = (JSONArray)response.get("data");
 
-                            tasksListAdapter.notifyDataSetChanged();
+                        /* Populate gardenApplicationsList with fetched and filtered gardens and notify the GardenApplications UI to display the fetched gardenApplications */
+                        if(fetchedGardens.length() > 0) {
+                            gardenApplicationsList.clear();
+                            for(int i = 0; i < Math.min(fetchedGardens.length(), 3); i++) {
+                                JSONObject gardenJSONObject = fetchedGardens.getJSONObject(i);
+                                Garden garden = new Garden(gardenJSONObject);
+                                gardenApplicationsList.add(garden);
+                            }
+                            gardenApplicationsListAdapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());

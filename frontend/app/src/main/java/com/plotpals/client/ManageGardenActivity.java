@@ -34,6 +34,7 @@ public class ManageGardenActivity extends AppCompatActivity {
     ArrayList<Role> memberList;
     ListView memberListView;
     ArrayAdapter<String> memberListAdapter;
+    Integer currentGardenId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class ManageGardenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent currentMemActivity = new Intent(ManageGardenActivity.this, CurrentMembersActivity.class);
                 googleProfileInformation.loadGoogleProfileInformationToIntent(currentMemActivity);
-                currentMemActivity.putExtra("gardenId", 4);
+                currentMemActivity.putExtra("gardenId", currentGardenId);
                 startActivity(currentMemActivity);
             }
         });
@@ -83,8 +84,7 @@ public class ManageGardenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // TODO: Hard coding the gardenId for now. Eventually, the parent activity should pass in the gardenId.
-        requestMembers(4);
+        requestMembers(currentGardenId);
     }
 
     private void requestMembers(Integer gardenId) {
@@ -136,6 +136,7 @@ public class ManageGardenActivity extends AppCompatActivity {
 
         if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
+            currentGardenId = extras.getInt("gardenId");
         }
     }
 }

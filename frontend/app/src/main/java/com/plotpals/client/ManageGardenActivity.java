@@ -52,8 +52,9 @@ public class ManageGardenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ManageGardenActivity.this, "Back Arrow pressed", Toast.LENGTH_SHORT).show();
-                Intent mapsActivity = new Intent(ManageGardenActivity.this, MyGardenYesGardenActivity.class);
-                startActivity(mapsActivity);
+                Intent intent = new Intent(ManageGardenActivity.this, MyGardenYesGardenActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                startActivity(intent);
             }
         });
 

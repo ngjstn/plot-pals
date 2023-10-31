@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Phone number (optional)"
+                android:hint="Phone number"
                 android:inputType="text" />
 
             <TextView
@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Email address (optional)"
+                android:hint="Email address"
                 android:inputType="text" />
 
             <TextView

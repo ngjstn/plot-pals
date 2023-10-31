@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.utils.GoogleProfileInformation;
@@ -95,6 +96,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
                 else {
                     Intent manageActivity = new Intent(CurrentMembersActivity.this, ManageGardenActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(manageActivity);
+                    manageActivity.putExtra("gardenId", gardenId);
                     startActivity(manageActivity);
                 }
             }
@@ -172,4 +174,5 @@ public class CurrentMembersActivity extends AppCompatActivity {
             cameFromMyGardenYesPage = extras.getBoolean("CameFromMyGardenYes");
         }
     }
+
 }

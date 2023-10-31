@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -15,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
@@ -35,6 +37,7 @@ public class ManageGardenActivity extends AppCompatActivity {
     ListView memberListView;
     ArrayAdapter<String> memberListAdapter;
     Integer currentGardenId;
+    Garden currentGarden;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,7 @@ public class ManageGardenActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         requestMembers(currentGardenId);
+        requestGardenInfo(currentGardenId);
     }
 
     private void requestMembers(Integer gardenId) {
@@ -130,7 +134,43 @@ public class ManageGardenActivity extends AppCompatActivity {
 
         volleyQueue.add(jsonObjectRequest);
     }
+    
+    private void requestGardenInfo(Integer gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/gardens/all?gardenId=%s", gardenId);
 
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining garden info");
+                        JSONArray fetchedGarden = (JSONArray)response.get("data");
+                        JSONObject gardenJson = fetchedGarden.getJSONObject(0);
+                        currentGarden = new Garden(gardenJson);
+                        updateGardenOverlayContent(currentGarden);
+
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+    
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();
 
@@ -138,5 +178,19 @@ public class ManageGardenActivity extends AppCompatActivity {
             googleProfileInformation = new GoogleProfileInformation(extras);
             currentGardenId = extras.getInt("gardenId");
         }
+    }
+
+    private void updateGardenOverlayContent(Garden garden) {
+        TextView gardenName = findViewById(R.id.garden_name);
+        TextView address = findViewById(R.id.something_r);
+        TextView contactName = findViewById(R.id.contact_nam);
+        TextView contactEmail = findViewById(R.id.name_email_);
+        TextView contactPhone = findViewById(R.id.some_id);
+
+        gardenName.setText(garden.getGardenName());
+        address.setText(garden.getAddress());
+        contactName.setText(garden.getGardenOwnerName());
+        contactEmail.setText(garden.getContactEmail());
+        contactPhone.setText(garden.getContactPhoneNumber());
     }
 }

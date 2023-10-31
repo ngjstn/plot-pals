@@ -2,7 +2,7 @@ const { database } = require('../database');
 
 const getRolesForAuthenticatedUser = async (req, res, next) => {
   const sql =
-    'SELECT roles.*, gardens.gardenName FROM roles JOIN gardens ON roles.gardenId = gardens.id WHERE profileId = ? ORDER BY gardens.gardenName';
+    'SELECT roles.*, gardens.gardenName FROM roles JOIN gardens ON roles.gardenId = gardens.id WHERE profileId = ?';
 
   try {
     const queryResults = await database.query(sql, [req.userId]);
@@ -15,8 +15,8 @@ const getRolesForAuthenticatedUser = async (req, res, next) => {
 const getAllRoles = async (req, res, next) => {
   const { gardenId } = req.query;
   const sql = gardenId
-    ? 'SELECT profiles.displayName AS gardenMemberName, roles.*, gardens.gardenName FROM roles JOIN gardens JOIN profiles WHERE (roles.gardenId = gardens.id AND gardens.id = ? AND roles.profileId = profiles.id) ORDER BY gardens.gardenName'
-    : 'SELECT profiles.displayName AS gardenMemberName, roles.*, gardens.gardenName FROM roles JOIN gardens JOIN profiles WHERE (roles.gardenId = gardens.id AND roles.profileId = profiles.id) ORDER BY gardens.gardenName';
+    ? 'SELECT profiles.displayName AS gardenMemberName, roles.*, gardens.gardenName FROM roles JOIN gardens JOIN profiles WHERE (roles.gardenId = gardens.id AND gardens.id = ? AND roles.profileId = profiles.id)'
+    : 'SELECT profiles.displayName AS gardenMemberName, roles.*, gardens.gardenName FROM roles JOIN gardens JOIN profiles WHERE (roles.gardenId = gardens.id AND roles.profileId = profiles.id)';
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);

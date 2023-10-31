@@ -10,6 +10,6 @@ router.get('/all', authMiddleware, getAllGardens);
 
 router.get('/', authMiddleware, getGardensForAuthorizedUser);
 
-router.post('/', createGardenApplication);
+router.post('/', authMiddleware, createGardenApplication);
 
 module.exports = router;

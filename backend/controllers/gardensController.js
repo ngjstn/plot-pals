@@ -96,14 +96,10 @@ const createGardenDev = async (req, res, next) => {
 const createGardenApplication = async (req, res, next) => {
   const {gardenName, gardenAddress, gardenPlots, gardenPhone, gardenEmail} = req.body;
 
+  console.log(req.userId);
+
   let lat = 0;
   let long = 0;
-  // let gardenAddress = '2205 Lower Mall';
-  // let gardenPhone = '1234567890';
-  // let gardenEmail = 'test@test';
-  // let gardenName = 'test';
-  // let gardenPlots = 10;
-  // let userId = "103354493506323780957";
   let gardenID;
 
   try {
@@ -155,6 +151,5 @@ module.exports = {
   getGardensForAuthorizedUser,
   createGardenDev,
   deleteGardenDev,
-  getGardens,
   createGardenApplication,
 };

@@ -117,8 +117,6 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
                             ContactEmailTextView.setVisibility(View.VISIBLE);
                         }
 
-
-
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }
@@ -155,9 +153,7 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
                         Log.d(TAG, "Response for approving application: \n" + response.toString());
                         boolean isGardenApplicationApprovalSuccessful = (boolean)response.get("success");
                         if(isGardenApplicationApprovalSuccessful) {
-                            Intent gardenApplicationsIntent = new Intent(SingleGardenApplicationActivity.this, GardenApplicationsActivity.class);
-                            googleProfileInformation.loadGoogleProfileInformationToIntent(gardenApplicationsIntent);
-                            startActivity(gardenApplicationsIntent);
+                            finish();
                         } else {
                             Toast.makeText(SingleGardenApplicationActivity.this, "Failed to approve garden application", Toast.LENGTH_SHORT).show();
                         }

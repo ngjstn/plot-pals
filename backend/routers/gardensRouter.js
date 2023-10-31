@@ -1,5 +1,10 @@
 const express = require('express');
-const { getAllGardens, getGardensForAuthorizedUser, updateGarden } = require('../controllers/gardensController');
+const {
+  getAllGardens,
+  getGardensForAuthorizedUser,
+  updateGarden,
+  createGardenApplication,
+} = require('../controllers/gardensController');
 
 const authMiddleware = require('../authMiddleware');
 
@@ -10,5 +15,6 @@ router.get('/all', authMiddleware, getAllGardens);
 router.get('/', authMiddleware, getGardensForAuthorizedUser);
 
 router.put('/:gardenId', authMiddleware, updateGarden);
+router.post('/', authMiddleware, createGardenApplication);
 
 module.exports = router;

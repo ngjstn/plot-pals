@@ -95,7 +95,7 @@
         android:layout_height="23dp"
         android:background="@null"
         android:ems="10"
-        android:hint="Reward (Optional)"
+        android:hint="Reward"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@+id/include5"
         app:layout_constraintEnd_toEndOf="parent"

@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Role;
+import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ForumBoardMainActivity extends NavBarActivity {
 
@@ -35,6 +38,9 @@ public class ForumBoardMainActivity extends NavBarActivity {
     private Integer currentGardenId;
     private String currentGardenName = "This should not show up";
     private int upperPosts = 0;
+    boolean isPlotOwner = false;
+    boolean isGardenOwner = false;
+    boolean isCaretaker = false;
 
     GoogleProfileInformation googleProfileInformation;
     @Override
@@ -86,7 +92,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
             intent.putExtra("gardenName", currentGardenName);
             startActivity(intent);
         });
-
+        findViewById(R.id.forum_board_plus).setVisibility(View.GONE);
+        requestMembers(currentGardenId);
         loadPosts();
     }
 
@@ -128,6 +135,62 @@ public class ForumBoardMainActivity extends NavBarActivity {
                 return headers;
             }
         };
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void requestMembers(Integer gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining members");
+                        JSONArray fetchedMembers = (JSONArray)response.get("data");
+
+                        /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
+                        if(fetchedMembers.length() > 0) {
+                            for (int i = 0; i < fetchedMembers.length(); i++) {
+                                JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
+                                Role role = new Role(roleJsonObject);
+                                View plusButton = findViewById(R.id.forum_board_plus);
+                                if (Objects.equals(role.getProfileId(), googleProfileInformation.getAccountUserId())) {
+                                    if (role.getRoleNum() == RoleEnum.PLOT_OWNER) {
+                                        isPlotOwner = true;
+                                        plusButton.setVisibility(View.VISIBLE);
+                                    }
+                                    else if (role.getRoleNum() == RoleEnum.CARETAKER) {
+                                        isCaretaker = true;
+                                        plusButton.setVisibility(View.GONE);
+                                    }
+                                    else if (role.getRoleNum() == RoleEnum.GARDEN_OWNER) {
+                                        isGardenOwner = true;
+                                        plusButton.setVisibility(View.VISIBLE);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
         volleyQueue.add(jsonObjectRequest);
     }
 

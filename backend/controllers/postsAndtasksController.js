@@ -136,22 +136,52 @@ const getTasksRelatedToAuthorizedUserByGardenId = async (req, res, next) => {
 const createTask = async (req, res, next) => {
   const { taskTitle, taskDesc, taskRating, taskDuration, taskDeadline, taskReward } = req.body;
   const { gardenId } = req.query;
+  // taskDeadline = "12252023";
 
+  // let userId = "103354493506323780957";
+
+  let gardenRoleNum;
   let plotId;
   let genTaskId;
 
-  // needs to catch error for missing plot
+  // check first if they are a gardenOwner
+
   try {
-    const sqlFindPlotId = `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`;
-    const queryResults = await database.query(sqlFindPlotId, [gardenId, req.userId]);
-    plotId = queryResults[0][0].id;
+    const sqlFindGardenOwner = `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`;
+    const queryResults = await database.query(sqlFindGardenOwner, [req.userId, gardenId]);
+    gardenRoleNum = queryResults[0][0].roleNum;
   } catch (err) {
     console.log(err);
     return next(err);
   }
 
-  console.log(plotId);
+  console.log("gardenRoleNum: " + gardenRoleNum);
 
+  if (gardenRoleNum == 2) {
+    plotId = null;
+  }
+  else {
+    try {
+      const sqlFindPlotId = `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`;
+      const queryResults = await database.query(sqlFindPlotId, [gardenId, req.userId]);
+      plotId = queryResults[0][0].id;
+    } catch (err) {
+      console.log(err);
+      return next(err);
+    }
+  }
+
+  console.log("plotId: " + plotId);
+
+  // need to process string for deadline
+  let month = taskDeadline.substring(0, 2);
+  let day = taskDeadline.substring(2, 4);
+  let year = taskDeadline.substring(4, 8);
+
+  let deadlineDate = year + "-" + month + "-" + day + " 00:00:00";
+
+  console.log("deadlineDate: " + deadlineDate);
+  
   try {
     const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
       isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, 
@@ -164,7 +194,7 @@ const createTask = async (req, res, next) => {
       null,
       0,
       0,
-      taskDeadline,
+      deadlineDate,
       null,
       null,
       taskDuration,

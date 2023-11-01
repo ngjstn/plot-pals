@@ -19,7 +19,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private String taskDescription;
     private int taskPlotNumber;
     private boolean taskStatus;
-    private String taskExpected;
+    private int taskExpected;
     private String taskDeadline;
     private String taskReward;
     private String taskAssignee;
@@ -48,7 +48,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         TextView status = findViewById(R.id.forum_Board_task_status);
         status.setText(taskStatus ? "Complete" : "Incomplete");
         TextView expected = findViewById(R.id.forum_Board_task_expected);
-        expected.setText(taskExpected);
+        expected.setText(Integer.toString(taskExpected));
         TextView deadline = findViewById(R.id.forum_Board_task_deadline);
         deadline.setText(taskDeadline);
         TextView reward = findViewById(R.id.forum_Board_task_reward);
@@ -99,7 +99,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             taskDescription = extras.getString("taskDescription");
             taskPlotNumber = extras.getInt("taskPlotNumber");
             taskStatus = extras.getBoolean("taskStatus");
-            taskExpected = extras.getString("taskExpected");
+            taskExpected = extras.getInt("taskExpected");
             taskDeadline = extras.getString("taskDeadline");
             taskReward = extras.getString("taskReward");
             taskAssignee = extras.getString("taskAssignee");

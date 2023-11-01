@@ -3,6 +3,7 @@ package com.plotpals.client;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,10 +88,11 @@ public class CurrentMembersActivity extends AppCompatActivity {
 
                     menu.getMenuInflater().inflate(R.menu.member_management_menu, menu.getMenu());
                     menu.setOnMenuItemClickListener(menuItem -> {
-                        // Toast message on menu item clicked
-                        Toast.makeText(CurrentMembersActivity.this, "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        turnCaretakerToPlotOwner(caretakerList.get(i).getProfileId());
                         return true;
                     });
+
+                    menu.show();
                 });
 
                 TextView name = view.findViewById(R.id.name);
@@ -179,6 +181,51 @@ public class CurrentMembersActivity extends AppCompatActivity {
         };
 
         volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void turnCaretakerToPlotOwner(String caretakerId) {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
+        JSONObject jsonRequestBody = new JSONObject();
+        try {
+            jsonRequestBody.put("gardenId", gardenId);
+            jsonRequestBody.put("plotOwnerId", caretakerId);
+
+            String url = "http://10.0.2.2:8081/plots";
+            Request<?> jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    jsonRequestBody,
+                    (JSONObject response) -> {
+                        try {
+                            Log.d(TAG, "Response for adding plotOwner: \n" + response.toString());
+                            boolean isPlotAddedSuccessfully = (boolean)response.get("success");
+                            if (isPlotAddedSuccessfully) {
+                                requestMembers(gardenId);
+                            }
+                        } catch (JSONException e) {
+                            Log.d(TAG, e.toString());
+                        }
+                    },
+                    (VolleyError e) -> {
+                        Log.d(TAG, e.toString());
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                    return headers;
+                }
+            };
+
+            volleyQueue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            Log.d(TAG, e.toString());
+        }
+
+
     }
 
     private void loadExtras() {

@@ -18,24 +18,44 @@ const getAllPlots = async (req, res, next) => {
   }
 };
 
-const addPlots = async (req, res, next) => {
+const addAPlotToAGarden = async (req, res, next) => {
   const { gardenId, plotOwnerId } = req.body;
   let sql = `
   INSERT INTO plots(
-    gardenId, 
+    gardenId,
     plotOwnerId
   ) VALUES (
-    123 /*some int from garden.id */, 
-    '{insert some profile.id}'
+    ?,
+    ?
   );`;
   try {
-    const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
-    return res.json({ data: queryResults[0] });
+    const insertResponse = await database.query(sql, [gardenId, plotOwnerId]);
+
+    if (insertResponse[0].affectedRows <= 0) {
+      return res.json({ success: false });
+    }
   } catch (err) {
     return next(err);
   }
+
+  sql = `
+  UPDATE roles
+  SET roleNum = 1
+  WHERE gardenId = ? AND profileId = ?;`;
+  try {
+    const updateResponse = await database.query(sql, [gardenId, plotOwnerId]);
+
+    if (updateResponse[0].affectedRows <= 0) {
+      return res.json({ success: false });
+    }
+  } catch (err) {
+    return next(err);
+  }
+
+  return res.json({ success: true });
 };
 
 module.exports = {
   getAllPlots,
+  addAPlotToAGarden,
 };

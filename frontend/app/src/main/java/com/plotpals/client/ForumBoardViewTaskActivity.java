@@ -23,7 +23,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private String taskDeadline;
     private String taskReward;
     private String taskAssignee;
-    private int taskAssigneeId;
+    private String taskAssigneeId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +56,9 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         TextView assignee = findViewById(R.id.forum_Board_task_assignee);
         assignee.setText(taskAssignee);
 
+        Log.d(TAG, "Assignee Id: " + taskAssigneeId);
+        Log.d(TAG, "Google Id: " + googleProfileInformation.getAccountUserId());
+
         Button button = findViewById(R.id.forum_board_task_button);
         if (taskStatus) { // task is complete
             button.setVisibility(View.GONE);
@@ -65,8 +68,9 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Volunteer Button Pressed", Toast.LENGTH_SHORT).show();
                 // set assignee and start time?
+                button.setVisibility(View.GONE);
             });
-        } else if (Integer.toString(taskAssigneeId).equals(googleProfileInformation.getAccountUserId())) { // assignee is you
+        } else if (taskAssigneeId.equals(googleProfileInformation.getAccountUserId())) { // assignee is you
 
             // THIS STATEMENT IS NOT TRUE FOR SOME REASON
 
@@ -74,7 +78,9 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Mark task Button Pressed", Toast.LENGTH_SHORT).show();
                 // set is completed and end time?
+                button.setVisibility(View.GONE);
             });
+
         } else { // task is assigned to someone else
             button.setVisibility(View.GONE);
         }
@@ -97,7 +103,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             taskDeadline = extras.getString("taskDeadline");
             taskReward = extras.getString("taskReward");
             taskAssignee = extras.getString("taskAssignee");
-            taskAssigneeId = extras.getInt("taskAssigneeId");
+            taskAssigneeId = extras.getString("taskAssigneeId");
         }
     }
 }

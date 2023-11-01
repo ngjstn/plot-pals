@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -59,7 +62,8 @@ public class CurrentMembersActivity extends AppCompatActivity {
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
-
+                View horizontalDots = view.findViewById(R.id.more_horiz);
+                horizontalDots.setVisibility(View.INVISIBLE);
                 TextView name = view.findViewById(R.id.name);
                 name.setText(plotOwnerList.get(i).getGardenMemberName());
 
@@ -76,6 +80,18 @@ public class CurrentMembersActivity extends AppCompatActivity {
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
+
+                View horizontalDots = view.findViewById(R.id.more_horiz);
+                horizontalDots.setOnClickListener(horizontalDotsView -> {
+                    PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
+
+                    menu.getMenuInflater().inflate(R.menu.member_management_menu, menu.getMenu());
+                    menu.setOnMenuItemClickListener(menuItem -> {
+                        // Toast message on menu item clicked
+                        Toast.makeText(CurrentMembersActivity.this, "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    });
+                });
 
                 TextView name = view.findViewById(R.id.name);
                 name.setText(caretakerList.get(i).getGardenMemberName());

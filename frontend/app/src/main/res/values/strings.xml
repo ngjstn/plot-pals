@@ -26,9 +26,13 @@
     <string name="account_admin_mode">Access Admin Pages</string>
     <string name="account_logout">Logout</string>
 
-    <string name="homepage_title_placeholder">Hey there hot stuff</string>
+    <string name="homepage_title_placeholder">Good Morning,</string>
     <string name="homepage_updates_title">Updates</string>
     <string name="homepage_tasks_title">My Tasks</string>
+    <string name="good_morning_text">Good Morning,</string>
+    <string name="good_afternoon_text">Good Afternoon,</string>
+    <string name="good_evening_text">Good Evening,</string>
+    <string name="good_night_text">Go to Sleep,</string>
 
     <string name="admin_homepage_title">Admin Mode</string>
     <string name="admin_homepage_garden_applications_title">Garden Applications</string>

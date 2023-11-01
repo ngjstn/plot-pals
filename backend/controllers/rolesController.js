@@ -26,7 +26,45 @@ const getAllRoles = async (req, res, next) => {
   }
 };
 
+const addRole = async (req, res, next) => {
+  const { profileId, gardenId, roleNum } = req.body;
+
+  const sql = `
+  INSERT INTO roles(
+    profileId, 
+    gardenId,
+    roleNum
+  ) VALUES (
+    ?,
+    ?,
+    ?
+  );`;
+
+  try {
+    const queryResults = await database.query(sql, [profileId, gardenId, roleNum]);
+    return res.json({ success: queryResults[0].affectedRows > 0 });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateRole = async (req, res, next) => {
+  const { profileId, gardenId } = req.params;
+  const { roleNum } = req.body;
+
+  const sql = `UPDATE roles SET roleNum=? WHERE profileId=? AND gardenId=?`;
+
+  try {
+    const queryResults = await database.query(sql, [roleNum, profileId, gardenId]);
+    return res.json({ success: queryResults[0].affectedRows > 0 });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   getAllRoles,
   getRolesForAuthenticatedUser,
+  addRole,
+  updateRole,
 };

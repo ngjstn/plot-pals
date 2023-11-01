@@ -2,6 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/java"
-        android:title="Assign as Plot Owner" />
-
+        android:title="Change to Caretaker" />
 </menu>

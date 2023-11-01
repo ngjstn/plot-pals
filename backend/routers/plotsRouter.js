@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPlots, addAPlotToAGarden } = require('../controllers/plotsController');
+const { getAllPlots, addAPlotToAGarden, removePlot } = require('../controllers/plotsController');
 
 const authMiddleware = require('../authMiddleware');
 
@@ -9,5 +9,7 @@ const router = express.Router();
 router.get('/all', authMiddleware, getAllPlots);
 
 router.post('/', authMiddleware, addAPlotToAGarden);
+
+router.delete('/:plotId', authMiddleware, removePlot);
 
 module.exports = router;

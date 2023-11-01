@@ -188,10 +188,10 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
     private void setMembersButton(Button membersButton, Garden garden) {
         membersButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Members Button");
-            Intent intent = new Intent(MyGardenYesGardenActivity.this, CurrentMembersActivity.class);
+            Intent intent = new Intent(MyGardenYesGardenActivity.this, GardenInfoMemberActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
             intent.putExtra("gardenId", garden.getId());
-            intent.putExtra("CameFromMyGardenYes", true);
+            intent.putExtra("gardenName", garden.getGardenName());
             startActivity(intent);
         });
     }

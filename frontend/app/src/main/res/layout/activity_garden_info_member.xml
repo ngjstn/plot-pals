@@ -152,11 +152,11 @@
         android:gravity="top"
         android:text="@string/plot_owner"
         android:textAppearance="@style/caretaker"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangle_8"
-        app:layout_constraintEnd_toEndOf="@+id/rectangle_8"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangle_12"
+        app:layout_constraintEnd_toEndOf="@+id/rectangle_12"
         app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="@+id/rectangle_8"
-        app:layout_constraintTop_toTopOf="@+id/rectangle_8"
+        app:layout_constraintStart_toStartOf="@+id/rectangle_12"
+        app:layout_constraintTop_toTopOf="@+id/rectangle_12"
         app:layout_constraintVertical_bias="0.538" />
 
     <TextView
@@ -210,7 +210,7 @@
         app:layout_constraintVertical_bias="0.538" />
 
     <View
-        android:id="@+id/rectangle_8"
+        android:id="@+id/rectangle_12"
         android:layout_width="90dp"
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
@@ -223,6 +223,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.272" />
+
+    <View
+        android:id="@+id/rectangle_11"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.274" />
+
+    <TextView
+        android:id="@+id/garden_owner"
+        android:layout_width="90dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="3dp"
+        android:elevation="4dp"
+        android:fontFamily="@font/inter"
+        android:gravity="top"
+        android:text="Garden Owner"
+        android:textAppearance="@style/caretaker"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangle_11"
+        app:layout_constraintEnd_toEndOf="@+id/rectangle_11"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="@+id/rectangle_11"
+        app:layout_constraintTop_toTopOf="@+id/rectangle_11"
+        app:layout_constraintVertical_bias="0.538" />
 
     <TextView
         android:id="@+id/plot"

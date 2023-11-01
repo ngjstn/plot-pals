@@ -32,6 +32,8 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
     private EditText expectedDaysText;
     private EditText deadlineText;
     private EditText rewardText;
+    private Integer currentGardenId;
+    private String currentGardenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                 else {
                     Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                    intent.putExtra("gardenId", currentGardenId);
+                    intent.putExtra("gardenName", currentGardenName);
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted (no backend)", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG,"------- Posted task -------" +
@@ -90,7 +94,9 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                             "\nDeadline: " + deadlineText.getText().toString() +
                             "\nReward: " + rewardText.getText().toString());
 
-                    // sendTaskInformation();
+                    Log.d(TAG, currentGardenName + currentGardenId);
+
+                    sendTaskInformation();
 
                     startActivity(intent);
                 }
@@ -113,7 +119,7 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         params.put("taskDeadline", deadlineText.getText().toString());
         params.put("taskReward", rewardText.getText().toString());
 
-        String url = "http://10.0.2.2:8081/posts/tasks";
+        String url = String.format("http://10.0.2.2:8081/posts/tasks?gardenId=%s", currentGardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,
@@ -151,6 +157,8 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
 
         if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
+            currentGardenId = extras.getInt("gardenId");
+            currentGardenName = extras.getString("gardenName");
         }
     }
 

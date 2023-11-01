@@ -32,8 +32,8 @@ import java.util.Map;
 public class ForumBoardMainActivity extends NavBarActivity {
 
     final static String TAG = "ForumBoardMainActivity";
-    Integer currentGardenId;
-    String currentGardenName = "This should not show up";
+    private Integer currentGardenId;
+    private String currentGardenName = "This should not show up";
     private int upperPosts = 0;
 
     GoogleProfileInformation googleProfileInformation;
@@ -80,6 +80,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
             Log.d(TAG, "Clicking New Task");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", currentGardenId);
+            intent.putExtra("gardenName", currentGardenName);
             startActivity(intent);
         });
 

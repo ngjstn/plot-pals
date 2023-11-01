@@ -21,6 +21,7 @@ router.get('/tasks', authMiddleware, getTasksRelatedToAuthorizedUser);
 // accepts query parameter userIs
 router.get('/tasks/:gardenId', authMiddleware, getTasksRelatedToAuthorizedUserByGardenId);
 
+// accepts query parameter gardenId
 router.post('/tasks', authMiddleware, createTask);
 
 module.exports = router;

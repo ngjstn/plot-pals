@@ -73,6 +73,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
             Log.d(TAG, "Clicking New Post");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewPostActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", currentGardenId);
+            intent.putExtra("gardenName", currentGardenName);
             startActivity(intent);
         });
 

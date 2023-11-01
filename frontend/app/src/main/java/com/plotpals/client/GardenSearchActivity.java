@@ -58,11 +58,6 @@ public class GardenSearchActivity extends AppCompatActivity {
         assert searchView != null;
         searchView.setQueryHint("Search for a Garden");
 
-//        Bundle extras = getIntent().getExtras();
-//        assert extras != null;
-//        String initQuery = extras.getString("initQuery");
-//        searchGarden(initQuery);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -113,7 +108,7 @@ public class GardenSearchActivity extends AppCompatActivity {
                     JSONArray fetchedGardens = (JSONArray)response.get("data");
                     if (fetchedGardens.length() > 0) {
                         gardenObjectList.clear();
-                        for (int i =0; i < Math.min(fetchedGardens.length(), 3); i++) {
+                        for (int i =0; i < fetchedGardens.length(); i++) {
                             JSONObject updateGardenObject = fetchedGardens.getJSONObject(i);
                             Garden garden = new Garden(updateGardenObject);
                             gardenObjectList.add(garden);

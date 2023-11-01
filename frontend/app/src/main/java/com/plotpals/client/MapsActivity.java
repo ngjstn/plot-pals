@@ -53,6 +53,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Role;
+import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.databinding.ActivityMapsBinding;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
@@ -84,6 +86,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Garden> gardenList = new ArrayList<>();
     private HashMap<Marker, Garden> gardenMarkerMap = new HashMap<>();
     private Garden currentGardenSelected;
+    boolean isPlotOwner = false;
+    boolean isGardenOwner = false;
+    boolean isCaretaker = false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +137,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "More Info/Join button pressed");
                 Toast.makeText(MapsActivity.this, "More Info/Join pressed", Toast.LENGTH_SHORT).show();
 
-                // TODO: intent should be conditional on being a member or non-member. For now, it's default member view.
-                Intent gardenInfo = new Intent(MapsActivity.this, GardenInfoMemberActivity.class);
-                googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfo);
-                gardenInfo.putExtra("gardenName", currentGardenSelected.getGardenName());
-                startActivity(gardenInfo);
+                if (!isCaretaker && !isGardenOwner && !isPlotOwner) {
+                    Intent gardenInfoNonMem = new Intent(MapsActivity.this, GardenInfoNonMemberActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfoNonMem);
+                    gardenInfoNonMem.putExtra("gardenId", currentGardenSelected.getId());
+                    startActivity(gardenInfoNonMem);
+                }
+                else {
+                    Intent gardenInfo = new Intent(MapsActivity.this, GardenInfoMemberActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfo);
+                    gardenInfo.putExtra("gardenName", currentGardenSelected.getGardenName());
+                    gardenInfo.putExtra("gardenId", currentGardenSelected.getId());
+                    startActivity(gardenInfo);
+                }
             }
         });
 
@@ -292,6 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Garden garden = gardenMarkerMap.get(marker);
         assert garden != null;
         currentGardenSelected = garden;
+        requestMembers(currentGardenSelected.getId());
         updateGardenOverlayContent(garden);
         gardenOverlayVisiblility(View.VISIBLE);
         return false;
@@ -386,7 +400,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONArray fetchedGardens = (JSONArray)response.get("data");
                     if (fetchedGardens.length() > 0) {
                         gardenList.clear();
-                        for (int i =0; i < Math.min(fetchedGardens.length(), 3); i++) {
+                        for (int i =0; i < fetchedGardens.length(); i++) {
                             JSONObject updateGardenObject = fetchedGardens.getJSONObject(i);
                             Garden garden = new Garden(updateGardenObject);
                             gardenList.add(garden);
@@ -394,8 +408,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         Bundle extras = getIntent().getExtras();
                         if (extras != null) {
-                            Garden selectedFromSearch = gardenList.get(extras.getInt("moveToSelectedIndex"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(selectedFromSearch.getLocation()));
+                            double latitude = extras.getDouble("moveToSelectedLat");
+                            double longitude = extras.getDouble("moveToSelectedLong");
+                            LatLng locationFromSearch = new LatLng(latitude, longitude);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFromSearch));
                         }
                     }
                 } catch (JSONException e) {
@@ -413,6 +429,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return headers;
             }
         };
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void requestMembers(Integer gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining members");
+                        JSONArray fetchedMembers = (JSONArray)response.get("data");
+
+                        /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
+                        if(fetchedMembers.length() > 0) {
+                            for (int i = 0; i < fetchedMembers.length(); i++) {
+                                JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
+                                Role role = new Role(roleJsonObject);
+                                if (Objects.equals(role.getGardenMemberName(), googleProfileInformation.getAccountGoogleName())) {
+                                    if (role.getRoleNum() == RoleEnum.PLOT_OWNER) {
+                                        isPlotOwner = true;
+                                    }
+                                    else if (role.getRoleNum() == RoleEnum.CARETAKER) {
+                                        isCaretaker = true;
+                                    }
+                                    else if (role.getRoleNum() == RoleEnum.GARDEN_OWNER) {
+                                        isGardenOwner = true;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
         volleyQueue.add(jsonObjectRequest);
     }
 }

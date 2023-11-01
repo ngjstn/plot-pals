@@ -66,7 +66,8 @@ public class gardenBaseAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()));
                 Toast.makeText(context, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()), Toast.LENGTH_SHORT).show();
                 Intent mapsIntent = new Intent(searchActivity, MapsActivity.class);
-                mapsIntent.putExtra("moveToSelectedIndex", i);
+                mapsIntent.putExtra("moveToSelectedLat", listGarden.get(i).getLocation().latitude);
+                mapsIntent.putExtra("moveToSelectedLong", listGarden.get(i).getLocation().longitude);
                 searchActivity.startActivity(mapsIntent);
             }
         });

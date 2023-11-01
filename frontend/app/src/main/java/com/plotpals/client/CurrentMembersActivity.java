@@ -42,7 +42,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
     ArrayList<Role> caretakerList;
     ArrayAdapter<Role> caretakerAdapter;
     int gardenId;
-    boolean cameFromMyGardenYesPage = false;
+//    boolean cameFromMyGardenYesPage = false;
     
     static GoogleProfileInformation googleProfileInformation;
 
@@ -88,17 +88,17 @@ public class CurrentMembersActivity extends AppCompatActivity {
         findViewById(R.id.arrow_back_).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cameFromMyGardenYesPage) {
-                    Intent myGardenYes = new Intent(CurrentMembersActivity.this, MyGardenYesGardenActivity.class);
-                    googleProfileInformation.loadGoogleProfileInformationToIntent(myGardenYes);
-                    startActivity(myGardenYes);
-                }
-                else {
+//                if (cameFromMyGardenYesPage) {
+//                    Intent myGardenYes = new Intent(CurrentMembersActivity.this, MyGardenYesGardenActivity.class);
+//                    googleProfileInformation.loadGoogleProfileInformationToIntent(myGardenYes);
+//                    startActivity(myGardenYes);
+//                }
+//                else {
                     Intent manageActivity = new Intent(CurrentMembersActivity.this, ManageGardenActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(manageActivity);
                     manageActivity.putExtra("gardenId", gardenId);
                     startActivity(manageActivity);
-                }
+//                }
             }
         });
     }
@@ -171,7 +171,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
         if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
             gardenId = extras.getInt("gardenId");
-            cameFromMyGardenYesPage = extras.getBoolean("CameFromMyGardenYes");
+//            cameFromMyGardenYesPage = extras.getBoolean("CameFromMyGardenYes");
         }
     }
 

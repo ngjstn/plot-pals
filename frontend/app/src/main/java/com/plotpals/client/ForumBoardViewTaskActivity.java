@@ -62,8 +62,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         Button button = findViewById(R.id.forum_board_task_button);
         if (taskStatus) { // task is complete
             button.setVisibility(View.GONE);
-        } else if (taskAssignee == null) { // nobody is assigned
-            // double check taskAssignee is null when unassigned
+        } else if (taskAssignee == null || taskAssignee.equals("null")) { // nobody is assigned
             button.setText("Volunteer for this task");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Volunteer Button Pressed", Toast.LENGTH_SHORT).show();

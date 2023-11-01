@@ -133,9 +133,69 @@ const getTasksRelatedToAuthorizedUserByGardenId = async (req, res, next) => {
   }
 };
 
+const createTask = async (req, res, next) => {
+  const { taskTitle, taskDesc, taskRating, taskDuration, taskDeadline, taskReward } = req.body;
+
+  // need to somehow get plotid from request and user
+  // since if they are a garden owner, plotid will be null
+  // otherwise it will be for the garden plot that they are part of?
+
+  // also need to get postGardenId from request
+  // im lost on how to do this .w.
+
+  try {
+    const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
+      isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, 
+      taskEndTime, expectedTaskDurationInHours) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    await database.query(sqlInsertTask, [
+      [],
+      taskReward,
+      taskRating,
+      null,
+      0,
+      0,
+      taskDeadline,
+      null,
+      null,
+      taskDuration,
+    ]);
+  }
+  catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  try  {
+    const sqlFind = `SELECT LAST_INSERT_ID();`
+    const queryResults = await database.query(sqlFind);
+    // use this to get the task id and use it for the next query (to place into table)
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  try {
+    const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
+    VALUES (?, ?, ?, ?, ?)`;
+    await database.query(sqlInsertPost, [
+      taskTitle,
+      taskDesc,
+      [],
+      req.userId,
+      []
+    ]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+};
+
 module.exports = {
   getAllTasks,
   getTasksRelatedToAuthorizedUser,
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllPostsAndTasks,
+  createTask,
 };

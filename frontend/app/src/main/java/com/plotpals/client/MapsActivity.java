@@ -448,10 +448,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
                         if(fetchedMembers.length() > 0) {
+                            isPlotOwner = false;
+                            isCaretaker = false;
+                            isGardenOwner = false;
                             for (int i = 0; i < fetchedMembers.length(); i++) {
                                 JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
                                 Role role = new Role(roleJsonObject);
-                                if (Objects.equals(role.getGardenMemberName(), googleProfileInformation.getAccountGoogleName())) {
+                                if (Objects.equals(role.getProfileId(), googleProfileInformation.getAccountUserId())) {
                                     if (role.getRoleNum() == RoleEnum.PLOT_OWNER) {
                                         isPlotOwner = true;
                                     }

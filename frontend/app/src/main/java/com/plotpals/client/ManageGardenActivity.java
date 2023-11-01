@@ -108,6 +108,7 @@ public class ManageGardenActivity extends AppCompatActivity {
                         /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
                         if(fetchedMembers.length() > 0) {
                             memberList.clear();
+                            memberNameList.clear();
                             for (int i = 0; i < fetchedMembers.length(); i++) {
                                 JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
                                 Role role = new Role(roleJsonObject);

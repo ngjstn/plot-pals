@@ -87,11 +87,9 @@ const removePlot = async (req, res, next) => {
 
   sql = `
   DELETE FROM posts
-  JOIN tasks
-  ON posts.taskId = tasks.taskId
-  WHERE tasks.plotId = ?;`;
+  WHERE assignerId = ? AND postGardenId = ?;`;
   try {
-    await database.query(sql, [plotId]);
+    await database.query(sql, [plotOwnerId, gardenId]);
   } catch (err) {
     return next(err);
   }

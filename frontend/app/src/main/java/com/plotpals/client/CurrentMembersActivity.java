@@ -144,7 +144,6 @@ public class CurrentMembersActivity extends AppCompatActivity {
         super.onStart();
         loadExtras();
         requestPlots(gardenId);
-        requestMembers(gardenId);
     }
 
     private void requestPlots(Integer gardenId) {
@@ -169,6 +168,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
                                 plotsList.add(plot);
                             }
                         }
+                        requestMembers(gardenId);
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }

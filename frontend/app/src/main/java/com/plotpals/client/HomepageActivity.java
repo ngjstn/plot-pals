@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -64,6 +66,9 @@ public class HomepageActivity extends NavBarActivity {
         loadExtras();
         activateNavBar();
 
+        TextView username = findViewById(R.id.username);
+        username.setText(googleProfileInformation.getAccountGoogleName());
+
         UpdatesForwardArrowImageView = findViewById(R.id.homepage_updates_forward_arrow_image_view);
         UpdatesForwardArrowImageView.setOnClickListener(view -> {
             Intent UpdatesIntent = new Intent(HomepageActivity.this, UpdatesActivity.class);
@@ -79,6 +84,20 @@ public class HomepageActivity extends NavBarActivity {
         });
 
         HomepageTitleTextView = findViewById(R.id.homepage_title_text_view);
+        Calendar calendar = Calendar.getInstance();
+        int hours24hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hours24hrs >= 5 && hours24hrs < 12) {
+            HomepageTitleTextView.setText(R.string.good_morning_text);
+        }
+        else if (hours24hrs >= 12 && hours24hrs <= 17) {
+            HomepageTitleTextView.setText(R.string.good_afternoon_text);
+        }
+        else if (hours24hrs > 17 && hours24hrs <= 21) {
+            HomepageTitleTextView.setText(R.string.good_evening_text);
+        }
+        else {
+            HomepageTitleTextView.setText(R.string.good_night_text);
+        }
 
         UpdatesListView = findViewById(R.id.homepage_updates_list_view);
         updatesList = new ArrayList<Update>();

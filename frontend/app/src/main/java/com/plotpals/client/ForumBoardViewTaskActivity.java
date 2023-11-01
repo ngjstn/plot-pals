@@ -18,12 +18,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         activateNavBar();
 
         ImageView arrow = findViewById(R.id.forum_board_task_arrow);
-        arrow.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Back Arrow");
-            Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardMainActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-            startActivity(intent);
-        });
+        arrow.setOnClickListener(v -> finish());
     }
     /**
      * load extras forwarded from previous activity

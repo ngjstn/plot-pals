@@ -136,16 +136,12 @@ const getTasksRelatedToAuthorizedUserByGardenId = async (req, res, next) => {
 const createTask = async (req, res, next) => {
   const { taskTitle, taskDesc, taskRating, taskDuration, taskDeadline, taskReward } = req.body;
   const { gardenId } = req.query;
-  // taskDeadline = "12252023";
-
-  // let userId = "103354493506323780957";
 
   let gardenRoleNum;
   let plotId;
   let genTaskId;
 
   // check first if they are a gardenOwner
-
   try {
     const sqlFindGardenOwner = `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`;
     const queryResults = await database.query(sqlFindGardenOwner, [req.userId, gardenId]);
@@ -177,7 +173,6 @@ const createTask = async (req, res, next) => {
   let month = taskDeadline.substring(0, 2);
   let day = taskDeadline.substring(2, 4);
   let year = taskDeadline.substring(4, 8);
-
   let deadlineDate = year + "-" + month + "-" + day + " 00:00:00";
 
   console.log("deadlineDate: " + deadlineDate);
@@ -234,10 +229,35 @@ const createTask = async (req, res, next) => {
 
 };
 
+
+const createPost = async (req, res, next) => {
+  const { postTitle, postDesc } = req.body;
+  const { gardenId } = req.query;
+
+  try {
+    const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId)
+    VALUES (?, ?, ?, ?, ?)`;
+    const insResults = await database.query(sqlInsertPost, [
+      postTitle,
+      postDesc,
+      null,
+      req.userId,
+      gardenId,
+    ]);
+    return res.json({ success: insResults[0].affectedRows > 0 });
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+};
+
+
 module.exports = {
   getAllTasks,
   getTasksRelatedToAuthorizedUser,
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllPostsAndTasks,
   createTask,
+  createPost,
 };

@@ -164,7 +164,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
                             for (int i = 0; i < fetchedMembers.length(); i++) {
                                 JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
                                 Role role = new Role(roleJsonObject);
-                                if (Objects.equals(role.getGardenMemberName(), googleProfileInformation.getAccountGoogleName())) {
+                                if (Objects.equals(role.getProfileId(), googleProfileInformation.getAccountUserId())) {
                                     if (role.getRoleNum() == RoleEnum.PLOT_OWNER) {
                                         isPlotOwner = true;
                                         plotOwnerVisibility(View.VISIBLE);

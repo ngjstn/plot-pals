@@ -8,14 +8,31 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.plotpals.client.utils.GoogleProfileInformation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ForumBoardNewTaskActivity extends NavBarActivity {
     final static String TAG = "ForumBoardNewTaskActivity";
+    private EditText titleText;
+    private EditText bodyText;
+    private RatingBar minRatingBar;
+    private EditText expectedDaysText;
+    private EditText deadlineText;
+    private EditText rewardText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +52,12 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         check.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Check");
 
-            EditText titleText = (EditText)findViewById(R.id.forum_board_new_task_title);
-            EditText bodyText = (EditText)findViewById(R.id.forum_board_new_task_body);
-            RatingBar minRatingBar = (RatingBar) findViewById(R.id.forum_board_new_task_ratingbar);
-            EditText expectedDaysText = (EditText)findViewById(R.id.forum_board_new_task_expected);
-            EditText deadlineText = (EditText)findViewById(R.id.forum_board_new_task_deadline);
-            EditText rewardText = (EditText)findViewById(R.id.forum_board_new_task_reward);
+            titleText = (EditText)findViewById(R.id.forum_board_new_task_title);
+            bodyText = (EditText)findViewById(R.id.forum_board_new_task_body);
+            minRatingBar = (RatingBar) findViewById(R.id.forum_board_new_task_ratingbar);
+            expectedDaysText = (EditText)findViewById(R.id.forum_board_new_task_expected);
+            deadlineText = (EditText)findViewById(R.id.forum_board_new_task_deadline);
+            rewardText = (EditText)findViewById(R.id.forum_board_new_task_reward);
 
             try {
                 // Check if date is parsable
@@ -61,8 +78,8 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Please enter a Title/Body", Toast.LENGTH_SHORT).show();}
 
                 else {
-                    Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
-                    googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                    // Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
+                    // googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted (no backend)", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG,"------- Posted task -------" +
@@ -73,7 +90,10 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                             "\nDeadline: " + deadlineText.getText().toString() +
                             "\nReward: " + rewardText.getText().toString());
 
-                    startActivity(intent);
+                    sendTaskInformation();
+
+                    finish();
+                    // startActivity(intent);
                 }
 
             }
@@ -81,6 +101,47 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                 Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString()+"Please enter a valid deadline", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void sendTaskInformation() {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("taskTitle", titleText.getText().toString());
+        params.put("taskDesc", bodyText.getText().toString());
+        params.put("taskRating", String.valueOf(minRatingBar.getRating()));
+        params.put("taskDuration", expectedDaysText.getText().toString());
+        params.put("taskDeadline", deadlineText.getText().toString());
+        params.put("taskReward", rewardText.getText().toString());
+
+        String url = "http://10.0.2.2:8081/";
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+            Request.Method.POST,
+            url,
+            new JSONObject(params),
+            (JSONObject response) -> {
+                try {
+                    Log.d(TAG, "Response for submitting form: \n"
+                            + response.getString("success"));
+                } catch (JSONException e) {
+                    Log.d(TAG, e.toString());
+                }
+            },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+
     }
 
     /**

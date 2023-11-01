@@ -78,8 +78,8 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Please enter a Title/Body", Toast.LENGTH_SHORT).show();}
 
                 else {
-                    // Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
-                    // googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                    Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
                     Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted (no backend)", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG,"------- Posted task -------" +
@@ -90,10 +90,9 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                             "\nDeadline: " + deadlineText.getText().toString() +
                             "\nReward: " + rewardText.getText().toString());
 
-                    sendTaskInformation();
+                    // sendTaskInformation();
 
-                    finish();
-                    // startActivity(intent);
+                    startActivity(intent);
                 }
 
             }
@@ -114,7 +113,7 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         params.put("taskDeadline", deadlineText.getText().toString());
         params.put("taskReward", rewardText.getText().toString());
 
-        String url = "http://10.0.2.2:8081/";
+        String url = "http://10.0.2.2:8081/posts/tasks";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,

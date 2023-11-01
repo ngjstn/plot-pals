@@ -135,13 +135,22 @@ const getTasksRelatedToAuthorizedUserByGardenId = async (req, res, next) => {
 
 const createTask = async (req, res, next) => {
   const { taskTitle, taskDesc, taskRating, taskDuration, taskDeadline, taskReward } = req.body;
+  const { gardenId } = req.query;
 
-  // need to somehow get plotid from request and user
-  // since if they are a garden owner, plotid will be null
-  // otherwise it will be for the garden plot that they are part of?
+  let plotId;
+  let genTaskId;
 
-  // also need to get postGardenId from request
-  // im lost on how to do this .w.
+  // needs to catch error for missing plot
+  try {
+    const sqlFindPlotId = `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`;
+    const queryResults = await database.query(sqlFindPlotId, [gardenId, req.userId]);
+    plotId = queryResults[0][0].id;
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  console.log(plotId);
 
   try {
     const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
@@ -149,7 +158,7 @@ const createTask = async (req, res, next) => {
       taskEndTime, expectedTaskDurationInHours) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     await database.query(sqlInsertTask, [
-      [],
+      plotId,
       taskReward,
       taskRating,
       null,
@@ -167,24 +176,27 @@ const createTask = async (req, res, next) => {
   }
 
   try  {
-    const sqlFind = `SELECT LAST_INSERT_ID();`
-    const queryResults = await database.query(sqlFind);
-    // use this to get the task id and use it for the next query (to place into table)
+    const sqlFindInsId = `SELECT LAST_INSERT_ID();`
+    const queryResults = await database.query(sqlFindInsId);
+    genTaskId = queryResults[0][0]['LAST_INSERT_ID()'];
   } catch (err) {
     console.log(err);
     return next(err);
   }
 
+  console.log(genTaskId);
+
   try {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
     VALUES (?, ?, ?, ?, ?)`;
-    await database.query(sqlInsertPost, [
+    const insResults = await database.query(sqlInsertPost, [
       taskTitle,
       taskDesc,
-      [],
+      genTaskId,
       req.userId,
-      []
+      gardenId,
     ]);
+    return res.json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);

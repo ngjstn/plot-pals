@@ -71,7 +71,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
         plus.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Plus Sign");
             // TODO: make invisible when clicked elsewhere
-            newPostText.setVisibility(newPostText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            // We disable posts for now
+            // newPostText.setVisibility(newPostText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             newTaskText.setVisibility(newTaskText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         });
 

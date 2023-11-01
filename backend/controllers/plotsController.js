@@ -61,6 +61,7 @@ const removePlot = async (req, res, next) => {
   let plotOwnerId;
   let gardenId;
 
+  // Get plotOwnerId and gardenId
   let sql = `
   SELECT * FROM plots WHERE id = ?;`;
   try {
@@ -71,6 +72,7 @@ const removePlot = async (req, res, next) => {
     return next(err);
   }
 
+  // Update role for user in garden
   sql = `
   UPDATE roles
   SET roleNum = 0
@@ -85,6 +87,7 @@ const removePlot = async (req, res, next) => {
     return next(err);
   }
 
+  // Delete posts from former plotOwner
   sql = `
   DELETE FROM posts
   WHERE assignerId = ? AND postGardenId = ?;`;
@@ -94,6 +97,17 @@ const removePlot = async (req, res, next) => {
     return next(err);
   }
 
+  // Delete tasks from former plotOwner
+  sql = `
+  DELETE FROM tasks
+  WHERE plotId = ?;`;
+  try {
+    await database.query(sql, [plotId]);
+  } catch (err) {
+    return next(err);
+  }
+
+  // Delete plot associated with former plotOwner
   sql = `
   DELETE FROM plots
   WHERE id = ?;`;

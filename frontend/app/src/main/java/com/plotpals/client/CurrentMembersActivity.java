@@ -257,7 +257,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
                         Log.d(TAG, "Response for adding plotOwner: \n" + response.toString());
                         boolean isPlotDeletedSuccessfully = response.getBoolean("success");
                         if (isPlotDeletedSuccessfully) {
-                            requestMembers(gardenId);
+                            requestPlots(gardenId);
                         }
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
@@ -299,7 +299,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
                             Log.d(TAG, "Response for adding plotOwner: \n" + response.toString());
                             boolean isPlotAddedSuccessfully = response.getBoolean("success");
                             if (isPlotAddedSuccessfully) {
-                                requestMembers(gardenId);
+                                requestPlots(gardenId);
                             }
                         } catch (JSONException e) {
                             Log.d(TAG, e.toString());

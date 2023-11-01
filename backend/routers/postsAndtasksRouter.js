@@ -4,6 +4,7 @@ const {
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllTasks,
   getAllPostsAndTasks,
+  createTask,
 } = require('../controllers/postsAndtasksController');
 
 const authMiddleware = require('../authMiddleware');
@@ -19,5 +20,7 @@ router.get('/tasks', authMiddleware, getTasksRelatedToAuthorizedUser);
 
 // accepts query parameter userIs
 router.get('/tasks/:gardenId', authMiddleware, getTasksRelatedToAuthorizedUserByGardenId);
+
+router.post('/tasks', authMiddleware, createTask);
 
 module.exports = router;

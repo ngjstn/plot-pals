@@ -72,25 +72,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
             }
         });
 
-//        findViewById(R.id.arrow_back_).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(GardenInfoMemberActivity.this, "Back Arrow pressed", Toast.LENGTH_SHORT).show();
-//                Intent mapsActivity = new Intent(GardenInfoMemberActivity.this, MapsActivity.class);
-//                startActivity(mapsActivity);
-//            }
-//        });
         findViewById(R.id.arrow_back_).setOnClickListener(view -> finish());
-
-        // TODO: temporary button to test non-member page view
-
-        findViewById(R.id.rectangle_10).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent nonMemberActivity = new Intent(GardenInfoMemberActivity.this, GardenInfoNonMemberActivity.class);
-                startActivity(nonMemberActivity);
-            }
-        });
     }
 
     @Override

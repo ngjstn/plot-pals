@@ -76,38 +76,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.923" />
 
-    <TextView
-        android:id="@+id/non_mem"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:elevation="4dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="non-member page"
-        android:textAppearance="@style/view_forum_"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangle_10"
-        app:layout_constraintEnd_toEndOf="@+id/rectangle_10"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toStartOf="@+id/rectangle_10"
-        app:layout_constraintTop_toTopOf="@+id/rectangle_10"
-        app:layout_constraintVertical_bias="0.583" />
-
-    <Button
-        android:id="@+id/rectangle_10"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/rectangle_4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.175"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
 
     <View
         android:id="@+id/rectangle_4"
@@ -186,7 +154,7 @@
         android:background="@drawable/rectangle_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.776"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.272" />

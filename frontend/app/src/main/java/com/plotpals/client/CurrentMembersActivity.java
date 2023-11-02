@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,7 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Plot;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.utils.GoogleProfileInformation;
@@ -40,6 +41,8 @@ public class CurrentMembersActivity extends AppCompatActivity {
 
     ListView caretakerListView;
     ArrayList<Role> caretakerList;
+
+    ArrayList<Plot> plotsList;
     ArrayAdapter<Role> caretakerAdapter;
     int gardenId;
 //    boolean cameFromMyGardenYesPage = false;
@@ -50,7 +53,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_members);
-
+        plotsList = new ArrayList<>();
         plotOwnerList = new ArrayList<>();
         plotOwnerListView = findViewById(R.id.plot_owner_list_view);
         plotOwnerAdapter = new ArrayAdapter<Role>(CurrentMembersActivity.this, R.layout.current_plot_owner_list_view, plotOwnerList)
@@ -59,6 +62,27 @@ public class CurrentMembersActivity extends AppCompatActivity {
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
+
+                TextView plotIdentifier = view.findViewById(R.id.plot_id);
+
+                for(int j = 0; j < plotsList.size(); j++) {
+                    if(plotsList.get(j).getPlotOwnerId().equals(plotOwnerList.get(i).getProfileId())){
+                        int plotIdOfCurrentPlotOwner = plotsList.get(j).getId();
+                        plotIdentifier.setText(plotIdOfCurrentPlotOwner+ ":");
+
+                        View horizontalDots = view.findViewById(R.id.more_horiz);
+                        horizontalDots.setOnClickListener(horizontalDotsView -> {
+                            PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
+                            menu.getMenuInflater().inflate(R.menu.management_menu_for_plotowners, menu.getMenu());
+                            menu.setOnMenuItemClickListener(menuItem -> {
+                                turnPlotOwnerToCaretaker(plotIdOfCurrentPlotOwner);
+                                return true;
+                            });
+
+                            menu.show();
+                        });
+                    }
+                }
 
                 TextView name = view.findViewById(R.id.name);
                 name.setText(plotOwnerList.get(i).getGardenMemberName());
@@ -76,6 +100,18 @@ public class CurrentMembersActivity extends AppCompatActivity {
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
+
+                View horizontalDots = view.findViewById(R.id.more_horiz);
+                horizontalDots.setOnClickListener(horizontalDotsView -> {
+                    PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
+                    menu.getMenuInflater().inflate(R.menu.management_menu_for_caretakers, menu.getMenu());
+                    menu.setOnMenuItemClickListener(menuItem -> {
+                        turnCaretakerToPlotOwner(caretakerList.get(i).getProfileId());
+                        return true;
+                    });
+
+                    menu.show();
+                });
 
                 TextView name = view.findViewById(R.id.name);
                 name.setText(caretakerList.get(i).getGardenMemberName());
@@ -107,7 +143,49 @@ public class CurrentMembersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         loadExtras();
-        requestMembers(gardenId);
+        requestPlots(gardenId);
+    }
+
+    private void requestPlots(Integer gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/plots/all?gardenId=", gardenId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining plots");
+                        JSONArray fetchedPlots = (JSONArray)response.get("data");
+                        plotsList.clear();
+                        /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
+                        if(fetchedPlots.length() > 0) {
+                            for (int i = 0; i < fetchedPlots.length(); i++) {
+                                Log.d(TAG, fetchedPlots.getJSONObject(i).toString());
+                                Plot plot = new Plot(fetchedPlots.getJSONObject(i));
+                                plotsList.add(plot);
+                            }
+                        }
+                        requestMembers(gardenId);
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
     }
 
     private void requestMembers(Integer gardenId) {
@@ -163,6 +241,88 @@ public class CurrentMembersActivity extends AppCompatActivity {
         };
 
         volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void turnPlotOwnerToCaretaker(int plotId) {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
+        String url = "http://10.0.2.2:8081/plots/" + plotId;
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for adding plotOwner: \n" + response.toString());
+                        boolean isPlotDeletedSuccessfully = response.getBoolean("success");
+                        if (isPlotDeletedSuccessfully) {
+                            requestPlots(gardenId);
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+
+
+    }
+
+    private void turnCaretakerToPlotOwner(String caretakerId) {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
+        JSONObject jsonRequestBody = new JSONObject();
+        try {
+            jsonRequestBody.put("gardenId", gardenId);
+            jsonRequestBody.put("plotOwnerId", caretakerId);
+
+            String url = "http://10.0.2.2:8081/plots";
+            Request<?> jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    jsonRequestBody,
+                    (JSONObject response) -> {
+                        try {
+                            Log.d(TAG, "Response for adding plotOwner: \n" + response.toString());
+                            boolean isPlotAddedSuccessfully = response.getBoolean("success");
+                            if (isPlotAddedSuccessfully) {
+                                requestPlots(gardenId);
+                            }
+                        } catch (JSONException e) {
+                            Log.d(TAG, e.toString());
+                        }
+                    },
+                    (VolleyError e) -> {
+                        Log.d(TAG, e.toString());
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                    return headers;
+                }
+            };
+
+            volleyQueue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            Log.d(TAG, e.toString());
+        }
+
+
     }
 
     private void loadExtras() {

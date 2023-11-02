@@ -108,6 +108,7 @@ public class ManageGardenActivity extends AppCompatActivity {
                         /* Populate taskList with fetched task and notify the TaskListView UI to display the fetched task*/
                         if(fetchedMembers.length() > 0) {
                             memberList.clear();
+                            memberNameList.clear();
                             for (int i = 0; i < fetchedMembers.length(); i++) {
                                 JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
                                 Role role = new Role(roleJsonObject);
@@ -137,7 +138,7 @@ public class ManageGardenActivity extends AppCompatActivity {
     
     private void requestGardenInfo(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/gardens/all?gardenId=%s", gardenId);
+        String url = String.format("http://10.0.2.2:8081/gardens/all?isApproved=true&gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

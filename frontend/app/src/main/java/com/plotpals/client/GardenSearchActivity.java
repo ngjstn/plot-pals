@@ -96,7 +96,7 @@ public class GardenSearchActivity extends AppCompatActivity {
 
     private void requestGardens() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=true";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.GET,

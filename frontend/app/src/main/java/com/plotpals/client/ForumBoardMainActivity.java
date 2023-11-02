@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.data.Task;
@@ -148,7 +149,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
                         // loop and add every garden
                         for (int i = 0; i < fetchedPosts.length(); i++) {
                             // Probably want to check if task or post, but we only do task for now
-                            Task task = new Task(fetchedPosts.getJSONObject(i));
+                            Post task = new Post(fetchedPosts.getJSONObject(i));
                             addTask(task);
                             upperPosts++;
                         }
@@ -228,7 +229,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
         volleyQueue.add(jsonObjectRequest);
     }
 
-    private void addTask(Task task) {
+    private void addTask(Post task) {
 
         RelativeLayout layout = findViewById(R.id.forum_board_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -245,34 +246,33 @@ public class ForumBoardMainActivity extends NavBarActivity {
 
     }
 
-    private void setTaskButton(View view, Task task) {
+    private void setTaskButton(View view, Post task) {
         TextView title = view.findViewById(R.id.forum_board_task_preview_title);
         title.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Task Title");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
             intent.putExtra("taskTitle", task.getTitle());
-            intent.putExtra("taskAuthor", task.getAssigner());
-            intent.putExtra("taskTime", task.getTaskStartTime());
+            intent.putExtra("taskAuthor", task.getAssignerName());
             intent.putExtra("taskDescription", task.getDescription());
-            intent.putExtra("taskPlotNumber", task.getPlotId());
-            intent.putExtra("taskStatus", task.isCompleted());
-            intent.putExtra("taskExpected", task.getExpectedTaskDurationInHours()); // the figma says this should be days, so... may need fixing
-            intent.putExtra("taskDeadline", task.getDeadlineDate());
-            intent.putExtra("taskReward", task.getReward());
-            intent.putExtra("taskAssignee", task.getAssigneeName());
-            intent.putExtra("taskAssigneeId", task.getAssigneeId());
+            intent.putExtra("taskPlotNumber", task.getTask().getPlotId());
+            intent.putExtra("taskStatus", task.getTask().isCompleted());
+            intent.putExtra("taskExpected", task.getTask().getExpectedTaskDurationInHours()); // the figma says this should be days, so... may need fixing
+            intent.putExtra("taskDeadline", task.getTask().getDeadlineDate());
+            intent.putExtra("taskReward", task.getTask().getReward());
+            intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
+            intent.putExtra("taskAssigneeId", task.getTask().getAssigneeId());
             startActivity(intent);
         });
     }
 
-    private void setPreviewText(View view, Task task) {
+    private void setPreviewText(View view, Post task) {
         TextView title = view.findViewById(R.id.forum_board_task_preview_title);
         title.setText(task.getTitle());
         TextView description = view.findViewById(R.id.forum_board_task_preview_description);
         description.setText("Description: " + task.getDescription());
         TextView author = view.findViewById(R.id.forum_board_task_preview_author);
-        author.setText("Author: " + task.getAssigner());
+        author.setText("Author: " + task.getAssignerName());
     }
 
     private void defineMargins (View v, int upperPosts) {

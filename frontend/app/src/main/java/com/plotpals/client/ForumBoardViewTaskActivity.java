@@ -15,7 +15,6 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     final static String TAG = "ForumBoardViewTaskActivity";
     private String taskTitle;
     private String taskAuthor;
-    private String taskTime;
     private String taskDescription;
     private int taskPlotNumber;
     private boolean taskStatus;
@@ -39,12 +38,16 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         title.setText(taskTitle);
         TextView author = findViewById(R.id.forum_board_task_author);
         author.setText(taskAuthor);
-        TextView time = findViewById(R.id.forum_board_task_stamp);
-        time.setText(taskTime);
         TextView description = findViewById(R.id.forum_board_task_description);
         description.setText(taskDescription);
+
         TextView plot = findViewById(R.id.forum_Board_task_plot_number);
-        plot.setText(Integer.toString(taskPlotNumber));
+        if(taskPlotNumber == -1) {
+            plot.setText("None");
+        } else {
+            plot.setText(Integer.toString(taskPlotNumber));
+        }
+
         TextView status = findViewById(R.id.forum_Board_task_status);
         status.setText(taskStatus ? "Complete" : "Incomplete");
         TextView expected = findViewById(R.id.forum_Board_task_expected);
@@ -94,7 +97,6 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             googleProfileInformation = new GoogleProfileInformation(extras);
             taskTitle = extras.getString("taskTitle");
             taskAuthor = extras.getString("taskAuthor");
-            taskTime = extras.getString("taskTime");
             taskDescription = extras.getString("taskDescription");
             taskPlotNumber = extras.getInt("taskPlotNumber");
             taskStatus = extras.getBoolean("taskStatus");

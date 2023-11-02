@@ -13,11 +13,6 @@ public class Task {
 
     private int plotId;
 
-    private String title;
-    private String description;
-    private String assigner;
-
-
     private String reward;
 
     private double minimumRating;
@@ -50,10 +45,7 @@ public class Task {
                 String taskStartTime,
                 String taskEndTime,
                 int expectedTaskDurationInHours,
-                String assigneeName,
-                String title,
-                String description,
-                String assigner) {
+                String assigneeName){
         this.id = id;
         this.plotId = plotId;
         this.reward = reward;
@@ -66,9 +58,6 @@ public class Task {
         this.taskEndTime = taskEndTime;
         this.expectedTaskDurationInHours = expectedTaskDurationInHours;
         this.assigneeName = assigneeName;
-        this.title = title;
-        this.description = description;
-        this.assigner = assigner;
     }
 
     /*
@@ -86,10 +75,7 @@ public class Task {
                 taskJsonObject.optString("taskStartTime", null),
                 taskJsonObject.optString("taskEndTime", null),
                 taskJsonObject.getInt("expectedTaskDurationInHours"),
-                taskJsonObject.optString("assigneeName", null),
-                taskJsonObject.optString("title", null),
-                taskJsonObject.optString("description", null),
-                taskJsonObject.optString("assignerName", null)
+                taskJsonObject.optString("assigneeName", null)
         );
     }
 
@@ -143,15 +129,5 @@ public class Task {
         return assigneeName;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAssigner() {
-        return assigner;
-    }
 }

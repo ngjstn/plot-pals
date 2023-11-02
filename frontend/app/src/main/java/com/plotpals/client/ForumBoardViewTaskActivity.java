@@ -37,6 +37,8 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private String taskAssigneeId;
     private String taskAssignerId;
     private int taskId;
+    private boolean taskFeedback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +75,14 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         Log.d(TAG, "Google Id: " + googleProfileInformation.getAccountUserId());
 
         Button button = findViewById(R.id.forum_board_task_button);
-        if (taskStatus && taskAssignerId.equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it
+        if (!taskFeedback && taskStatus && taskAssignerId.equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it and no feedback
             button.setText("Provide Feedback");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
                 googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                intent.putExtra("taskTitle", taskTitle);
+                intent.putExtra("taskAssignee", taskAssignee);
                 startActivity(intent);
                 button.setVisibility(View.GONE);
             });
@@ -193,6 +197,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             taskAssigneeId = extras.getString("taskAssigneeId");
             taskId = extras.getInt("taskId");
             taskAssignerId = extras.getString("taskAssignerId");
+            taskFeedback = extras.getBoolean("taskFeedback");
         }
     }
 }

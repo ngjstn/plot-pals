@@ -70,9 +70,6 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                 button.setVisibility(View.GONE);
             });
         } else if (taskAssigneeId.equals(googleProfileInformation.getAccountUserId())) { // assignee is you
-
-            // THIS STATEMENT IS NOT TRUE FOR SOME REASON
-
             button.setText("Mark task as completed");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Mark task Button Pressed", Toast.LENGTH_SHORT).show();

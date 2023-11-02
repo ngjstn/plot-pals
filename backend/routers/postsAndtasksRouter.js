@@ -16,7 +16,8 @@ const router = express.Router();
 
 router.get('/tasks/all', authMiddleware, getAllTasks);
 
-router.get('/all', getAllPostsAndTasks);
+// accepts query parameter gardenId and postId
+router.get('/all', authMiddleware, getAllPostsAndTasks);
 
 // accepts query parameter userIs
 router.get('/tasks', authMiddleware, getTasksRelatedToAuthorizedUser);

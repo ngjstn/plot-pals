@@ -19,27 +19,31 @@ const getAllTasks = async (req, res, next) => {
 };
 
 const getAllPostsAndTasks = async (req, res, next) => {
-  const { gardenId } = req.query;
-  let sql = gardenId
-    ? `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
+  const { gardenId, postId } = req.query;
+  const sqlInput = [];
+  let additionalSqlConditions = '';
+
+  if (gardenId) {
+    sqlInput.push(gardenId);
+    additionalSqlConditions += ' AND posts.postGardenId = ?';
+  }
+
+  if (postId) {
+    sqlInput.push(postId);
+    additionalSqlConditions += ' AND posts.id = ?';
+  }
+
+  const sql = `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
     FROM posts 
     LEFT JOIN tasks ON posts.taskId = tasks.taskId 
     JOIN gardens 
     LEFT JOIN profiles AS assignerProfiles ON posts.assignerId = assignerProfiles.id
     LEFT JOIN profiles As assigneeProfiles ON tasks.assigneeId = assigneeProfiles.id
-    WHERE posts.postGardenId = gardens.id AND posts.postGardenId = ?
-    ORDER BY posts.id DESC`
-    : `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
-    FROM posts 
-    LEFT JOIN tasks ON posts.taskId = tasks.taskId 
-    JOIN gardens 
-    LEFT JOIN profiles AS assignerProfiles ON posts.assignerId = assignerProfiles.id
-    LEFT JOIN profiles As assigneeProfiles ON tasks.assigneeId = assigneeProfiles.id
-    WHERE posts.postGardenId = gardens.id
+    WHERE posts.postGardenId = gardens.id ${additionalSqlConditions} 
     ORDER BY posts.id DESC`;
 
   try {
-    const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
+    const queryResults = await database.query(sql, sqlInput);
     return res.json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
@@ -151,12 +155,11 @@ const createTask = async (req, res, next) => {
     return next(err);
   }
 
-  console.log("gardenRoleNum: " + gardenRoleNum);
+  console.log('gardenRoleNum: ' + gardenRoleNum);
 
   if (gardenRoleNum == 2) {
     plotId = null;
-  }
-  else {
+  } else {
     try {
       const sqlFindPlotId = `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`;
       const queryResults = await database.query(sqlFindPlotId, [gardenId, req.userId]);
@@ -167,16 +170,16 @@ const createTask = async (req, res, next) => {
     }
   }
 
-  console.log("plotId: " + plotId);
+  console.log('plotId: ' + plotId);
 
   // need to process string for deadline
   let month = taskDeadline.substring(0, 2);
   let day = taskDeadline.substring(2, 4);
   let year = taskDeadline.substring(4, 8);
-  let deadlineDate = year + "-" + month + "-" + day + " 00:00:00";
+  let deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
-  console.log("deadlineDate: " + deadlineDate);
-  
+  console.log('deadlineDate: ' + deadlineDate);
+
   try {
     const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
       isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, 
@@ -194,14 +197,13 @@ const createTask = async (req, res, next) => {
       null,
       taskDuration,
     ]);
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return next(err);
   }
 
-  try  {
-    const sqlFindInsId = `SELECT LAST_INSERT_ID();`
+  try {
+    const sqlFindInsId = `SELECT LAST_INSERT_ID();`;
     const queryResults = await database.query(sqlFindInsId);
     genTaskId = queryResults[0][0]['LAST_INSERT_ID()'];
   } catch (err) {
@@ -214,21 +216,13 @@ const createTask = async (req, res, next) => {
   try {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
     VALUES (?, ?, ?, ?, ?)`;
-    const insResults = await database.query(sqlInsertPost, [
-      taskTitle,
-      taskDesc,
-      genTaskId,
-      req.userId,
-      gardenId,
-    ]);
+    const insResults = await database.query(sqlInsertPost, [taskTitle, taskDesc, genTaskId, req.userId, gardenId]);
     return res.json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
   }
-
 };
-
 
 const createPost = async (req, res, next) => {
   const { postTitle, postDesc } = req.body;
@@ -237,21 +231,13 @@ const createPost = async (req, res, next) => {
   try {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId)
     VALUES (?, ?, ?, ?, ?)`;
-    const insResults = await database.query(sqlInsertPost, [
-      postTitle,
-      postDesc,
-      null,
-      req.userId,
-      gardenId,
-    ]);
+    const insResults = await database.query(sqlInsertPost, [postTitle, postDesc, null, req.userId, gardenId]);
     return res.json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
   }
-
 };
-
 
 const claimTask = async (req, res, next) => {
   const { taskId } = req.query;
@@ -283,7 +269,6 @@ const completeTask = async (req, res, next) => {
     return next(err);
   }
 };
-
 
 module.exports = {
   getAllTasks,

@@ -25,6 +25,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
 
     private String taskTitle;
     private String taskAssignee;
+    private int taskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +40,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
         ImageView check = findViewById(R.id.forum_board_feedback_check);
         check.setOnClickListener(v -> {
 
-            // set is provided feedback to false
-            // send rating back for calculation
             sendFeedback();
-
             finish();
 
         });
@@ -51,6 +49,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
         title.setText(taskTitle);
         TextView name = findViewById(R.id.forum_board_feedback_name);
         name.setText(taskAssignee);
+
     }
 
     private void sendFeedback() {
@@ -58,9 +57,11 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
         RatingBar ratingBar = findViewById(R.id.forum_board_feedback_ratingbar);
-        params.put("taskRating", String.valueOf(ratingBar.getRating()));
+        params.put("newRating", String.valueOf(ratingBar.getRating()));
+        params.put("taskId", String.valueOf(taskId));
+        Log.d(TAG, "Sending feedback for task ID: " + taskId);
 
-        String url = "";
+        String url = "http://10.0.2.2:8081/profiles/rating";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -99,6 +100,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
             googleProfileInformation = new GoogleProfileInformation(extras);
             taskTitle = extras.getString("taskTitle");
             taskAssignee = extras.getString("taskAssignee");
+            taskId = extras.getInt("taskId");
         }
     }
 }

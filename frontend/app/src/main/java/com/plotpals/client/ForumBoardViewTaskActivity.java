@@ -118,9 +118,11 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                 googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
                 intent.putExtra("taskTitle", task.getTitle());
                 intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
+                intent.putExtra("taskId", task.getTask().getId());
                 startActivity(intent);
+                button.setVisibility(View.GONE);
             });
-        } else if (task.getTask().isCompleted()) { // task is complete
+        } else if (task.getTask().isCompleted() ){  // || task.getAssignerId().equals(googleProfileInformation.getAccountUserId())
             button.setVisibility(View.GONE);
         } else if (task.getTask().getAssigneeName().equals("null")) { // nobody is assigned
             button.setText("Volunteer for this task");

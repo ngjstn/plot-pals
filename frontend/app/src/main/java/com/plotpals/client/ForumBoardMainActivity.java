@@ -104,6 +104,10 @@ public class ForumBoardMainActivity extends NavBarActivity {
                         for (int i = 0; i < fetchedPosts.length(); i++) {
                             // Probably want to check if task or post, but we only do task for now
                             Task task = new Task(fetchedPosts.getJSONObject(i));
+
+                            // Check if we exceed minimum rating
+                            //if ( task.getMinimumRating())
+
                             addTask(task);
                             upperPosts++;
                         }

@@ -87,7 +87,7 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
 
     private void requestGardenApplication() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all?gardenId=" + gardenIdForApplication;
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false&gardenId=" + gardenIdForApplication;
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

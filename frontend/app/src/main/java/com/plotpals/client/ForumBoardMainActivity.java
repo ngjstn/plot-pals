@@ -1,7 +1,5 @@
 package com.plotpals.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Profile;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.data.Task;
@@ -41,6 +39,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
     boolean isPlotOwner = false;
     boolean isGardenOwner = false;
     boolean isCaretaker = false;
+    double myRating = 0; // we set this later. if no tasks show up, this int might still be 0.
 
     GoogleProfileInformation googleProfileInformation;
     @Override
@@ -99,12 +98,14 @@ public class ForumBoardMainActivity extends NavBarActivity {
     }
 
     private void loadPosts() {
+
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
+
         Log.d(TAG, "Current Garden: " + currentGardenId);
-        String url = "http://10.0.2.2:8081/posts/all?gardenId="+ currentGardenId;
-        Request<?> jsonObjectRequest = new JsonObjectRequest(
+        String gardenUrl = "http://10.0.2.2:8081/posts/all?gardenId="+ currentGardenId;
+        Request<?> jsonObjectGardenRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                gardenUrl,
                 null,
                 (JSONObject response) -> {
                     try {
@@ -118,10 +119,11 @@ public class ForumBoardMainActivity extends NavBarActivity {
                             Task task = new Task(fetchedPosts.getJSONObject(i));
 
                             // Check if we exceed minimum rating
-                            //if ( task.getMinimumRating())
-
-                            addTask(task);
-                            upperPosts++;
+                            Log.d(TAG, "My Rating: " + myRating);
+                            if (myRating > task.getMinimumRating()) {
+                                addTask(task);
+                                upperPosts++;
+                            }
                         }
                         Bundle extras = getIntent().getExtras();
                         assert extras != null;
@@ -140,7 +142,40 @@ public class ForumBoardMainActivity extends NavBarActivity {
                 return headers;
             }
         };
-        volleyQueue.add(jsonObjectRequest);
+
+        String profileUrl = "http://10.0.2.2:8081/profiles/all?profileId="+ googleProfileInformation.getAccountUserId();
+        Request<?> jsonObjectProfileRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                profileUrl,
+                null,
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining Profile");
+                        JSONArray fetchedProfiles = (JSONArray)response.get("data");
+                        Log.d(TAG, "Profiles (should be 1): " + fetchedProfiles.length());
+                        Profile profile = new Profile(fetchedProfiles.getJSONObject(0));
+                        Log.d(TAG, "Grabbing My Rating: " + profile.getRating());
+                        myRating = profile.getRating();
+                        Bundle extras = getIntent().getExtras();
+                        assert extras != null;
+                        volleyQueue.add(jsonObjectGardenRequest);
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectProfileRequest);
     }
 
     private void requestMembers(Integer gardenId) {

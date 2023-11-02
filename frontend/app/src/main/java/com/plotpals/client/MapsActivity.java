@@ -48,6 +48,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -190,7 +191,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng currentLocation = new LatLng(locationLat, locationLong);
         drawCurrentLocationMarker();
         requestGardens();
-//        mapsMarker = mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.format("Marker in %s", locationCityName)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
 
         googleMap.setOnMarkerClickListener(this);
@@ -214,25 +214,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationLat = location.getLatitude();
         locationLong = location.getLongitude();
 
-        // parse for city name using current location
-//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//        try {
-//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//            locationCityName = addresses.get(0).getLocality();
-//            Log.d(TAG, String.format("Current City: %s, Lat: %f, Long: %f", locationCityName, locationLat, locationLong));
-//        } catch (IOException e) {
-//            Log.d(TAG, String.format("Can't find Geocoder locality: %f", e));
-//            //            throw new RuntimeException(e);
-//        }
-
         Log.d(TAG, String.format("Lat: %f, Long: %f", locationLat, locationLong));
         LatLng currentLocation = new LatLng(locationLat, locationLong);
         // marker is stuck on default location (0,0); move to current location
-        if (mapsMarker.getPosition().equals(new LatLng(0, 0))) {
+        if (mapsMarker.getPosition().equals(new LatLng(0, 0)) || mMap.getCameraPosition().target.equals(new LatLng(0,0))) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         }
         mapsMarker.setPosition(currentLocation);
-//        mapsMarker.setTitle(String.format("Marker in %s", locationCityName));
     }
 
 
@@ -352,7 +340,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void loadExtras() {
         Bundle extras = getIntent().getExtras();
 
-        if (extras != null && googleProfileInformation == null) {
+        if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
         }
     }
@@ -415,7 +403,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             double latitude = extras.getDouble("moveToSelectedLat");
                             double longitude = extras.getDouble("moveToSelectedLong");
                             LatLng locationFromSearch = new LatLng(latitude, longitude);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFromSearch));
+                            if (!locationFromSearch.equals(new LatLng(0,0))) {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(locationFromSearch));
+                            }
                         }
                     }
                 } catch (JSONException e) {

@@ -23,12 +23,14 @@ public class gardenBaseAdapter extends BaseAdapter {
     List<Garden> listGarden;
     int listImages[];
     GardenSearchActivity searchActivity;
+    GoogleProfileInformation googleProfileInformation;
 
-    public gardenBaseAdapter(Context ctx, List<Garden> garden, int[] images, GardenSearchActivity activity) {
+    public gardenBaseAdapter(Context ctx, List<Garden> garden, int[] images, GardenSearchActivity activity, GoogleProfileInformation googleProfileInformation) {
         this.context = ctx;
         this.listGarden = garden;
         this.listImages = images;
         this.searchActivity = activity;
+        this.googleProfileInformation = googleProfileInformation;
     }
     @Override
     public int getCount() {
@@ -66,6 +68,7 @@ public class gardenBaseAdapter extends BaseAdapter {
                 Log.d(TAG, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()));
                 Toast.makeText(context, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()), Toast.LENGTH_SHORT).show();
                 Intent mapsIntent = new Intent(searchActivity, MapsActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
                 mapsIntent.putExtra("moveToSelectedLat", listGarden.get(i).getLocation().latitude);
                 mapsIntent.putExtra("moveToSelectedLong", listGarden.get(i).getLocation().longitude);
                 searchActivity.startActivity(mapsIntent);

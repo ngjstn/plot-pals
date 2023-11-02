@@ -60,12 +60,13 @@ public class ForumBoardMainActivity extends NavBarActivity {
         name.setText(currentGardenName);
 
         ImageView arrow = findViewById(R.id.forum_board_arrow);
-        arrow.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Back Arrow");
-            Intent mapsIntent = new Intent(ForumBoardMainActivity.this, MyGardenYesGardenActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(mapsIntent);
-            startActivity(mapsIntent);
-        });
+        arrow.setOnClickListener(view -> finish());
+//        arrow.setOnClickListener(view -> {
+//            Log.d(TAG, "Clicking Back Arrow");
+//            Intent myGardenIntent = new Intent(ForumBoardMainActivity.this, MyGardenYesGardenActivity.class);
+//            googleProfileInformation.loadGoogleProfileInformationToIntent(myGardenIntent);
+//            startActivity(myGardenIntent);
+//        });
 
         ImageView plus = findViewById(R.id.forum_board_plus);
         plus.setOnClickListener(view -> {

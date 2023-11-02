@@ -48,6 +48,11 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(GardenInfoNonMemberActivity.this, "View Forum Board pressed", Toast.LENGTH_SHORT).show();
+                Intent forumBoard = new Intent(GardenInfoNonMemberActivity.this, ForumBoardMainActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(forumBoard);
+                forumBoard.putExtra("gardenId", gardenId);
+                forumBoard.putExtra("gardenName", currentGarden.getGardenName());
+                startActivity(forumBoard);
             }
         });
 

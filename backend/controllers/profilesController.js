@@ -69,8 +69,17 @@ const submitFeedback = async (req, res, next) => {
   try {
     const sqlUpdateNewRating = `UPDATE profiles SET rating = ? WHERE id = ?`;
     const updateResults = await database.query(sqlUpdateNewRating, [calculatedRating, req.userId]);
-    return res.json({ success: updateResults[0].affectedRows > 0 });
+    // return res.json({ success: updateResults[0].affectedRows > 0 });
   } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+  
+  try {
+    const sqlUpdateFeedbackStatus= `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`;
+    const updateResults = await database.query(sqlUpdateFeedbackStatus, [taskId, req.userId]);
+    return res.json({ success: updateResults[0].affectedRows > 0 });
+  } catch (err ){
     console.log(err);
     return next(err);
   }

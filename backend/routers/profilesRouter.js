@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllProfiles, createProfileForAuthenticatedUser } = require('../controllers/profilesController');
+const { getAllProfiles, createProfileForAuthenticatedUser, submitFeedback } = require('../controllers/profilesController');
 const authMiddleware = require('../authMiddleware');
 
 const router = express.Router();
@@ -8,5 +8,7 @@ const router = express.Router();
 router.get('/all', authMiddleware, getAllProfiles);
 
 router.post('/', authMiddleware, createProfileForAuthenticatedUser);
+
+router.put('/rating', authMiddleware, submitFeedback);
 
 module.exports = router;

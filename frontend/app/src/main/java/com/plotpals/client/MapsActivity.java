@@ -127,7 +127,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Forum board button pressed");
-                Toast.makeText(MapsActivity.this, "View Forum Board pressed", Toast.LENGTH_SHORT).show();
+                Intent forumBoard = new Intent(MapsActivity.this, ForumBoardMainActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(forumBoard);
+                forumBoard.putExtra("gardenId", currentGardenSelected.getId());
+                forumBoard.putExtra("gardenName", currentGardenSelected.getGardenName());
+                startActivity(forumBoard);
             }
         });
 

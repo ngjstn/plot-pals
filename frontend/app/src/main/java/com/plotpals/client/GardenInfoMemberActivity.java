@@ -69,6 +69,11 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(GardenInfoMemberActivity.this, "Forum Board pressed", Toast.LENGTH_SHORT).show();
+                Intent forumBoard = new Intent(GardenInfoMemberActivity.this, ForumBoardMainActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(forumBoard);
+                forumBoard.putExtra("gardenId", gardenId);
+                forumBoard.putExtra("gardenName", gardenName);
+                startActivity(forumBoard);
             }
         });
 

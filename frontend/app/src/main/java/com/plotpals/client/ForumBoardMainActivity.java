@@ -157,7 +157,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
                             // Check if we exceed minimum rating
                             Log.d(TAG, "My Rating: " + myRating);
                             if (myRating > task.getTask().getMinimumRating()) {
-                                addTask(task.getTask());
+                                addTask(task);
                                 upperPosts++;
                             }
                         }
@@ -293,6 +293,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
             Log.d(TAG, "Clicking Task Title");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("postId", task.getId());
             startActivity(intent);
         });
     }

@@ -31,6 +31,7 @@ const submitFeedback = async (req, res, next) => {
   let oldRating;
   let calculatedRating;
 
+  console.log(taskId);
   // get old rating
   try {
     const sqlFindOldRating = `SELECT rating FROM profiles WHERE id = ?`;

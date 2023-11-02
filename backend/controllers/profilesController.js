@@ -26,7 +26,36 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
   }
 };
 
+const submitFeedback = async (req, res, next) => {
+  const { newRating } = req.body;
+  let oldRating;
+  let calculatedRating;
+
+  // get old rating
+  try {
+    const sqlFindOldRating = `SELECT rating FROM profiles WHERE id = ?`;
+    const queryResults = await database.query(sqlFindOldRating, [req.userId]);
+    oldRating = queryResults[0][0].rating;
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+  console.log("old rating: " + oldRating);
+  // calculate rating
+  calculatedRating = oldRating * 0.8 + newRating * 0.2;
+  console.log("calculated rating: " + calculatedRating);
+  try {
+    const sqlUpdateNewRating = `UPDATE profiles SET rating = ? WHERE id = ?`
+    const updateResults = await database.query(sqlUpdateNewRating, [calculatedRating, req.userId]);
+    return res.json({ success: updateResults[0].affectedRows > 0 });
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+};
+
 module.exports = {
   getAllProfiles,
   createProfileForAuthenticatedUser,
+  submitFeedback,
 };

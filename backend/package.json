@@ -20,7 +20,8 @@
     "google-auth-library": "^9.1.0",
     "http-status-codes": "^2.3.0",
     "mysql2": "^3.6.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "dotenv": "^16.3.1"

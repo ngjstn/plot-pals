@@ -253,6 +253,38 @@ const createPost = async (req, res, next) => {
 };
 
 
+const claimTask = async (req, res, next) => {
+  const { taskId } = req.query;
+
+  // update task based on taskid, update taskStartTime and set assigneeId
+  try {
+    const sqlClaimTask = `UPDATE tasks SET taskStartTime = NOW(), assigneeId = ? 
+      WHERE taskId = ? AND taskStartTime IS NULL AND assigneeId IS NULL`;
+    const queryResults = await database.query(sqlClaimTask, [req.userId, taskId]);
+    return res.json({ success: queryResults[0].affectedRows > 0 });
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+};
+
+const completeTask = async (req, res, next) => {
+  const { taskId } = req.query;
+
+  // update task based on taskid
+  // if taskStartTime is not null, update taskEndTime and isCompleted
+  try {
+    const sqlCompleteTask = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
+      WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`;
+    const queryResults = await database.query(sqlCompleteTask, [taskId, req.userId]);
+    return res.json({ success: queryResults[0].affectedRows > 0 });
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+};
+
+
 module.exports = {
   getAllTasks,
   getTasksRelatedToAuthorizedUser,
@@ -260,4 +292,6 @@ module.exports = {
   getAllPostsAndTasks,
   createTask,
   createPost,
+  claimTask,
+  completeTask,
 };

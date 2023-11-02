@@ -7,7 +7,7 @@
     tools:context=".ForumBoardFeedbackActivity">
 
     <RatingBar
-        android:id="@+id/forum_board_new_task_ratingbar2"
+        android:id="@+id/forum_board_feedback_ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -28,12 +28,12 @@
         android:text="Please rate your satisfaction with the completed task:"
         android:textAppearance="@style/basic_text"
         android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="@+id/forum_board_post_author3"
-        app:layout_constraintTop_toBottomOf="@+id/forum_board_post_author3"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_feedback_name"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_feedback_name"
         tools:gravity="left|center_vertical" />
 
     <TextView
-        android:id="@+id/forum_board_post_author3"
+        android:id="@+id/forum_board_feedback_name"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
@@ -42,12 +42,12 @@
         android:text="Volunteer"
         android:textAppearance="@style/basic_text"
         android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="@+id/forum_board_post_author2"
-        app:layout_constraintTop_toBottomOf="@+id/forum_board_post_author2"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_feedback_title"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_feedback_title"
         tools:gravity="left|center_vertical" />
 
     <TextView
-        android:id="@+id/forum_board_post_author2"
+        android:id="@+id/forum_board_feedback_title"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
         tools:gravity="left|center_vertical" />
 
     <ImageView
-        android:id="@+id/forum_board_new_task_check2"
+        android:id="@+id/forum_board_feedback_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

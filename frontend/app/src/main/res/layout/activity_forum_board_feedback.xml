@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ForumBoardFeedbackActivity">
+
+    <include
+        layout="@layout/activity_nav_bar"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <RatingBar
+        android:id="@+id/forum_board_feedback_ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
+        android:numStars="5"
+        android:transformPivotX="0dp"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_post_author4"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_post_author4" />
+
+    <TextView
+        android:id="@+id/forum_board_post_author4"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:gravity="top"
+        android:text="Please rate your satisfaction with the completed task:"
+        android:textAppearance="@style/basic_text"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_feedback_name"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_feedback_name"
+        tools:gravity="left|center_vertical" />
+
+    <TextView
+        android:id="@+id/forum_board_feedback_name"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="Volunteer"
+        android:textAppearance="@style/basic_text"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_feedback_title"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_feedback_title"
+        tools:gravity="left|center_vertical" />
+
+    <TextView
+        android:id="@+id/forum_board_feedback_title"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="24dp"
+        android:gravity="top"
+        android:text="Task Name"
+        android:textAppearance="@style/basic_text"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/forum_board_feedback_x"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:gravity="left|center_vertical" />
+
+    <ImageView
+        android:id="@+id/forum_board_feedback_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:srcCompat="@drawable/check" />
+
+    <ImageView
+        android:id="@+id/forum_board_feedback_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:srcCompat="@drawable/x" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="235dp"
+        android:layout_height="49dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="76dp"
+        android:gravity="top"
+        android:text="Feedback Form"
+        android:textAppearance="@style/page_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

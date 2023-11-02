@@ -3,8 +3,6 @@ package com.plotpals.client.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 /**
  * Task object that maps to entries of 'tasks' table
  */
@@ -23,6 +21,7 @@ public class Task {
     private double minimumRating;
 
     private String assigneeId;
+    private String assignerId;
 
     private boolean isCompleted;
 
@@ -53,7 +52,7 @@ public class Task {
                 String assigneeName,
                 String title,
                 String description,
-                String assigner) {
+                String assigner, String assignerId) {
         this.id = id;
         this.plotId = plotId;
         this.reward = reward;
@@ -69,6 +68,7 @@ public class Task {
         this.title = title;
         this.description = description;
         this.assigner = assigner;
+        this.assignerId = assignerId;
     }
 
     /*
@@ -89,8 +89,8 @@ public class Task {
                 taskJsonObject.optString("assigneeName", null),
                 taskJsonObject.optString("title", null),
                 taskJsonObject.optString("description", null),
-                taskJsonObject.optString("assignerName", null)
-        );
+                taskJsonObject.optString("assignerName", null),
+                taskJsonObject.optString("assignerId", null));
     }
 
 
@@ -153,5 +153,9 @@ public class Task {
 
     public String getAssigner() {
         return assigner;
+    }
+
+    public String getAssignerId() {
+        return assignerId;
     }
 }

@@ -270,6 +270,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
             intent.putExtra("taskAssignee", task.getAssigneeName());
             intent.putExtra("taskAssigneeId", task.getAssigneeId());
             intent.putExtra("taskId", task.getId());
+            intent.putExtra("taskAssignerId", task.getAssignerId());
+            intent.putExtra("taskFeedback", task.isAssigneeIsProvidedFeedback());
             startActivity(intent);
         });
     }

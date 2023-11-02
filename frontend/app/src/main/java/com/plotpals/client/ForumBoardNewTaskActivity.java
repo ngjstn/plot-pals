@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.utils.GoogleProfileInformation;
+import com.plotpals.client.utils.TaskSocketHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.socket.client.Socket;
 
 public class ForumBoardNewTaskActivity extends NavBarActivity {
     final static String TAG = "ForumBoardNewTaskActivity";
@@ -35,12 +38,16 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
     private Integer currentGardenId;
     private String currentGardenName;
 
+    Socket taskSocket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_board_new_task);
         loadExtras();
         activateNavBar();
+        taskSocket = TaskSocketHandler.getSocket();
+        taskSocket.connect();
 
         ImageView x = findViewById(R.id.forum_board_new_task_x);
         x.setOnClickListener(view -> {
@@ -108,6 +115,12 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        taskSocket.close();
+    }
+
     private void sendTaskInformation() {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
@@ -129,6 +142,9 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                 try {
                     Log.d(TAG, "Response for submitting form: \n"
                             + response.getString("success"));
+
+                    taskSocket.emit("New Task", currentGardenId);
+
                 } catch (JSONException e) {
                     Log.d(TAG, e.toString());
                 }

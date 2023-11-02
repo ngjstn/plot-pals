@@ -24,6 +24,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private String taskReward;
     private String taskAssignee;
     private String taskAssigneeId;
+    private String taskAssignerId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,14 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         Log.d(TAG, "Google Id: " + googleProfileInformation.getAccountUserId());
 
         Button button = findViewById(R.id.forum_board_task_button);
-        if (taskStatus) { // task is complete
+        if (taskStatus && taskAssignerId.equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it
+            button.setText("Provide Feedback");
+            button.setOnClickListener(view -> {
+                Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
+                // set assignee and start time?
+                button.setVisibility(View.GONE);
+            });
+        } else if (taskStatus) { // task is complete
             button.setVisibility(View.GONE);
         } else if (taskAssignee == null || taskAssignee.equals("null")) { // nobody is assigned
             button.setText("Volunteer for this task");
@@ -103,6 +111,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             taskReward = extras.getString("taskReward");
             taskAssignee = extras.getString("taskAssignee");
             taskAssigneeId = extras.getString("taskAssigneeId");
+            taskAssignerId = extras.getString("taskAssignerId");
         }
     }
 }

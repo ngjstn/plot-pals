@@ -65,7 +65,9 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             button.setText("Provide Feedback");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
-                // set assignee and start time?
+                Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                startActivity(intent);
                 button.setVisibility(View.GONE);
             });
         } else if (taskStatus) { // task is complete

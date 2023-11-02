@@ -23,6 +23,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
+import com.plotpals.client.utils.TaskSocketHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +48,8 @@ public class AppEntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_entry);
+
+        TaskSocketHandler.setSocket();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))

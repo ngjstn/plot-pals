@@ -53,7 +53,7 @@ public class Post {
 
     public int getId() {
         return id;
-    }
+    } // BE CAREFUL USING THIS, TALK TO JAMES/ALAN/ADRI FIRST
 
     public String getTitle() {
         return title;

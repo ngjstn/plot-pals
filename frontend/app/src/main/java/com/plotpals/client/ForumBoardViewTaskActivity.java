@@ -84,6 +84,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                 JSONArray fetchedTasks = (JSONArray)response.get("data");
                 Log.d(TAG, "Tasks (Should be 1): " + fetchedTasks.length());
                 task = new Post(fetchedTasks.getJSONObject(0));
+                Log.d(TAG, "Got task assigned to: " + task.getTask().getAssigneeName());
                 setButton();
                 setText();
                 Bundle extras = getIntent().getExtras();
@@ -118,7 +119,6 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                 intent.putExtra("taskTitle", task.getTitle());
                 intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
                 startActivity(intent);
-                button.setVisibility(View.GONE);
             });
         } else if (task.getTask().isCompleted()) { // task is complete
             button.setVisibility(View.GONE);
@@ -127,14 +127,12 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Volunteer Button Pressed", Toast.LENGTH_SHORT).show();
                 claimTask();
-                button.setVisibility(View.GONE);
             });
         } else if (task.getTask().getAssigneeId().equals(googleProfileInformation.getAccountUserId())) { // assignee is you
             button.setText("Mark task as completed");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Mark task Button Pressed", Toast.LENGTH_SHORT).show();
                 completeTask();
-                button.setVisibility(View.GONE);
             });
 
         } else { // task is assigned to someone else
@@ -146,8 +144,8 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
-
-        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", task.getId());
+        Log.d(TAG, "Claiming Task: " + task.getTask().getId());
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -157,6 +155,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
+                        loadTask();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }
@@ -181,7 +180,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
 
-        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", task.getId());
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -191,6 +190,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
+                        loadTask();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }

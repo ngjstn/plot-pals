@@ -1,5 +1,7 @@
 package com.plotpals.client.data;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -125,6 +127,7 @@ public class Task {
     }
 
     public String getAssigneeName() {
+        Log.d("Task", "RETURNING ASSIGNEE NAME: " + assigneeName);
         return assigneeName;
     }
 

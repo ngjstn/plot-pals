@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
 
             // set is provided feedback to false
             // send rating back for calculation
+            sendFeedback();
 
             finish();
 
@@ -55,6 +57,8 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
+        RatingBar ratingBar = findViewById(R.id.forum_board_feedback_ratingbar);
+        params.put("taskRating", String.valueOf(ratingBar.getRating()));
 
         String url = "";
 

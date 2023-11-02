@@ -55,7 +55,12 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         TextView description = findViewById(R.id.forum_board_task_description);
         description.setText(task.getDescription());
         TextView plot = findViewById(R.id.forum_Board_task_plot_number);
-        plot.setText(Integer.toString(task.getPlotId()));
+        if(taskPlotNumber == -1) {
+            plot.setText("None");
+        } else {
+            plot.setText(Integer.toString(task.getPlotId()));
+        }
+
         TextView status = findViewById(R.id.forum_Board_task_status);
         status.setText(task.isCompleted() ? "Complete" : "Incomplete");
         TextView expected = findViewById(R.id.forum_Board_task_expected);

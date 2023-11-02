@@ -1,4 +1,5 @@
 const express = require('express');
+const socket = require('socket.io');
 const app = express();
 const profilesRouter = require('./routers/profilesRouter');
 const updatesRouter = require('./routers/updatesRouter');
@@ -31,6 +32,17 @@ app.use(errorHandler);
 const PORT = 8081;
 
 // start server
-app.listen(PORT, (req, res) => {
+const server = app.listen(PORT, (req, res) => {
   console.log('Server running at port: %s', PORT);
+});
+
+const io = socket(server);
+
+io.on('connection', (socket) => {
+  console.log('New socket connection: ' + socket.id);
+
+  socket.on('New Task', (idOfGardenWithNewTask) => {
+    console.log(idOfGardenWithNewTask);
+    io.emit('New Task', idOfGardenWithNewTask);
+  });
 });

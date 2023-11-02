@@ -16,11 +16,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Profile;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
+import com.plotpals.client.utils.TaskSocketHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +32,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import io.socket.client.Socket;
 
 public class ForumBoardMainActivity extends NavBarActivity {
 
@@ -41,6 +46,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
     boolean isCaretaker = false;
     double myRating = 0; // we set this later. if no tasks show up, this int might still be 0.
 
+    Socket taskSocket;
+
     GoogleProfileInformation googleProfileInformation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
         setContentView(R.layout.activity_forum_board_main);
         loadExtras();
         activateNavBar();
+        taskSocket = TaskSocketHandler.getSocket();
+        taskSocket.connect();
 
         TextView newPostText = findViewById(R.id.forum_board_new_post);
         TextView newTaskText = findViewById(R.id.forum_board_new_task);
@@ -94,6 +103,27 @@ public class ForumBoardMainActivity extends NavBarActivity {
             startActivity(intent);
         });
         findViewById(R.id.forum_board_plus).setVisibility(View.GONE);
+
+        taskSocket.on("New Task", args -> {
+            if (args[0] != null) {
+                int idOfGardenWithNewTask = (int) args[0];
+
+                if(idOfGardenWithNewTask == currentGardenId) {
+                    loadPosts();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        taskSocket.close();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         requestMembers(currentGardenId);
         loadPosts();
     }
@@ -114,15 +144,20 @@ public class ForumBoardMainActivity extends NavBarActivity {
                         JSONArray fetchedPosts = (JSONArray)response.get("data");
                         Log.d(TAG, "Posts: " + fetchedPosts.length());
 
+                        /* Resets scrollable view so that it does not have items */
+                        RelativeLayout layout = findViewById(R.id.forum_board_scrollview_layout);
+                        layout.removeAllViewsInLayout();
+                        upperPosts = 0;
+
                         // loop and add every garden
                         for (int i = 0; i < fetchedPosts.length(); i++) {
                             // Probably want to check if task or post, but we only do task for now
-                            Task task = new Task(fetchedPosts.getJSONObject(i));
+                            Post task = new Post(fetchedPosts.getJSONObject(i));
 
                             // Check if we exceed minimum rating
                             Log.d(TAG, "My Rating: " + myRating);
-                            if (myRating > task.getMinimumRating()) {
-                                addTask(task);
+                            if (myRating > task.getTask().getMinimumRating()) {
+                                addTask(task.getTask());
                                 upperPosts++;
                             }
                         }
@@ -235,7 +270,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
         volleyQueue.add(jsonObjectRequest);
     }
 
-    private void addTask(Task task) {
+    private void addTask(Post task) {
 
         RelativeLayout layout = findViewById(R.id.forum_board_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -252,7 +287,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
 
     }
 
-    private void setTaskButton(View view, Task task) {
+    private void setTaskButton(View view, Post task) {
         TextView title = view.findViewById(R.id.forum_board_task_preview_title);
         title.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Task Title");
@@ -262,20 +297,18 @@ public class ForumBoardMainActivity extends NavBarActivity {
         });
     }
 
-    private void setPreviewText(View view, Task task) {
+    private void setPreviewText(View view, Post task) {
         TextView title = view.findViewById(R.id.forum_board_task_preview_title);
         title.setText(task.getTitle());
         TextView description = view.findViewById(R.id.forum_board_task_preview_description);
-        description.setText(task.getDescription());
+        description.setText("Description: " + task.getDescription());
         TextView author = view.findViewById(R.id.forum_board_task_preview_author);
-        author.setText(task.getAssigner());
-        TextView stamp = view.findViewById(R.id.forum_board_task_preview_stamp);
-        stamp.setText(task.getTaskStartTime());
+        author.setText("Author: " + task.getAssignerName());
     }
 
     private void defineMargins (View v, int upperPosts) {
         ViewGroup.MarginLayoutParams margins = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-        margins.setMargins(margins.leftMargin, margins.topMargin + upperPosts * 300, margins.rightMargin, margins.bottomMargin);
+        margins.setMargins(margins.leftMargin, margins.topMargin + upperPosts * 350, margins.rightMargin, margins.bottomMargin);
     }
 
     /**

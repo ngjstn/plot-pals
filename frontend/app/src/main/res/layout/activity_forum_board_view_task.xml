@@ -54,13 +54,13 @@
         android:layout_height="180dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:gravity="top"
         android:text="Task description..."
         android:textAppearance="@style/basic_text"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="@+id/forum_board_task_arrow"
-        app:layout_constraintTop_toBottomOf="@+id/forum_board_task_stamp"
+        app:layout_constraintTop_toBottomOf="@+id/forum_board_task_author"
         tools:gravity="left" />
 
     <View
@@ -96,20 +96,6 @@
         android:textAppearance="@style/page_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/forum_board_task_stamp"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="top"
-        android:text="Timestamp"
-        android:textAppearance="@style/basic_text"
-        android:textSize="12dp"
-        app:layout_constraintStart_toEndOf="@+id/forum_board_task_author"
-        app:layout_constraintTop_toTopOf="@+id/forum_board_task_author"
-        tools:gravity="left|center_vertical" />
 
     <TextView
         android:id="@+id/forum_board_task_author"

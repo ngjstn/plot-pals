@@ -14,8 +14,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Post;
+import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,19 +27,8 @@ import java.util.Map;
 
 public class ForumBoardViewTaskActivity extends NavBarActivity {
     final static String TAG = "ForumBoardViewTaskActivity";
-    private String taskTitle;
-    private String taskAuthor;
-    private String taskDescription;
-    private int taskPlotNumber;
-    private boolean taskStatus;
-    private int taskExpected;
-    private String taskDeadline;
-    private String taskReward;
-    private String taskAssignee;
-    private String taskAssigneeId;
-    private String taskAssignerId;
-    private int taskId;
-    private boolean taskFeedback;
+    Post task;
+    private int postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,64 +38,101 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         loadExtras();
         activateNavBar();
 
+        loadTask();
+
         ImageView arrow = findViewById(R.id.forum_board_task_arrow);
         arrow.setOnClickListener(v -> finish());
 
-        TextView title = findViewById(R.id.forum_Board_task_Title);
-        title.setText(taskTitle);
-        TextView author = findViewById(R.id.forum_board_task_author);
-        author.setText(taskAuthor);
-        TextView description = findViewById(R.id.forum_board_task_description);
-        description.setText(taskDescription);
+    }
 
+    private void setText() {
+        TextView title = findViewById(R.id.forum_Board_task_Title);
+        title.setText(task.getTitle());
+        TextView author = findViewById(R.id.forum_board_task_author);
+        author.setText(task.getAssignerName());
+        TextView description = findViewById(R.id.forum_board_task_description);
+        description.setText(task.getDescription());
         TextView plot = findViewById(R.id.forum_Board_task_plot_number);
-        if(taskPlotNumber == -1) {
+        if(task.getTask().getPlotId() == -1) {
             plot.setText("None");
         } else {
-            plot.setText(Integer.toString(taskPlotNumber));
+            plot.setText(Integer.toString(task.getTask().getPlotId()));
         }
 
         TextView status = findViewById(R.id.forum_Board_task_status);
-        status.setText(taskStatus ? "Complete" : "Incomplete");
+        status.setText(task.getTask().isCompleted() ? "Complete" : "Incomplete");
         TextView expected = findViewById(R.id.forum_Board_task_expected);
-        expected.setText(Integer.toString(taskExpected));
+        expected.setText(Integer.toString(task.getTask().getExpectedTaskDurationInHours()));
         TextView deadline = findViewById(R.id.forum_Board_task_deadline);
-        deadline.setText(taskDeadline);
+        deadline.setText(task.getTask().getDeadlineDate());
         TextView reward = findViewById(R.id.forum_Board_task_reward);
-        reward.setText(taskReward);
+        reward.setText(task.getTask().getReward());
         TextView assignee = findViewById(R.id.forum_Board_task_assignee);
-        assignee.setText(taskAssignee);
+        assignee.setText(task.getTask().getAssigneeName());
+    }
 
-        Log.d(TAG, "Assignee Id: " + taskAssigneeId);
-        Log.d(TAG, "Google Id: " + googleProfileInformation.getAccountUserId());
+    private void loadTask() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8081/posts/all?postId=" + postId;
+        Request<?> req = new JsonObjectRequest(
+        Request.Method.GET,
+        url,
+        null,
+        (JSONObject response) -> {
+            try {
+                Log.d(TAG, "Obtaining Task");
+                JSONArray fetchedTasks = (JSONArray)response.get("data");
+                Log.d(TAG, "Tasks (Should be 1): " + fetchedTasks.length());
+                task = new Post(fetchedTasks.getJSONObject(0));
+                Log.d(TAG, "Got task assigned to: " + task.getTask().getAssigneeName());
+                setButton();
+                setText();
+                Bundle extras = getIntent().getExtras();
+                assert extras != null;
+            } catch (JSONException e) {
+                Log.d(TAG, e.toString());
+            }
+        },
+            (VolleyError e) -> {
+                Log.d(TAG, e.toString());
+            }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
 
+        volleyQueue.add(req);
+    }
+
+    private void setButton() {
         Button button = findViewById(R.id.forum_board_task_button);
-        if (!taskFeedback && taskStatus && taskAssignerId.equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it and no feedback
+        if (!task.getTask().isAssigneeIsProvidedFeedback() && task.getTask().isCompleted() && task.getAssignerId().equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it and no feedback
             button.setText("Provide Feedback");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
                 googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-                intent.putExtra("taskTitle", taskTitle);
-                intent.putExtra("taskAssignee", taskAssignee);
+                intent.putExtra("taskTitle", task.getTitle());
+                intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
                 startActivity(intent);
-                button.setVisibility(View.GONE);
             });
-        } else if (taskStatus) { // task is complete
+        } else if (task.getTask().isCompleted()) { // task is complete
             button.setVisibility(View.GONE);
-        } else if (taskAssignee == null || taskAssignee.equals("null")) { // nobody is assigned
+        } else if (task.getTask().getAssigneeName().equals("null")) { // nobody is assigned
             button.setText("Volunteer for this task");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Volunteer Button Pressed", Toast.LENGTH_SHORT).show();
                 claimTask();
-                button.setVisibility(View.GONE);
             });
-        } else if (taskAssigneeId.equals(googleProfileInformation.getAccountUserId())) { // assignee is you
+        } else if (task.getTask().getAssigneeId().equals(googleProfileInformation.getAccountUserId())) { // assignee is you
             button.setText("Mark task as completed");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Mark task Button Pressed", Toast.LENGTH_SHORT).show();
                 completeTask();
-                button.setVisibility(View.GONE);
             });
 
         } else { // task is assigned to someone else
@@ -115,8 +144,8 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
-
-        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", taskId);
+        Log.d(TAG, "Claiming Task: " + task.getTask().getId());
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -126,6 +155,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
+                        loadTask();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }
@@ -150,7 +180,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
 
-        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", taskId);
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -160,6 +190,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
+                        loadTask();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }
@@ -187,19 +218,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
 
         if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
-            taskTitle = extras.getString("taskTitle");
-            taskAuthor = extras.getString("taskAuthor");
-            taskDescription = extras.getString("taskDescription");
-            taskPlotNumber = extras.getInt("taskPlotNumber");
-            taskStatus = extras.getBoolean("taskStatus");
-            taskExpected = extras.getInt("taskExpected");
-            taskDeadline = extras.getString("taskDeadline");
-            taskReward = extras.getString("taskReward");
-            taskAssignee = extras.getString("taskAssignee");
-            taskAssigneeId = extras.getString("taskAssigneeId");
-            taskId = extras.getInt("taskId");
-            taskAssignerId = extras.getString("taskAssignerId");
-            taskFeedback = extras.getBoolean("taskFeedback");
+            postId = extras.getInt("postId");
         }
     }
 }

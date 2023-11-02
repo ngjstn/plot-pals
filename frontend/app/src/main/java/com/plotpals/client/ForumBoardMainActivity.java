@@ -258,20 +258,6 @@ public class ForumBoardMainActivity extends NavBarActivity {
             Log.d(TAG, "Clicking Task Title");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardViewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-            intent.putExtra("taskTitle", task.getTitle());
-            intent.putExtra("taskAuthor", task.getAssigner());
-            intent.putExtra("taskTime", task.getTaskStartTime());
-            intent.putExtra("taskDescription", task.getDescription());
-            intent.putExtra("taskPlotNumber", task.getPlotId());
-            intent.putExtra("taskStatus", task.isCompleted());
-            intent.putExtra("taskExpected", task.getExpectedTaskDurationInHours()); // the figma says this should be days, so... may need fixing
-            intent.putExtra("taskDeadline", task.getDeadlineDate());
-            intent.putExtra("taskReward", task.getReward());
-            intent.putExtra("taskAssignee", task.getAssigneeName());
-            intent.putExtra("taskAssigneeId", task.getAssigneeId());
-            intent.putExtra("taskId", task.getId());
-            intent.putExtra("taskAssignerId", task.getAssignerId());
-            intent.putExtra("taskFeedback", task.isAssigneeIsProvidedFeedback());
             startActivity(intent);
         });
     }

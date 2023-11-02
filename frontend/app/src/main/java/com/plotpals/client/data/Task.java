@@ -3,8 +3,6 @@ package com.plotpals.client.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 /**
  * Task object that maps to entries of 'tasks' table
  */
@@ -18,6 +16,7 @@ public class Task {
     private double minimumRating;
 
     private String assigneeId;
+    private String assignerId;
 
     private boolean isCompleted;
 

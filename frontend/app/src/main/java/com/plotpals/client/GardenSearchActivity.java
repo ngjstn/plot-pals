@@ -35,7 +35,7 @@ public class GardenSearchActivity extends AppCompatActivity {
 //    ArrayList<String> gardenList = new ArrayList<String>(Arrays.asList("Garden 1", "Garden 2", "Garden 3", "Garden 4", "Garden 5"));
     private List<Garden> gardenObjectList = new ArrayList<>();
     int[] gardenImages = {R.drawable.image_rec, R.drawable.image_rec, R.drawable.image_rec, R.drawable.image_rec, R.drawable.image_rec};
-    static GoogleProfileInformation googleProfileInformation;
+    GoogleProfileInformation googleProfileInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class GardenSearchActivity extends AppCompatActivity {
         loadProfileInfo();
         requestGardens();
         listView = (ListView) findViewById(R.id.garden_list);
-        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this);
+        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this, googleProfileInformation);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -90,7 +90,7 @@ public class GardenSearchActivity extends AppCompatActivity {
             findViewById(R.id.try_again_text).setVisibility(View.VISIBLE);
         }
 
-        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardensSearched, gardenImages, GardenSearchActivity.this);
+        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardensSearched, gardenImages, GardenSearchActivity.this, googleProfileInformation);
         listView.setAdapter(arrayAdapter);
     }
 

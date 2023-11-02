@@ -6,6 +6,8 @@ const {
   getAllPostsAndTasks,
   createTask,
   createPost,
+  claimTask,
+  completeTask,
 } = require('../controllers/postsAndtasksController');
 
 const authMiddleware = require('../authMiddleware');
@@ -27,5 +29,11 @@ router.post('/tasks', authMiddleware, createTask);
 
 // accepts query parameter gardenId
 router.post('/', authMiddleware, createPost);
+
+// accepts query parameter
+router.put('/tasks/claim', authMiddleware, claimTask);
+
+// accepts query parameter
+router.put('/tasks/complete', authMiddleware, completeTask);
 
 module.exports = router;

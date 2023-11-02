@@ -50,12 +50,7 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         taskSocket.connect();
 
         ImageView x = findViewById(R.id.forum_board_new_task_x);
-        x.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking X");
-            Intent intent = new Intent(ForumBoardNewTaskActivity.this, ForumBoardMainActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-            startActivity(intent);
-        });
+        x.setOnClickListener(v -> finish());
 
         ImageView check = findViewById(R.id.forum_board_new_task_check);
         check.setOnClickListener(view -> {

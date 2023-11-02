@@ -9,7 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.plotpals.client.utils.GoogleProfileInformation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ForumBoardViewTaskActivity extends NavBarActivity {
     final static String TAG = "ForumBoardViewTaskActivity";
@@ -23,6 +34,10 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private String taskReward;
     private String taskAssignee;
     private String taskAssigneeId;
+    private String taskAssignerId;
+    private int taskId;
+    private boolean taskFeedback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,23 +78,31 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         Log.d(TAG, "Google Id: " + googleProfileInformation.getAccountUserId());
 
         Button button = findViewById(R.id.forum_board_task_button);
-        if (taskStatus) { // task is complete
+        if (!taskFeedback && taskStatus && taskAssignerId.equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it and no feedback
+            button.setText("Provide Feedback");
+            button.setOnClickListener(view -> {
+                Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                intent.putExtra("taskTitle", taskTitle);
+                intent.putExtra("taskAssignee", taskAssignee);
+                startActivity(intent);
+                button.setVisibility(View.GONE);
+            });
+        } else if (taskStatus) { // task is complete
             button.setVisibility(View.GONE);
         } else if (taskAssignee == null || taskAssignee.equals("null")) { // nobody is assigned
             button.setText("Volunteer for this task");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Volunteer Button Pressed", Toast.LENGTH_SHORT).show();
-                // set assignee and start time?
+                claimTask();
                 button.setVisibility(View.GONE);
             });
         } else if (taskAssigneeId.equals(googleProfileInformation.getAccountUserId())) { // assignee is you
-
-            // THIS STATEMENT IS NOT TRUE FOR SOME REASON
-
             button.setText("Mark task as completed");
             button.setOnClickListener(view -> {
                 Toast.makeText(ForumBoardViewTaskActivity.this, "Mark task Button Pressed", Toast.LENGTH_SHORT).show();
-                // set is completed and end time?
+                completeTask();
                 button.setVisibility(View.GONE);
             });
 
@@ -87,6 +110,75 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             button.setVisibility(View.GONE);
         }
     }
+
+    private void claimTask() {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        HashMap<String, String> params = new HashMap<>();
+
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", taskId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                new JSONObject(params),
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for submitting form: \n"
+                                + response.getString("success"));
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void completeTask() {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        HashMap<String, String> params = new HashMap<>();
+
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", taskId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                new JSONObject(params),
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for submitting form: \n"
+                                + response.getString("success"));
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
     /**
      * load extras forwarded from previous activity
      */
@@ -105,6 +197,9 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
             taskReward = extras.getString("taskReward");
             taskAssignee = extras.getString("taskAssignee");
             taskAssigneeId = extras.getString("taskAssigneeId");
+            taskId = extras.getInt("taskId");
+            taskAssignerId = extras.getString("taskAssignerId");
+            taskFeedback = extras.getBoolean("taskFeedback");
         }
     }
 }

@@ -12,7 +12,7 @@
         android:id="@+id/homepage_tasks_title_text_view2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_bold"
         android:text="@string/homepage_tasks_title"
         android:textColor="#000000"
@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homepage_updates_list_view" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <TextView
         android:id="@+id/homepage_title_text_view"
@@ -54,20 +54,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/rectangle1"
-        android:layout_width="330dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#D9D9D9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327" />
-
-    <View
         android:id="@+id/rectangle2"
         android:layout_width="330dp"
         android:layout_height="2dp"
@@ -76,42 +62,15 @@
         android:background="#D9D9D9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.663" />
-
-    <ListView
-        android:id="@+id/homepage_updates_list_view"
-        android:layout_width="330dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="12dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homepage_updates_title_text_view" />
-
-    <TextView
-        android:id="@+id/homepage_updates_title_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:fontFamily="@font/inter_bold"
-        android:text="@string/homepage_updates_title"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.307" />
 
     <ListView
         android:id="@+id/homepage_tasks_list_view"
         android:layout_width="330dp"
-        android:layout_height="160dp"
+        android:layout_height="400dp"
         android:layout_marginTop="12dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -121,25 +80,14 @@
         app:layout_constraintTop_toBottomOf="@+id/homepage_tasks_title_text_view2" />
 
     <ImageView
-        android:id="@+id/homepage_updates_forward_arrow_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.806"
-        app:layout_constraintStart_toEndOf="@+id/homepage_updates_title_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/homepage_title_text_view"
-        app:srcCompat="@drawable/arrow_forward" />
-
-    <ImageView
         android:id="@+id/homepage_tasks_forward_arrow_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.799"
+        app:layout_constraintHorizontal_bias="0.838"
         app:layout_constraintStart_toEndOf="@+id/homepage_tasks_title_text_view2"
-        app:layout_constraintTop_toBottomOf="@+id/homepage_updates_list_view"
+        app:layout_constraintTop_toBottomOf="@+id/username"
         app:srcCompat="@drawable/arrow_forward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

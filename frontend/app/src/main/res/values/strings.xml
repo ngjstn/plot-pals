@@ -27,7 +27,6 @@
     <string name="account_logout">Logout</string>
 
     <string name="homepage_title_placeholder">Good Morning,</string>
-    <string name="homepage_updates_title">Updates</string>
     <string name="homepage_tasks_title">My Tasks</string>
     <string name="good_morning_text">Good Morning,</string>
     <string name="good_afternoon_text">Good Afternoon,</string>
@@ -36,9 +35,6 @@
 
     <string name="admin_homepage_title">Admin Mode</string>
     <string name="admin_homepage_garden_applications_title">Garden Applications</string>
-    <string name="admin_homepage_reports_title">Reports</string>
-
-    <string name="updates_title">Updates</string>
 
     <string name="tasks_title">Tasks</string>
 

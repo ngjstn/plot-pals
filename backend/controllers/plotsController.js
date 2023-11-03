@@ -1,17 +1,27 @@
 const { database } = require('../database');
 
 const getAllPlots = async (req, res, next) => {
-  const { gardenId } = req.query;
-  let sql = gardenId
-    ? `SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName 
+  const { gardenId, plotOwnerId } = req.query;
+
+  const sqlInput = [];
+  let additionalQueries = '';
+
+  if (gardenId) {
+    sqlInput.add(gardenId);
+    additionalQueries += ' AND plots.gardenId = ?';
+  }
+
+  if (plotOwnerId) {
+    sqlInput.add(plotOwnerId);
+    additionalQueries += ' AND plots.plotOwnerId = ?';
+  }
+
+  const sql = `SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName 
   FROM plots JOIN gardens JOIN profiles 
-  WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id AND plots.gardenId = ?`
-    : `SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName 
-  FROM plots JOIN gardens JOIN profiles 
-  WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id`;
+  WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id${additionalQueries}`;
 
   try {
-    const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
+    const queryResults = await database.query(sql, sqlInput);
     return res.json({ data: queryResults[0] });
   } catch (err) {
     return next(err);

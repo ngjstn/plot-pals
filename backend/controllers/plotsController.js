@@ -7,12 +7,12 @@ const getAllPlots = async (req, res, next) => {
   let additionalQueries = '';
 
   if (gardenId) {
-    sqlInput.add(gardenId);
+    sqlInput.push(gardenId);
     additionalQueries += ' AND plots.gardenId = ?';
   }
 
   if (plotOwnerId) {
-    sqlInput.add(plotOwnerId);
+    sqlInput.push(plotOwnerId);
     additionalQueries += ' AND plots.plotOwnerId = ?';
   }
 

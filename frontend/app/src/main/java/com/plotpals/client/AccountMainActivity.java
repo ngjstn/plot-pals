@@ -69,13 +69,6 @@ public class AccountMainActivity extends NavBarActivity {
             startActivity(TasksIntent);
         });
 
-        AccountRatingsActivityView = findViewById(R.id.account_rating_button_view);
-        AccountRatingsActivityView.setOnClickListener(view -> {
-            Intent TasksIntent = new Intent(AccountMainActivity.this, RatingsActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(TasksIntent);
-            startActivity(TasksIntent);
-        });
-
         AccountRolesActivityView = findViewById(R.id.account_roles_button_view);
         AccountRolesActivityView.setOnClickListener(view -> {
             Intent TasksIntent = new Intent(AccountMainActivity.this, RolesActivity.class);

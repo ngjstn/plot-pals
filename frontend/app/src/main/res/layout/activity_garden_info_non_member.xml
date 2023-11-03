@@ -252,26 +252,6 @@
         app:layout_constraintVertical_bias="0.512" />
 
     <TextView
-        android:id="@+id/view_forum_"
-        android:layout_width="143.93dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="3dp"
-        android:elevation="4dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/view_forum_"
-        android:textAppearance="@style/view_forum_"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangle_2"
-        app:layout_constraintEnd_toEndOf="@+id/rectangle_2"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="@+id/rectangle_2"
-        app:layout_constraintTop_toTopOf="@+id/rectangle_2"
-        app:layout_constraintVertical_bias="0.466" />
-
-    <TextView
         android:id="@+id/join"
         android:layout_width="33dp"
         android:layout_height="25dp"
@@ -290,20 +270,6 @@
         app:layout_constraintStart_toStartOf="@+id/rectangle_5_"
         app:layout_constraintTop_toTopOf="@+id/rectangle_5_"
         app:layout_constraintVertical_bias="0.666" />
-
-    <Button
-        android:id="@+id/rectangle_2"
-        android:layout_width="170dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/rectangle_2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.261"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.91" />
 
     <Button
         android:id="@+id/rectangle_5_"

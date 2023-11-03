@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,25 +12,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +35,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -62,14 +48,10 @@ import com.plotpals.client.utils.GoogleProfileInformation;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -105,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        gardenOverlayVisiblility(View.GONE);
+        gardenOverlayVisibility(View.GONE, View.GONE);
 
         gardenSearchView = findViewById(R.id.search_garden);
         gardenSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -198,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
-                gardenOverlayVisiblility(View.GONE);
+                gardenOverlayVisibility(View.GONE, View.GONE);
             }
         });
     }
@@ -291,36 +273,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // clicking the current location marker shouldn't update the overlay
         if (marker.equals(mapsMarker))
         {
-            gardenOverlayVisiblility(View.GONE);
+            gardenOverlayVisibility(View.GONE, View.GONE);
             return false;
         }
         Garden garden = gardenMarkerMap.get(marker);
         assert garden != null;
         currentGardenSelected = garden;
-        requestMembers(currentGardenSelected.getId());
         updateGardenOverlayContent(garden);
-        gardenOverlayVisiblility(View.VISIBLE);
+        requestMembersAndShowOverlay(currentGardenSelected.getId());
+
         return false;
     }
 
-    private void gardenOverlayVisiblility(int visible) {
-        findViewById(R.id.shadow_rectangle_1).setVisibility(visible);
-        findViewById(R.id.rectangle_1).setVisibility(visible);
-        findViewById(R.id.image_rec).setVisibility(visible);
-        findViewById(R.id.rectangle_2).setVisibility(visible);
-        findViewById(R.id.rectangle_3).setVisibility(visible);
-        findViewById(R.id.garden_name).setVisibility(visible);
-        findViewById(R.id.address).setVisibility(visible);
-        findViewById(R.id.something_r).setVisibility(visible);
-        findViewById(R.id.contact_inf).setVisibility(visible);
-        findViewById(R.id.person).setVisibility(visible);
-        findViewById(R.id.call).setVisibility(visible);
-        findViewById(R.id.mail).setVisibility(visible);
-        findViewById(R.id.contact_nam).setVisibility(visible);
-        findViewById(R.id.some_id).setVisibility(visible);
-        findViewById(R.id.name_email_).setVisibility(visible);
-        findViewById(R.id.view_forum_).setVisibility(visible);
-        findViewById(R.id.more_info_j).setVisibility(visible);
+    private void gardenOverlayVisibility(int everythingElseVisible, int forumBoardVisible) {
+        findViewById(R.id.shadow_rectangle_1).setVisibility(everythingElseVisible);
+        findViewById(R.id.rectangle_1).setVisibility(everythingElseVisible);
+        findViewById(R.id.image_rec).setVisibility(everythingElseVisible);
+        findViewById(R.id.rectangle_2).setVisibility(forumBoardVisible);
+        findViewById(R.id.rectangle_3).setVisibility(everythingElseVisible);
+        findViewById(R.id.garden_name).setVisibility(everythingElseVisible);
+        findViewById(R.id.address).setVisibility(everythingElseVisible);
+        findViewById(R.id.something_r).setVisibility(everythingElseVisible);
+        findViewById(R.id.contact_inf).setVisibility(everythingElseVisible);
+        findViewById(R.id.person).setVisibility(everythingElseVisible);
+        findViewById(R.id.call).setVisibility(everythingElseVisible);
+        findViewById(R.id.mail).setVisibility(everythingElseVisible);
+        findViewById(R.id.contact_nam).setVisibility(everythingElseVisible);
+        findViewById(R.id.some_id).setVisibility(everythingElseVisible);
+        findViewById(R.id.name_email_).setVisibility(everythingElseVisible);
+        findViewById(R.id.view_forum_).setVisibility(forumBoardVisible);
+        findViewById(R.id.more_info_j).setVisibility(everythingElseVisible);
     }
 
     private void updateGardenOverlayContent(Garden garden) {
@@ -332,7 +314,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         gardenName.setText(garden.getGardenName());
         address.setText(garden.getAddress());
-       contactName.setText(garden.getGardenOwnerName());
+        contactName.setText(garden.getGardenOwnerName());
         contactEmail.setText(garden.getContactEmail());
         contactPhone.setText(garden.getContactPhoneNumber());
     }
@@ -426,7 +408,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         volleyQueue.add(jsonObjectRequest);
     }
 
-    private void requestMembers(Integer gardenId) {
+    private void requestMembersAndShowOverlay(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
 
@@ -446,20 +428,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             isCaretaker = false;
                             isGardenOwner = false;
                             for (int i = 0; i < fetchedMembers.length(); i++) {
+                                Log.d(TAG, "Fetching Members");
                                 JSONObject roleJsonObject = fetchedMembers.getJSONObject(i);
                                 Role role = new Role(roleJsonObject);
                                 if (Objects.equals(role.getProfileId(), googleProfileInformation.getAccountUserId())) {
                                     if (role.getRoleNum() == RoleEnum.PLOT_OWNER) {
+                                        Log.d(TAG, "You are Plot Owner here");
                                         isPlotOwner = true;
+                                        gardenOverlayVisibility(View.VISIBLE, View.VISIBLE);
                                     }
                                     else if (role.getRoleNum() == RoleEnum.CARETAKER) {
+                                        Log.d(TAG, "You are Care Taker here");
                                         isCaretaker = true;
+                                        gardenOverlayVisibility(View.VISIBLE, View.VISIBLE);
                                     }
                                     else if (role.getRoleNum() == RoleEnum.GARDEN_OWNER) {
+                                        Log.d(TAG, "You are Garden Owner here");
                                         isGardenOwner = true;
+                                        gardenOverlayVisibility(View.VISIBLE, View.VISIBLE);
                                     }
                                     break;
                                 }
+                            }
+
+                            if (!isCaretaker && !isGardenOwner && !isPlotOwner) {
+                                // Not any role, hide forum button.
+                                Log.d(TAG, "You are not a member here");
+                                gardenOverlayVisibility(View.VISIBLE, View.GONE);
                             }
                         }
                     } catch (JSONException e) {

@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
+import com.plotpals.client.data.Plot;
 import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
@@ -88,6 +89,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
         gardenOwnerVisibility(View.GONE);
         requestTasks();
         requestMembers(gardenId);
+        requestPlotOwnerId();
     }
 
     private void requestTasks() {
@@ -105,12 +107,11 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
                         JSONArray fetchedTaskPosts = (JSONArray)response.get("data");
                         if(fetchedTaskPosts.length() > 0) {
                             tasksList.clear();
-                            for (int i = 0; i < Math.min(fetchedTaskPosts.length(), 3); i++) {
+                            for (int i = 0; i < fetchedTaskPosts.length(); i++) {
                                 JSONObject taskJsonObject = fetchedTaskPosts.getJSONObject(i);
                                 Post taskPost = new Post(taskJsonObject);
                                 tasksList.add(taskPost);
                             }
-
                             tasksListAdapter.notifyDataSetChanged();
                         }
                     } catch (JSONException e) {
@@ -168,6 +169,47 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
                                     }
                                     break;
                                 }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+
+    private void requestPlotOwnerId() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/plots/all?plotOwnerId=%s&gardenId=%s", googleProfileInformation.getAccountUserId(), gardenId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining plot id");
+                        JSONArray fetchedTaskPosts = (JSONArray)response.get("data");
+                        if(fetchedTaskPosts.length() > 0) {
+                            for (int i = 0; i < fetchedTaskPosts.length(); i++) {
+                                JSONObject plotJsonObject = fetchedTaskPosts.getJSONObject(i);
+                                Plot plot = new Plot(plotJsonObject);
+                                TextView plotidText = findViewById(R.id.plot);
+                                plotidText.setText(Integer.toString(plot.getId()));
                             }
                         }
                     } catch (JSONException e) {

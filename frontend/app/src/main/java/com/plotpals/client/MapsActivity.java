@@ -380,7 +380,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void requestGardens() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens/all?isApproved=true";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=true";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.GET,
@@ -428,7 +428,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/roles/all?gardenId=%s", gardenId);
+        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

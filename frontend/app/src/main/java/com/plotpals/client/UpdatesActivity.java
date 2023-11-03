@@ -84,7 +84,7 @@ public class UpdatesActivity extends AppCompatActivity {
 
     private void requestUpdates() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/updates/";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/updates/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

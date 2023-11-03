@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     final static String TAG = "ProfileActivity";
     GoogleProfileInformation googleProfileInformation;
     ImageView AccountProfilePictureImageView;
-    TextView AccountProfileNameTextView;
+    TextView AccountProfileNameEditTextView;
     TextView GoogleNameTextView;
 
     @Override
@@ -39,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         loadExtras();
         requestProfileInformation();
 
-        AccountProfileNameTextView = findViewById(R.id.account_name_text_view);
+        AccountProfileNameEditTextView = findViewById(R.id.account_name_text_view);
 
         GoogleNameTextView = findViewById(R.id.name);
         GoogleNameTextView.setText(googleProfileInformation.getAccountGoogleName());
@@ -54,7 +55,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .into(AccountProfilePictureImageView);
 
         findViewById(R.id.close_icon).setOnClickListener(view -> finish());
-        findViewById(R.id.check_icon).setOnClickListener(view -> finish());
+//        findViewById(R.id.check_icon).setOnClickListener(view -> finish());
+        findViewById(R.id.check_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNameChange(AccountProfileNameEditTextView.getText().toString());
+                finish();
+            }
+        });
     }
 
     private void requestProfileInformation() {
@@ -76,8 +84,45 @@ public class ProfileActivity extends AppCompatActivity {
                         if (fetchedProfile.length() > 0) {
                             /* Use fetched profile information to populate page with relevant account information */
                             Profile profile = new Profile(fetchedProfile.getJSONObject(0));
-                            AccountProfileNameTextView.setText(profile.getDisplayName());
+                            AccountProfileNameEditTextView.setHint(profile.getDisplayName());
                         }
+
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void sendNameChange(String name) {
+
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("displayName", name);
+        Log.d(TAG, "Sending name change to " + name);
+
+        String url = "http://10.0.2.2:8081/profiles/";
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                new JSONObject(params),
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Response for submitting form: \n"
+                                + response.getString("success"));
 
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());

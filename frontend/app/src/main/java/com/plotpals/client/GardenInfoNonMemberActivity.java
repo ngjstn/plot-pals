@@ -79,7 +79,7 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
 
     private void requestGardenInfo(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens/all?isApproved=true&gardenId=%s", gardenId);
+        String url = String.format("http://10.0.2.2:8081/gardens/all?isApproved=true&gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -115,7 +115,7 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
 
     private void joinGardenRole(RoleEnum role) throws JSONException {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/roles";
+        String url = "http://10.0.2.2:8081/roles";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("roleNum", role.ordinal());
         jsonBody.put("gardenId", gardenId);

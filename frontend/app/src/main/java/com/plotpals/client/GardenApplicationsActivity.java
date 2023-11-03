@@ -87,7 +87,7 @@ public class GardenApplicationsActivity extends AppCompatActivity {
 
     private void requestGardenApplications() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens/all?isApproved=false";
+        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

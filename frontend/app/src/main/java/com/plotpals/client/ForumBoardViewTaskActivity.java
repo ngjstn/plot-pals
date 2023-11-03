@@ -73,7 +73,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
 
     private void loadTask() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/posts/all?postId=" + postId;
+        String url = "http://10.0.2.2:8081/posts/all?postId=" + postId;
         Request<?> req = new JsonObjectRequest(
         Request.Method.GET,
         url,
@@ -147,7 +147,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
         Log.d(TAG, "Claiming Task: " + task.getTask().getId());
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/posts/tasks/claim?taskId=%s", task.getTask().getId());
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/claim?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -182,7 +182,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
         HashMap<String, String> params = new HashMap<>();
 
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/posts/tasks/complete?taskId=%s", task.getTask().getId());
+        String url = String.format("http://10.0.2.2:8081/posts/tasks/complete?taskId=%s", task.getTask().getId());
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,

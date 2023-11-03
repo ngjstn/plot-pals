@@ -44,18 +44,6 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
         setContentView(R.layout.activity_garden_info_non_member);
         loadExtras();
 
-        findViewById(R.id.view_forum_).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(GardenInfoNonMemberActivity.this, "View Forum Board pressed", Toast.LENGTH_SHORT).show();
-                Intent forumBoard = new Intent(GardenInfoNonMemberActivity.this, ForumBoardMainActivity.class);
-                googleProfileInformation.loadGoogleProfileInformationToIntent(forumBoard);
-                forumBoard.putExtra("gardenId", gardenId);
-                forumBoard.putExtra("gardenName", currentGarden.getGardenName());
-                startActivity(forumBoard);
-            }
-        });
-
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

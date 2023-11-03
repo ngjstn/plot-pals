@@ -110,7 +110,9 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
                             for (int i = 0; i < fetchedTaskPosts.length(); i++) {
                                 JSONObject taskJsonObject = fetchedTaskPosts.getJSONObject(i);
                                 Post taskPost = new Post(taskJsonObject);
-                                tasksList.add(taskPost);
+                                if (taskPost.getPostGardenId() == gardenId) {
+                                    tasksList.add(taskPost);
+                                }
                             }
                             tasksListAdapter.notifyDataSetChanged();
                         }

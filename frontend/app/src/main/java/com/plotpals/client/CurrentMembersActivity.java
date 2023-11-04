@@ -148,7 +148,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
 
     private void requestPlots(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//plots/all?gardenId=", gardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/plots/all?gardenId=", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -190,7 +190,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//roles/all?gardenId=%s", gardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -247,7 +247,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
 
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//plots/" + plotId;
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/plots/" + plotId;
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,
@@ -289,7 +289,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
             jsonRequestBody.put("gardenId", gardenId);
             jsonRequestBody.put("plotOwnerId", caretakerId);
 
-            String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//plots";
+            String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/plots";
             Request<?> jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     url,

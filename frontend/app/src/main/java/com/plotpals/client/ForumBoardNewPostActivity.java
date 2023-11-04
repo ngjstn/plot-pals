@@ -72,7 +72,7 @@ public class ForumBoardNewPostActivity extends NavBarActivity {
         params.put("postTitle", titleText.getText().toString());
         params.put("postDesc", bodyText.getText().toString());
 
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//posts?gardenId=%s", currentGardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/posts?gardenId=%s", currentGardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,

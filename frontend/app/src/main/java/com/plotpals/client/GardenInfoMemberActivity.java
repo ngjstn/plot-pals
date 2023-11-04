@@ -94,7 +94,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//posts/tasks?userIs=assignee";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -137,7 +137,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//roles/all?gardenId=%s", gardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -195,7 +195,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
 
     private void requestPlotOwnerId() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//plots/all?plotOwnerId=%s&gardenId=%s", googleProfileInformation.getAccountUserId(), gardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/plots/all?plotOwnerId=%s&gardenId=%s", googleProfileInformation.getAccountUserId(), gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

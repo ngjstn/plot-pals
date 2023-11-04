@@ -127,7 +127,7 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
         params.put("taskDeadline", deadlineText.getText().toString());
         params.put("taskReward", rewardText.getText().toString());
 
-        String url = String.format("http://10.0.2.2:8081/posts/tasks?gardenId=%s", currentGardenId);
+        String url = String.format("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//posts/tasks?gardenId=%s", currentGardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
             Request.Method.POST,

@@ -10,7 +10,7 @@ public class TaskSocketHandler {
 
     public static synchronized void setSocket() {
         try {
-            taskSocket = IO.socket("http://10.0.2.2:8081");
+            taskSocket = IO.socket("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

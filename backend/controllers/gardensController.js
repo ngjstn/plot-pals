@@ -35,7 +35,7 @@ const getGardensForAuthorizedUser = async (req, res, next) => {
     isApprovedConditionString = 'AND gardens.isApproved = false';
   }
 
-  const sql = `SELECT gardens.*, profiles.displayName AS gardenOwnerName, roles.roleNum AS roleNumOfCurrentAuthorizedUserInGarden FROM gardens JOIN roles JOIN profiles WHERE (roles.profileId = ? AND roles.profileId = profiles.id AND roles.gardenId = gardens.id${isApprovedConditionString}) ORDER BY id DESC`;
+  const sql = `SELECT gardens.*, profiles.displayName AS gardenOwnerName, roles.roleNum AS roleNumOfCurrentAuthorizedUserInGarden FROM gardens JOIN roles JOIN profiles WHERE (roles.profileId = ? AND roles.profileId = profiles.id AND roles.gardenId = gardens.id ${isApprovedConditionString}) ORDER BY id DESC`;
 
   try {
     const queryResults = await database.query(sql, [req.userId]);

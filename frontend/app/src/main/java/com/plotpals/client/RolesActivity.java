@@ -86,7 +86,7 @@ public class RolesActivity extends AppCompatActivity {
 
     private void requestRoles() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//roles/";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/roles/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

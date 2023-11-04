@@ -119,7 +119,7 @@ public class AppEntryActivity extends AppCompatActivity {
      */
     private void checkIfUserIsAdminAndRedirect() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//adminProfiles/all?profileId=" + googleProfileInformation.getAccountUserId();;
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/adminProfiles/all?profileId=" + googleProfileInformation.getAccountUserId();;
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -162,7 +162,7 @@ public class AppEntryActivity extends AppCompatActivity {
      */
     private void redirectToProfileCreationOrSkipIt() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -206,7 +206,7 @@ public class AppEntryActivity extends AppCompatActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
 
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

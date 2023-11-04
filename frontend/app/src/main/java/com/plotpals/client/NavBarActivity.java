@@ -72,7 +72,7 @@ public class NavBarActivity extends AppCompatActivity {
 
     private void startGardenActivity() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//gardens";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens";
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

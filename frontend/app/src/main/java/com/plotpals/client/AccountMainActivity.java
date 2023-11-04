@@ -1,6 +1,7 @@
 package com.plotpals.client;
 
 import android.content.Intent;
+import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,6 +75,15 @@ public class AccountMainActivity extends NavBarActivity {
             Intent TasksIntent = new Intent(AccountMainActivity.this, RolesActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(TasksIntent);
             startActivity(TasksIntent);
+        });
+
+        findViewById(R.id.rating_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent ratingIntent = new Intent(AccountMainActivity.this, RatingExplainActivity.class);
+                googleProfileInformation.loadGoogleProfileInformationToIntent(ratingIntent);
+                startActivity(ratingIntent);
+            }
         });
 
         AccountProfilePictureImageView = findViewById(R.id.account_pic_image_view);

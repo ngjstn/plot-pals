@@ -105,7 +105,7 @@ public class HomepageActivity extends NavBarActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com//posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

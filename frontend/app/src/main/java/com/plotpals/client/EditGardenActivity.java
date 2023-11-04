@@ -19,21 +19,8 @@ public class EditGardenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_garden);
         loadExtras();
 
-        findViewById(R.id.close_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent manageActivity = new Intent(EditGardenActivity.this, ManageGardenActivity.class);
-                startActivity(manageActivity);
-            }
-        });
-
-        findViewById(R.id.check_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent manageActivity = new Intent(EditGardenActivity.this, ManageGardenActivity.class);
-                startActivity(manageActivity);
-            }
-        });
+        findViewById(R.id.close_icon).setOnClickListener(view -> finish());
+        findViewById(R.id.check_icon).setOnClickListener(view -> finish());
     }
 
     private void loadExtras() {

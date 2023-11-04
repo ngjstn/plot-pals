@@ -20,19 +20,6 @@
         app:layout_constraintTop_toBottomOf="@+id/admin_homepage_title_text_view" />
 
     <TextView
-        android:id="@+id/admin_homepage_reports_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="@string/admin_homepage_reports_title"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.088"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_homepage_garden_applications_list_view" />
-
-    <TextView
         android:id="@+id/admin_homepage_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +35,7 @@
     <ListView
         android:id="@+id/admin_homepage_garden_applications_list_view"
         android:layout_width="350dp"
-        android:layout_height="160dp"
+        android:layout_height="500dp"
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -66,26 +53,4 @@
         app:layout_constraintTop_toBottomOf="@+id/admin_homepage_title_text_view"
         app:srcCompat="@drawable/arrow_forward" />
 
-    <ListView
-        android:id="@+id/admin_homepage_reports_list_view"
-        android:layout_width="350dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="148dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_homepage_reports_title"
-        app:layout_constraintVertical_bias="0.739" />
-
-    <ImageView
-        android:id="@+id/admin_homepage_reports_forward_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.822"
-        app:layout_constraintStart_toEndOf="@+id/admin_homepage_reports_title"
-        app:layout_constraintTop_toBottomOf="@+id/admin_homepage_garden_applications_list_view"
-        app:srcCompat="@drawable/arrow_forward" />
 </androidx.constraintlayout.widget.ConstraintLayout>

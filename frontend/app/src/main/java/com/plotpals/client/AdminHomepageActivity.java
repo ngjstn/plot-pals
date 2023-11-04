@@ -18,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
-import com.plotpals.client.data.Update;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;

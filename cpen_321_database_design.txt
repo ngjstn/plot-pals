@@ -1,16 +1,12 @@
 TABLES:
 Garden
 Id (int), gardenName (string), address (string), longitude (string), latitude (string), profileId (string, references Profile id column), isApproved (boolean), gardenPicture (BLOB), contactPhoneNumber (string), contactEmail (string), numberOfPlots (int) 
-Report
-Id (int), reporterId (string, references Profile id column), reporteeId (string, references Profile id column) , reason (string), comment (string)
 Profile
 Id (string which comes from google), rating (int with 2 decimals scale 0-5), displayName (string), competence (int)
 Admin Profile
 Id (string which comes from google)
 Plot
 Id (int), gardenId (int, references Garden id), profileId (string, references Profile id column)
-Updates
-Id (int), profileId (string, references Profile id column), description (string), title (string)
 Tasks
 Id (int), plotId (int, references Plot id column), reward (string), minimumRating (int, scale from 0-5), assigneeId (string, references Profile id column), isCompleted (boolean), assigneeIsProvidedFeedback (Boolean), deadline (DATETIME, YYYY-MM-DD hh:mm:ss format), taskStartTime (DATETIME, YYYY-MM-DD hh:mm:ss format), taskEndTime (DATETIME, YYYY-MM-DD hh:mm:ss format), expectedTaskDurationInHours (int)
 Posts

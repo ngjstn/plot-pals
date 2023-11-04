@@ -19,8 +19,6 @@ SELECT * FROM plots;
 SELECT * FROM posts;
 SELECT * FROM tasks;
 SELECT * FROM admin_profiles;
-SELECT * FROM reports;
-SELECT * FROM updates;
 
 /* INSERT STATEMENTS TEMPLATE TO INITIALIZE TEST DATA FOR NON-PROFILE TABLES */
 INSERT INTO roles(
@@ -102,27 +100,6 @@ INSERT INTO tasks(
 	'2023-01-01 10:00:00' /*YYYY-MM-DD*/, 
 	'2023-03-01 10:00:00' /*YYYY-MM-DD*/, 
 	100 /*some int*/
-);
-INSERT INTO reports(
-	reportedId, 
-	reporteeId, 
-	reason, 
-	comment
-) VALUES (
-	'{insert some profile.id}',
-	'{insert some profile.id}', 
-	'some reason', 
-	'some comment'
-);
-
-INSERT INTO updates(
-	userId, 
-	description, 
-	title
-) VALUES (
-	'{insert your profile.id}', 
-	"some test description", 
-	"some title"
 );
 
 /* UPDATE STATEMENT TEMPLATE */

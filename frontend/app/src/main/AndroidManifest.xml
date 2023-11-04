@@ -103,10 +103,6 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UpdatesActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".HomepageActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -2,7 +2,6 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,14 +18,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
-import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

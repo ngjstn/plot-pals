@@ -1,7 +1,5 @@
 package com.plotpals.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;

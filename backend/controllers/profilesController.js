@@ -82,7 +82,7 @@ const submitFeedback = async (req, res, next) => {
   console.log('calculated rating: ' + calculatedRating);
   try {
     const sqlUpdateNewRating = `UPDATE profiles SET rating = ? WHERE id = ?`;
-    const updateResults = await database.query(sqlUpdateNewRating, [calculatedRating, feedBackReceiverId]);
+    await database.query(sqlUpdateNewRating, [calculatedRating, feedBackReceiverId]);
     // return res.json({ success: updateResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);

@@ -61,16 +61,16 @@ public class CurrentMembersActivity extends AppCompatActivity {
             @NonNull
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
+                View v = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
 
-                TextView plotIdentifier = view.findViewById(R.id.plot_id);
+                TextView plotIdentifier = v.findViewById(R.id.plot_id);
 
                 for(int j = 0; j < plotsList.size(); j++) {
                     if(plotsList.get(j).getPlotOwnerId().equals(plotOwnerList.get(i).getProfileId())){
                         int plotIdOfCurrentPlotOwner = plotsList.get(j).getId();
                         plotIdentifier.setText(plotIdOfCurrentPlotOwner+ ":");
 
-                        View horizontalDots = view.findViewById(R.id.more_horiz);
+                        View horizontalDots = v.findViewById(R.id.more_horiz);
                         horizontalDots.setOnClickListener(horizontalDotsView -> {
                             PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
                             menu.getMenuInflater().inflate(R.menu.management_menu_for_plotowners, menu.getMenu());
@@ -84,10 +84,10 @@ public class CurrentMembersActivity extends AppCompatActivity {
                     }
                 }
 
-                TextView name = view.findViewById(R.id.name);
+                TextView name = v.findViewById(R.id.name);
                 name.setText(plotOwnerList.get(i).getGardenMemberName());
 
-                return view;
+                return v;
             }
         };
         plotOwnerListView.setAdapter(plotOwnerAdapter);
@@ -99,9 +99,9 @@ public class CurrentMembersActivity extends AppCompatActivity {
             @NonNull
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
+                View v = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
 
-                View horizontalDots = view.findViewById(R.id.more_horiz);
+                View horizontalDots = v.findViewById(R.id.more_horiz);
                 horizontalDots.setOnClickListener(horizontalDotsView -> {
                     PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
                     menu.getMenuInflater().inflate(R.menu.management_menu_for_caretakers, menu.getMenu());
@@ -113,10 +113,10 @@ public class CurrentMembersActivity extends AppCompatActivity {
                     menu.show();
                 });
 
-                TextView name = view.findViewById(R.id.name);
+                TextView name = v.findViewById(R.id.name);
                 name.setText(caretakerList.get(i).getGardenMemberName());
 
-                return view;
+                return v;
             }
         };
         caretakerListView.setAdapter(caretakerAdapter);

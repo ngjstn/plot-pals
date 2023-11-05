@@ -48,7 +48,7 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
                 try {
                     joinGardenRole(RoleEnum.CARETAKER);
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.d(TAG, "Error joining garden");
                 }
             }
         });

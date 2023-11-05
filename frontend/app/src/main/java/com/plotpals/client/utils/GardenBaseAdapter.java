@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.plotpals.client.GardenDiscovery.GardenDiscoverySearchActivity;
-import com.plotpals.client.GardenDiscovery.GardenDiscoveryMapsActivity;
+import com.plotpals.client.discovery.GardenDiscoverySearchActivity;
+import com.plotpals.client.discovery.GardenDiscoveryMapsActivity;
 import com.plotpals.client.R;
 import com.plotpals.client.data.Garden;
 

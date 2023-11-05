@@ -114,7 +114,7 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                // do something
             }
         }) {
             @Override

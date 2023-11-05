@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
-import com.plotpals.client.GardenDiscovery.GardenDiscoveryMapsActivity;
-import com.plotpals.client.HomePage.HomePageActivity;
+import com.plotpals.client.discovery.GardenDiscoveryMapsActivity;
+import com.plotpals.client.home.HomePageActivity;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 /**

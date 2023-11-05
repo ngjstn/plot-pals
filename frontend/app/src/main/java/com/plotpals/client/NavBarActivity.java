@@ -12,10 +12,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.Account.AccountMainActivity;
-import com.plotpals.client.HomePage.HomePageActivity;
-import com.plotpals.client.MyGarden.MyGardenNoGardenActivity;
-import com.plotpals.client.MyGarden.MyGardenYesGardenActivity;
+import com.plotpals.client.account.AccountMainActivity;
+import com.plotpals.client.home.HomePageActivity;
+import com.plotpals.client.mygarden.MyGardenNoGardenActivity;
+import com.plotpals.client.mygarden.MyGardenYesGardenActivity;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;

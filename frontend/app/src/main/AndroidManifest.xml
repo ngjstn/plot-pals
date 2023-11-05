@@ -17,118 +17,118 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Account.AccountRatingExplainActivity"
+            android:name=".account.AccountRatingExplainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardFeedbackActivity"
+            android:name=".forum.ForumBoardFeedbackActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardViewTaskActivity"
+            android:name=".forum.ForumBoardViewTaskActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenApplications.GardenApplicationActivity"
+            android:name=".applications.GardenApplicationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenApplications.GardenApplicationConfirmActivity"
+            android:name=".applications.GardenApplicationConfirmActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardViewPostActivity"
+            android:name=".forum.ForumBoardViewPostActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenApplications.GardenApplicationSingleActivity"
+            android:name=".applications.GardenApplicationSingleActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenApplications.GardenApplicationsActivity"
+            android:name=".applications.GardenApplicationsActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenApplications.AdminHomepageActivity"
+            android:name=".applications.AdminHomepageActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardNewTaskActivity"
+            android:name=".forum.ForumBoardNewTaskActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardNewPostActivity"
+            android:name=".forum.ForumBoardNewPostActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardCurrentMembersActivity"
+            android:name=".forum.ForumBoardCurrentMembersActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardEditGardenActivity"
+            android:name=".forum.ForumBoardEditGardenActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardManageGardenActivity"
+            android:name=".forum.ForumBoardManageGardenActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoard.ForumBoardMainActivity"
+            android:name=".forum.ForumBoardMainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Account.AccountRolesActivity"
+            android:name=".account.AccountRolesActivity"
             android:exported="false"
             android:label="Roles Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Account.AccountProfileActivity"
+            android:name=".account.AccountProfileActivity"
             android:exported="false"
             android:label="Profile Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenDiscovery.GardenDiscoveryInfoMemberActivity"
+            android:name=".discovery.GardenDiscoveryInfoMemberActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyGarden.MyGardenNoGardenActivity"
+            android:name=".mygarden.MyGardenNoGardenActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyGarden.MyGardenYesGardenActivity"
+            android:name=".mygarden.MyGardenYesGardenActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HomePage.HomePageTasksActivity"
+            android:name=".home.HomePageTasksActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HomePage.HomePageActivity"
+            android:name=".home.HomePageActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenDiscovery.GardenDiscoveryInfoNonMemberActivity"
+            android:name=".discovery.GardenDiscoveryInfoNonMemberActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GardenDiscovery.GardenDiscoveryListView"
+            android:name=".discovery.GardenDiscoveryListView"
             android:exported="false" />
         <activity
-            android:name=".GardenDiscovery.GardenDiscoverySearchActivity"
+            android:name=".discovery.GardenDiscoverySearchActivity"
             android:exported="false" />
         <activity
-            android:name=".GardenDiscovery.GardenDiscoveryMapsActivity"
+            android:name=".discovery.GardenDiscoveryMapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".NavBarActivity"
             android:exported="false" />
         <activity
-            android:name=".HomePage.AppEntryCreateProfileActivity"
+            android:name=".home.AppEntryCreateProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Account.AccountMainActivity"
+            android:name=".account.AccountMainActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -136,7 +136,7 @@
             android:exported="true"
             android:label="@string/temporary_homepage_label" />
         <activity
-            android:name=".HomePage.AppEntryActivity"
+            android:name=".home.AppEntryActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -3,7 +3,6 @@ package com.plotpals.client;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,18 +17,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Plot;
 import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
-import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;

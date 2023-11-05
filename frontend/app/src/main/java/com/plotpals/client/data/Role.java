@@ -19,7 +19,7 @@ public class Role {
 
     private String gardenMemberName;
 
-    public Role(String profileId, int gardenId, RoleEnum roleNum, String gardenName, String gardenMemberName) {
+    private Role(String profileId, int gardenId, RoleEnum roleNum, String gardenName, String gardenMemberName) {
         this.profileId = profileId;
         this.gardenId = gardenId;
         this.roleNum = roleNum;

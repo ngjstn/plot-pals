@@ -14,7 +14,7 @@ public class Profile {
 
     private int competence;
 
-    public Profile(String id, double rating, String displayName, int competence) {
+    private Profile(String id, double rating, String displayName, int competence) {
         this.id = id;
         this.rating = rating;
         this.displayName = displayName;

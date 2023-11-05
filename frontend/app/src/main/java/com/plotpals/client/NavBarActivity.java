@@ -26,7 +26,6 @@ public class NavBarActivity extends AppCompatActivity {
     final static String TAG = "NavBarActivity";
 
     GoogleProfileInformation googleProfileInformation;
-    private boolean haveGardens = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

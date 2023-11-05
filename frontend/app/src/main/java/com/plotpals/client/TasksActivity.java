@@ -65,7 +65,7 @@ public class TasksActivity extends AppCompatActivity {
                 text1.setText(tasksList.get(position).getGardenName() + " - " + tasksList.get(position).getTitle());
                 text1.setTypeface(null, Typeface.BOLD);
 
-                if (tasksList.get(position).getTask().isCompleted() == true) {
+                if (tasksList.get(position).getTask().isCompleted()) {
                     text2.setText("Status: Completed" + "\n");
                 } else {
                     text2.setText("Status: In progress" + "\n");

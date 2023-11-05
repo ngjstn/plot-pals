@@ -12,6 +12,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.Account.AccountMainActivity;
+import com.plotpals.client.HomePage.HomePageActivity;
+import com.plotpals.client.MyGarden.MyGardenNoGardenActivity;
+import com.plotpals.client.MyGarden.MyGardenYesGardenActivity;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
@@ -23,9 +27,9 @@ import java.util.Map;
 
 public class NavBarActivity extends AppCompatActivity {
 
-    final static String TAG = "NavBarActivity";
+    public final static String TAG = "NavBarActivity";
 
-    GoogleProfileInformation googleProfileInformation;
+    public GoogleProfileInformation googleProfileInformation;
     private boolean haveGardens = false;
 
     @Override
@@ -38,7 +42,7 @@ public class NavBarActivity extends AppCompatActivity {
         Button homeButton = findViewById(R.id.button_navbar_home);
         homeButton.setOnClickListener(v -> {
             Log.d(TAG, "Clicking Home Button");
-            Intent intent = new Intent(NavBarActivity.this, HomepageActivity.class);
+            Intent intent = new Intent(NavBarActivity.this, HomePageActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
             startActivity(intent);
         });

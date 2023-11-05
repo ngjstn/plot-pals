@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dip"
-    tools:context=".GardenListView">
+    tools:context=".GardenDiscovery.GardenDiscoveryListView">
 
 
     <TextView

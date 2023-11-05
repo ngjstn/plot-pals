@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingleGardenApplicationActivity">
+    tools:context=".GardenApplications.GardenApplicationSingleActivity">
 
     <TextView
         android:id="@+id/single_garden_application_title_text_view"

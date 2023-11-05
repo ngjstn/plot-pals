@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AppEntryPage">
+    android:layout_height="match_parent">
 
 
         <fragment
@@ -12,7 +11,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MapsActivity"
+            tools:context=".GardenDiscovery.GardenDiscoveryMapsActivity"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="301dp" />
 
@@ -32,7 +31,7 @@
             app:layout_constraintVertical_bias="0.062" />
 
 
-        <SearchView
+        <android.widget.SearchView
             android:id="@+id/search_garden"
             android:layout_width="330dp"
             android:layout_height="40dp"

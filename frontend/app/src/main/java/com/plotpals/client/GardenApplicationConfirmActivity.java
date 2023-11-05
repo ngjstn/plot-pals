@@ -28,7 +28,6 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
     private String gardenName;
     private String gardenAddress;
     private String gardenPlots;
-    private String gardenContactName;
     private String gardenPhone;
     private String gardenEmail;
     private TextView gardenNameDisplay;

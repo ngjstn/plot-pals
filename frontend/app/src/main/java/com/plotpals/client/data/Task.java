@@ -18,7 +18,6 @@ public class Task {
     private double minimumRating;
 
     private String assigneeId;
-    private String assignerId;
 
     private boolean isCompleted;
 

@@ -1,7 +1,6 @@
 package com.plotpals.client;
 
 import android.content.Intent;
-import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +22,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.appcompat.app.AppCompatActivity;
-import android.widget.Button;
 
 public class AccountMainActivity extends NavBarActivity {
 

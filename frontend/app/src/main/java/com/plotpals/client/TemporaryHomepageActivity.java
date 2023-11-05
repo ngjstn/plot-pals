@@ -13,7 +13,6 @@ public class TemporaryHomepageActivity extends NavBarActivity {
     final static String TAG = "TemporaryHomepageActivity";
 
     GoogleProfileInformation googleProfileInformation;
-    private Button actualHomepageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +23,7 @@ public class TemporaryHomepageActivity extends NavBarActivity {
          * Insert buttons for feature pages here
          */
 
-        actualHomepageButton = findViewById(R.id.actual_homepage_button);
+        Button actualHomepageButton = findViewById(R.id.actual_homepage_button);
         actualHomepageButton.setOnClickListener(view -> {
             Log.d(TAG, "Clicking Homepage Button");
             Intent homepageIntent = new Intent(TemporaryHomepageActivity.this, HomepageActivity.class);

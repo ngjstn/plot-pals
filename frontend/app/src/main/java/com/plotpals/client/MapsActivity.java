@@ -77,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         checkLocationPermission();
         loadExtras();
 
-        com.plotpals.client.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

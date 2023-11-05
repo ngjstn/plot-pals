@@ -15,7 +15,7 @@ public class Plot {
 
     private String gardenName;
 
-    public Plot(int id, int gardenId, String plotOwnerId, String plotOwnerName, String gardenName) {
+    private Plot(int id, int gardenId, String plotOwnerId, String plotOwnerName, String gardenName) {
         this.id = id;
         this.gardenId = gardenId;
         this.plotOwnerId = plotOwnerId;

@@ -22,20 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GardenApplicationConfirmActivity extends AppCompatActivity {
-    final static String TAG = "GardenAppliConfActivity";
+    final static String TAG = "GardenApplicationConfActivity";
     GoogleProfileInformation googleProfileInformation;
-    private Button confirmButton;
     private String gardenName;
     private String gardenAddress;
     private String gardenPlots;
     private String gardenPhone;
     private String gardenEmail;
-    private TextView gardenNameDisplay;
-    private TextView gardenAddressDisplay;
-    private TextView gardenPlotsDisplay;
-    private TextView gardenContactNameDisplay;
-    private TextView gardenPhoneDisplay;
-    private TextView gardenEmailDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +43,12 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         gardenPhone = applicationExtras.getString("gardenPhone");
         gardenEmail = applicationExtras.getString("gardenEmail");
 
-        gardenNameDisplay = findViewById(R.id.garden_name_placeholder);
-        gardenAddressDisplay = findViewById(R.id.garden_address_placeholder);
-        gardenPlotsDisplay = findViewById(R.id.garden_plot_placeholder);
-        gardenContactNameDisplay = findViewById(R.id.garden_contact_name_placeholder);
-        gardenPhoneDisplay = findViewById(R.id.garden_contact_phone_placeholder);
-        gardenEmailDisplay = findViewById(R.id.garden_contact_email_placeholder);
+        TextView gardenNameDisplay = findViewById(R.id.garden_name_placeholder);
+        TextView gardenAddressDisplay = findViewById(R.id.garden_address_placeholder);
+        TextView gardenPlotsDisplay = findViewById(R.id.garden_plot_placeholder);
+        TextView gardenContactNameDisplay = findViewById(R.id.garden_contact_name_placeholder);
+        TextView gardenPhoneDisplay = findViewById(R.id.garden_contact_phone_placeholder);
+        TextView gardenEmailDisplay = findViewById(R.id.garden_contact_email_placeholder);
 
         gardenNameDisplay.setText(gardenName);
         gardenAddressDisplay.setText(gardenAddress);
@@ -64,7 +57,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         gardenEmailDisplay.setText(gardenEmail);
         gardenContactNameDisplay.setText(googleProfileInformation.getAccountGoogleName());
 
-        confirmButton = findViewById(R.id.confirm_application_button);
+        Button confirmButton = findViewById(R.id.confirm_application_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

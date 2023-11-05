@@ -21,7 +21,7 @@ public class Post {
 
     private String assignerName;
 
-    public Post(int id, String title, String description, String assignerId, int postGardenId, Task task, String gardenName, String assignerName) {
+    private Post(int id, String title, String description, String assignerId, int postGardenId, Task task, String gardenName, String assignerName) {
         this.id = id;
         this.title = title;
         this.description = description;

@@ -59,7 +59,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
         params.put("taskId", String.valueOf(taskId));
         Log.d(TAG, "Sending feedback for task ID: " + taskId);
 
-        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles/rating";
+        String url = "http://10.0.2.2:8081/profiles/rating";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,

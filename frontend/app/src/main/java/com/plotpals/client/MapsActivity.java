@@ -59,13 +59,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     final static String TAG = "MapsActivity";
     public static GoogleMap mMap;
-    private ActivityMapsBinding binding;
     private Marker mapsMarker;
     public static String locationCityName;
     public static double locationLat = 0;
     public static double locationLong = 0;
-    private Integer locationPollRate_ms = 1000;
-    private SearchView gardenSearchView;
     static GoogleProfileInformation googleProfileInformation;
     private List<Garden> gardenList = new ArrayList<>();
     private HashMap<Marker, Garden> gardenMarkerMap = new HashMap<>();
@@ -80,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         checkLocationPermission();
         loadExtras();
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        com.plotpals.client.databinding.ActivityMapsBinding binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -90,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         gardenOverlayVisibility(View.GONE, View.GONE);
 
-        gardenSearchView = findViewById(R.id.search_garden);
+        SearchView gardenSearchView = findViewById(R.id.search_garden);
         gardenSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -266,6 +263,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             return;
         }
+        Integer locationPollRate_ms = 1000;
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, locationPollRate_ms, 0, this);
     }
 

@@ -14,15 +14,12 @@ import com.plotpals.client.utils.GoogleProfileInformation;
 
 
 public class GardenApplicationActivity extends AppCompatActivity {
-    private Button nextButton;
     GoogleProfileInformation googleProfileInformation;
-    private boolean sendable;
     private EditText gardenName;
     private EditText gardenAddress;
     private EditText gardenPlots;
     private EditText gardenPhone;
     private EditText gardenEmail;
-    private TextView contactName;
     private TextView nameError;
     private TextView addressError;
     private TextView plotsError;
@@ -36,7 +33,7 @@ public class GardenApplicationActivity extends AppCompatActivity {
         loadExtras();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        contactName = findViewById(R.id.garden_contact_name_loaded);
+        TextView contactName = findViewById(R.id.garden_contact_name_loaded);
         contactName.setText(googleProfileInformation.getAccountGoogleName());
 
         gardenName = findViewById(R.id.garden_name_input);
@@ -51,12 +48,12 @@ public class GardenApplicationActivity extends AppCompatActivity {
         phoneError = findViewById(R.id.garden_phone_error);
         emailError = findViewById(R.id.garden_email_error);
 
-        nextButton = findViewById(R.id.next_button);
+        Button nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent gardenAppConfIntent = new Intent(GardenApplicationActivity.this, GardenApplicationConfirmActivity.class);
-                sendable = parseGardenInformation();
+                Boolean sendable = parseGardenInformation();
                 if (sendable) {
                     gardenAppConfIntent.putExtra("gardenName", gardenName.getText().toString());
                     gardenAppConfIntent.putExtra("gardenAddress", gardenAddress.getText().toString());

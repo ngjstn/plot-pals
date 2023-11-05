@@ -29,11 +29,6 @@ public class CreateProfileActivity extends AppCompatActivity {
 
     GoogleProfileInformation googleProfileInformation;
 
-    private TextView GoogleLoginNameTextView;
-    private ImageView ProfilePictureImageView;
-
-    private ImageView CheckmarkImageView;
-
     private EditText DisplayNameEditTextView;
 
     private TextView ErrorTextView;
@@ -46,23 +41,23 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_create_profile);
 
-        GoogleLoginNameTextView = findViewById(R.id.create_profile_google_login_name_description_text_view);
-        GoogleLoginNameTextView.setText("Logged in as:\n" + googleProfileInformation.getAccountGoogleName());
+        TextView googleLoginNameTextView = findViewById(R.id.create_profile_google_login_name_description_text_view);
+        googleLoginNameTextView.setText("Logged in as:\n" + googleProfileInformation.getAccountGoogleName());
 
-        ProfilePictureImageView = findViewById(R.id.create_profile_profile_picture_image_view);
+        ImageView profilePictureImageView = findViewById(R.id.create_profile_profile_picture_image_view);
         Picasso.get()
                 .load(googleProfileInformation.getAccountGoogleProfilePictureImageUrl())
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.default_profile_picture)
                 .error(R.drawable.default_profile_picture)
-                .into(ProfilePictureImageView);
+                .into(profilePictureImageView);
 
         ErrorTextView = findViewById(R.id.create_profile_error_text_view);
         DisplayNameEditTextView= findViewById(R.id.create_profile_display_name_edit_text_view);
 
-        CheckmarkImageView = findViewById(R.id.create_profile_checkmark_image_view);
-        CheckmarkImageView.setOnClickListener((view) -> {
+        ImageView checkmarkImageView = findViewById(R.id.create_profile_checkmark_image_view);
+        checkmarkImageView.setOnClickListener((view) -> {
             createProfileAndRedirect();
         });
     }

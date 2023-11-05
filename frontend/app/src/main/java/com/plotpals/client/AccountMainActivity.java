@@ -43,7 +43,6 @@ public class AccountMainActivity extends NavBarActivity {
 
     View AccountRolesActivityView;
 
-    private View applyButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class AccountMainActivity extends NavBarActivity {
                 .error(R.drawable.default_profile_picture)
                 .into(AccountProfilePictureImageView);
 
-        applyButton = findViewById(R.id.account_apply_button);
+        View applyButton = findViewById(R.id.account_apply_button);
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -17,7 +17,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Garden;
 import com.plotpals.client.utils.GoogleProfileInformation;
-import com.plotpals.client.utils.gardenBaseAdapter;
+import com.plotpals.client.utils.GardenBaseAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ public class GardenSearchActivity extends AppCompatActivity {
         loadProfileInfo();
         requestGardens();
         listView = (ListView) findViewById(R.id.garden_list);
-        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this, googleProfileInformation);
+        GardenBaseAdapter arrayAdapter = new GardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this, googleProfileInformation);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -89,7 +89,7 @@ public class GardenSearchActivity extends AppCompatActivity {
             findViewById(R.id.try_again_text).setVisibility(View.VISIBLE);
         }
 
-        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardensSearched, gardenImages, GardenSearchActivity.this, googleProfileInformation);
+        GardenBaseAdapter arrayAdapter = new GardenBaseAdapter(getApplicationContext(), gardensSearched, gardenImages, GardenSearchActivity.this, googleProfileInformation);
         listView.setAdapter(arrayAdapter);
     }
 

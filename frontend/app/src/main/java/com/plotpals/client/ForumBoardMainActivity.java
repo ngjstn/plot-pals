@@ -16,12 +16,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Post;
 import com.plotpals.client.data.Profile;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
-import com.plotpals.client.data.Task;
 import com.plotpals.client.utils.GoogleProfileInformation;
 import com.plotpals.client.utils.TaskSocketHandler;
 

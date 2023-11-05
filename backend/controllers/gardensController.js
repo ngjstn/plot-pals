@@ -72,7 +72,7 @@ const updateGarden = async (req, res, next) => {
     }
   }
 
-  if (changeCount == 0) {
+  if (changeCount === 0) {
     const err = new Error('Request body contains no updates');
     err.status = StatusCodes.BAD_REQUEST;
     return next(err);

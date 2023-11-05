@@ -157,7 +157,7 @@ const createTask = async (req, res, next) => {
 
   console.log('gardenRoleNum: ' + gardenRoleNum);
 
-  if (gardenRoleNum == 2) {
+  if (gardenRoleNum === 2) {
     plotId = null;
   } else {
     try {

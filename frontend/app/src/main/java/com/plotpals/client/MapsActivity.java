@@ -62,7 +62,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private Marker mapsMarker;
     public static String locationCityName;
-    public static double locationLat = 0, locationLong = 0;
+    public static double locationLat = 0;
+    public static double locationLong = 0;
     private Integer locationPollRate_ms = 1000;
     private SearchView gardenSearchView;
     static GoogleProfileInformation googleProfileInformation;

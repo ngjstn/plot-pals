@@ -1,5 +1,6 @@
 const { OAuth2Client } = require('google-auth-library');
 const { StatusCodes } = require('http-status-codes');
+require('dotenv').config();
 
 // middleware to authenticate user
 const authMiddleware = async (req, res, next) => {
@@ -14,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(403).json({ error: invalidAuthorizationHeader });
     }
     const client = new OAuth2Client();
-    const serverClientId = '188221629259-675olt1lscjefjkllj14cuo801r5eoqv.apps.googleusercontent.com';
+    const serverClientId = process.env.GOOGLE_SERVER_CLIENT_ID;
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: serverClientId,

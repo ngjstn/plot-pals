@@ -18,7 +18,7 @@ import com.plotpals.client.data.Garden;
 import java.util.List;
 
 public class GardenBaseAdapter extends BaseAdapter {
-    final static String TAG = "gardenBaseAdapter";
+    final static String TAG = "GardenBaseAdapter";
     Context context;
     List<Garden> listGarden;
     int listImages[];

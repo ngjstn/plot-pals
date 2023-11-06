@@ -116,7 +116,7 @@ public class GardenSearchActivity extends AppCompatActivity {
                         assert extras != null;
                         String initQuery = extras.getString("initQuery");
                         searchGarden(initQuery);
-//                        gardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this);
+//                        GardenBaseAdapter arrayAdapter = new gardenBaseAdapter(getApplicationContext(), gardenObjectList, gardenImages, GardenSearchActivity.this);
 //                        listView.setAdapter(arrayAdapter);
                     }
                 } catch (JSONException e) {

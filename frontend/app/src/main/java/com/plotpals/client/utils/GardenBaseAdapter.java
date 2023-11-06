@@ -17,15 +17,15 @@ import com.plotpals.client.data.Garden;
 
 import java.util.List;
 
-public class gardenBaseAdapter extends BaseAdapter {
-    final static String TAG = "gardenBaseAdapter";
+public class GardenBaseAdapter extends BaseAdapter {
+    final static String TAG = "GardenBaseAdapter";
     Context context;
     List<Garden> listGarden;
     int listImages[];
     GardenSearchActivity searchActivity;
     GoogleProfileInformation googleProfileInformation;
 
-    public gardenBaseAdapter(Context ctx, List<Garden> garden, int[] images, GardenSearchActivity activity, GoogleProfileInformation googleProfileInformation) {
+    public GardenBaseAdapter(Context ctx, List<Garden> garden, int[] images, GardenSearchActivity activity, GoogleProfileInformation googleProfileInformation) {
         this.context = ctx;
         this.listGarden = garden;
         this.listImages = images;

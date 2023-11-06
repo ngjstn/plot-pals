@@ -29,35 +29,18 @@ public class Garden implements Serializable {
 
     private RoleEnum roleNumOfCurrentAuthorizedUserInGarden;
 
-
-    public Garden(int id, String address, String longitude, String latitude, String gardenOwnerId, int isApproved, String contactPhoneNumber, String contactEmail, int numberOfPlots, String gardenName, String gardenOwnerName, RoleEnum roleNumOfCurrentAuthorizedUserInGarden) {
-        this.id = id;
-        this.address = address;
-        this.location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        this.gardenOwnerId = gardenOwnerId;
-        this.isApproved = isApproved == 1;
-        this.contactPhoneNumber = contactPhoneNumber;
-        this.contactEmail = contactEmail;
-        this.numberOfPlots = numberOfPlots;
-        this.gardenName = gardenName;
-        this.gardenOwnerName = gardenOwnerName;
-        this.roleNumOfCurrentAuthorizedUserInGarden = roleNumOfCurrentAuthorizedUserInGarden;
-    }
-
     public Garden(JSONObject gardenJsonObject) throws JSONException {
-        this(gardenJsonObject.getInt("id"),
-                gardenJsonObject.getString("address"),
-                gardenJsonObject.getString("longitude"),
-                gardenJsonObject.getString("latitude"),
-                gardenJsonObject.getString("gardenOwnerId"),
-                gardenJsonObject.getInt("isApproved"),
-                gardenJsonObject.getString("contactPhoneNumber"),
-                gardenJsonObject.getString("contactEmail"),
-                gardenJsonObject.getInt("numberOfPlots"),
-                gardenJsonObject.getString("gardenName"),
-                gardenJsonObject.optString("gardenOwnerName", null),
-                null
-        );
+        this.id = gardenJsonObject.getInt("id");
+        this.address = gardenJsonObject.getString("address");
+        this.location = new LatLng(Double.parseDouble(gardenJsonObject.getString("latitude")), Double.parseDouble(gardenJsonObject.getString("longitude")));
+        this.gardenOwnerId = gardenJsonObject.getString("gardenOwnerId");
+        this.isApproved = gardenJsonObject.getInt("isApproved") == 1;
+        this.contactPhoneNumber = gardenJsonObject.getString("contactPhoneNumber");
+        this.contactEmail = gardenJsonObject.getString("contactEmail");
+        this.numberOfPlots = gardenJsonObject.getInt("numberOfPlots");
+        this.gardenName = gardenJsonObject.getString("gardenName");
+        this.gardenOwnerName = gardenJsonObject.optString("gardenOwnerName", null);
+        this.roleNumOfCurrentAuthorizedUserInGarden = null;
 
         int roleNumOfCurrentAuthorizedUserInGardenAsInt = gardenJsonObject.optInt("roleNumOfCurrentAuthorizedUserInGarden", -1);
 

@@ -14,20 +14,11 @@ public class Profile {
 
     private int competence;
 
-    private Profile(String id, double rating, String displayName, int competence) {
-        this.id = id;
-        this.rating = rating;
-        this.displayName = displayName;
-        this.competence = competence;
-    }
-
     public Profile(JSONObject profileJsonObject) throws JSONException {
-        this(
-                profileJsonObject.getString("id"),
-                profileJsonObject.getDouble("rating"),
-                profileJsonObject.getString("displayName"),
-                profileJsonObject.getInt("competence")
-                );
+        this.id = profileJsonObject.getString("id");
+        this.rating = profileJsonObject.getDouble("rating");
+        this.displayName = profileJsonObject.getString("displayName");
+        this.competence = profileJsonObject.getInt("competence");
     }
 
     public String getId() {

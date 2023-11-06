@@ -15,20 +15,12 @@ public class Plot {
 
     private String gardenName;
 
-    private Plot(int id, int gardenId, String plotOwnerId, String plotOwnerName, String gardenName) {
-        this.id = id;
-        this.gardenId = gardenId;
-        this.plotOwnerId = plotOwnerId;
-        this.plotOwnerName = plotOwnerName;
-        this.gardenName = gardenName;
-    }
-
     public Plot(JSONObject plotsJsonObject) throws JSONException {
-        this(plotsJsonObject.getInt("id"),
-                plotsJsonObject.getInt("gardenId"),
-                plotsJsonObject.getString("plotOwnerId"),
-                plotsJsonObject.getString("plotOwnerName"),
-                plotsJsonObject.getString("gardenName"));
+        this.id = plotsJsonObject.getInt("id");
+        this.gardenId = plotsJsonObject.getInt("gardenId");
+        this.plotOwnerId = plotsJsonObject.getString("plotOwnerId");
+        this.plotOwnerName = plotsJsonObject.getString("plotOwnerName");
+        this.gardenName = plotsJsonObject.getString("gardenName");
     }
 
     public int getId() {

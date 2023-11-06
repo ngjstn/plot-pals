@@ -21,27 +21,15 @@ public class Post {
 
     private String assignerName;
 
-    private Post(int id, String title, String description, String assignerId, int postGardenId, Task task, String gardenName, String assignerName) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.assignerId = assignerId;
-        this.postGardenId = postGardenId;
-        this.task = task;
-        this.gardenName = gardenName;
-        this.assignerName = assignerName;
-    }
-
     public Post(JSONObject postJsonObject) throws JSONException {
-        this(postJsonObject.getInt("id"),
-                postJsonObject.getString("title"),
-                postJsonObject.getString("description"),
-                postJsonObject.getString("assignerId"),
-                postJsonObject.getInt("postGardenId"),
-                null,
-                postJsonObject.optString("gardenName", null),
-                postJsonObject.optString("assignerName", null)
-        );
+        this.id = postJsonObject.getInt("id");
+        this.title = postJsonObject.getString("title");
+        this.description = postJsonObject.getString("description");
+        this.assignerId = postJsonObject.getString("assignerId");
+        this.postGardenId = postJsonObject.getInt("postGardenId");
+        this.task = null;
+        this.gardenName = postJsonObject.optString("gardenName", null);
+        this.assignerName = postJsonObject.optString("assignerName", null);
 
         /**
          * If post is a task

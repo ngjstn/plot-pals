@@ -34,49 +34,22 @@ public class Task {
     /* Entries that are not in the tasks table but still would be useful */
     private String assigneeName;
 
-    public Task(int id,
-                int plotId,
-                String reward,
-                double minimumRating,
-                String assigneeId,
-                boolean isCompleted,
-                boolean assigneeIsProvidedFeedback,
-                String deadlineDate,
-                String taskStartTime,
-                String taskEndTime,
-                int expectedTaskDurationInHours,
-                String assigneeName){
-        this.id = id;
-        this.plotId = plotId;
-        this.reward = reward;
-        this.minimumRating = minimumRating;
-        this.assigneeId = assigneeId;
-        this.isCompleted = isCompleted;
-        this.assigneeIsProvidedFeedback = assigneeIsProvidedFeedback;
-        this.deadlineDate = deadlineDate;
-        this.taskStartTime = taskStartTime;
-        this.taskEndTime = taskEndTime;
-        this.expectedTaskDurationInHours = expectedTaskDurationInHours;
-        this.assigneeName = assigneeName;
-    }
-
     /*
      * To be used within GET api calls for tasks
      */
     public Task(JSONObject taskJsonObject) throws JSONException {
-        this(taskJsonObject.getInt("taskId"),
-                taskJsonObject.optInt("plotId", -1),
-                taskJsonObject.getString("reward"),
-                taskJsonObject.getDouble("minimumRating"),
-                taskJsonObject.optString("assigneeId", null),
-                taskJsonObject.getInt("isCompleted") == 1,
-                taskJsonObject.getInt("assigneeIsProvidedFeedback") == 1,
-                taskJsonObject.getString("deadlineDate"),
-                taskJsonObject.optString("taskStartTime", null),
-                taskJsonObject.optString("taskEndTime", null),
-                taskJsonObject.getInt("expectedTaskDurationInHours"),
-                taskJsonObject.optString("assigneeName", null)
-        );
+        this.id = taskJsonObject.getInt("taskId");
+        this.plotId = taskJsonObject.optInt("plotId", -1);
+        this.reward = taskJsonObject.getString("reward");
+        this.minimumRating = taskJsonObject.getDouble("minimumRating");
+        this.assigneeId = taskJsonObject.optString("assigneeId", null);
+        this.isCompleted = taskJsonObject.getInt("isCompleted") == 1;
+        this.assigneeIsProvidedFeedback = taskJsonObject.getInt("assigneeIsProvidedFeedback") == 1;
+        this.deadlineDate = taskJsonObject.getString("deadlineDate");
+        this.taskStartTime = taskJsonObject.optString("taskStartTime", null);
+        this.taskEndTime = taskJsonObject.optString("taskEndTime", null);
+        this.expectedTaskDurationInHours = taskJsonObject.getInt("expectedTaskDurationInHours");
+        this.assigneeName = taskJsonObject.optString("assigneeName", null);
     }
 
 

@@ -19,22 +19,12 @@ public class Role {
 
     private String gardenMemberName;
 
-    private Role(String profileId, int gardenId, RoleEnum roleNum, String gardenName, String gardenMemberName) {
-        this.profileId = profileId;
-        this.gardenId = gardenId;
-        this.roleNum = roleNum;
-        this.gardenName = gardenName;
-        this.gardenMemberName = gardenMemberName;
-    }
-
     public Role(JSONObject rolesJsonObject) throws JSONException {
-        this(
-                rolesJsonObject.getString("profileId"),
-                rolesJsonObject.getInt("gardenId"),
-                RoleEnum.values()[rolesJsonObject.getInt("roleNum")],
-                rolesJsonObject.optString("gardenName", null),
-                rolesJsonObject.optString("gardenMemberName", null)
-        );
+        this.profileId = rolesJsonObject.getString("profileId");
+        this.gardenId = rolesJsonObject.getInt("gardenId");
+        this.roleNum = RoleEnum.values()[rolesJsonObject.getInt("roleNum")];
+        this.gardenName = rolesJsonObject.optString("gardenName", null);
+        this.gardenMemberName = rolesJsonObject.optString("gardenMemberName", null);
     }
 
 

@@ -14,12 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.plotpals.client.data.Garden;
 import com.plotpals.client.data.Plot;
 import com.plotpals.client.data.Role;
 import com.plotpals.client.data.RoleEnum;
@@ -45,8 +47,8 @@ public class CurrentMembersActivity extends AppCompatActivity {
     ArrayList<Plot> plotsList;
     ArrayAdapter<Role> caretakerAdapter;
     int gardenId;
-//    boolean cameFromMyGardenYesPage = false;
-    
+    Garden currentGarden;
+
     static GoogleProfileInformation googleProfileInformation;
 
     @Override
@@ -105,11 +107,19 @@ public class CurrentMembersActivity extends AppCompatActivity {
                 horizontalDots.setOnClickListener(horizontalDotsView -> {
                     PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
                     menu.getMenuInflater().inflate(R.menu.management_menu_for_caretakers, menu.getMenu());
-                    menu.setOnMenuItemClickListener(menuItem -> {
-                        turnCaretakerToPlotOwner(caretakerList.get(i).getProfileId());
-                        return true;
-                    });
 
+                    if (plotsList.size() < currentGarden.getNumberOfPlots()) {
+                        menu.setOnMenuItemClickListener(menuItem -> {
+                            turnCaretakerToPlotOwner(caretakerList.get(i).getProfileId());
+                            return true;
+                        });
+                    }
+                    else {
+                        menu.setOnMenuItemClickListener(menuItem -> {
+                            Toast.makeText(CurrentMembersActivity.this, "No plots available", Toast.LENGTH_SHORT).show();
+                            return true;
+                        });
+                    }
                     menu.show();
                 });
 
@@ -124,17 +134,10 @@ public class CurrentMembersActivity extends AppCompatActivity {
         findViewById(R.id.arrow_back_).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (cameFromMyGardenYesPage) {
-//                    Intent myGardenYes = new Intent(CurrentMembersActivity.this, MyGardenYesGardenActivity.class);
-//                    googleProfileInformation.loadGoogleProfileInformationToIntent(myGardenYes);
-//                    startActivity(myGardenYes);
-//                }
-//                else {
                     Intent manageActivity = new Intent(CurrentMembersActivity.this, ManageGardenActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(manageActivity);
                     manageActivity.putExtra("gardenId", gardenId);
                     startActivity(manageActivity);
-//                }
             }
         });
     }
@@ -144,11 +147,12 @@ public class CurrentMembersActivity extends AppCompatActivity {
         super.onStart();
         loadExtras();
         requestPlots(gardenId);
+        requestGardenInfo(gardenId);
     }
 
     private void requestPlots(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/plots/all?gardenId=", gardenId);
+        String url = String.format("http://10.0.2.2:8081/plots/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -224,6 +228,40 @@ public class CurrentMembersActivity extends AppCompatActivity {
                             plotOwnerAdapter.notifyDataSetChanged();
                             caretakerAdapter.notifyDataSetChanged();
                         }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void requestGardenInfo(Integer gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = String.format("http://10.0.2.2:8081/gardens/all?isApproved=true&gardenId=%s", gardenId);
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining garden info");
+                        JSONArray fetchedGarden = (JSONArray)response.get("data");
+                        JSONObject gardenJson = fetchedGarden.getJSONObject(0);
+                        currentGarden = new Garden(gardenJson);
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }
@@ -331,7 +369,6 @@ public class CurrentMembersActivity extends AppCompatActivity {
         if (extras != null) {
             googleProfileInformation = new GoogleProfileInformation(extras);
             gardenId = extras.getInt("gardenId");
-//            cameFromMyGardenYesPage = extras.getBoolean("CameFromMyGardenYes");
         }
     }
 

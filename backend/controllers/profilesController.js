@@ -59,7 +59,6 @@ const submitFeedback = async (req, res, next) => {
     ratingsChangeDueToCompletionEfficiency =
       (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
@@ -69,23 +68,19 @@ const submitFeedback = async (req, res, next) => {
     const queryResults = await database.query(sqlFindOldRating, [feedBackReceiverId]);
     oldRating = queryResults[0][0].rating;
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
-  console.log('old rating: ' + oldRating);
   // calculate rating based on feedback and completion efficiency while making sure it is between 0 and 5
   calculatedRating = Math.min(
     Math.max(oldRating * 0.8 + newRating * 0.2 + ratingsChangeDueToCompletionEfficiency, 0),
     5
   );
-  console.log('calculated rating: ' + calculatedRating);
   try {
     const sqlUpdateNewRating = `UPDATE profiles SET rating = ? WHERE id = ?`;
     await database.query(sqlUpdateNewRating, [calculatedRating, feedBackReceiverId]);
     // return res.json({ success: updateResults[0].affectedRows > 0 });
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
@@ -94,7 +89,6 @@ const submitFeedback = async (req, res, next) => {
     const updateResults = await database.query(sqlUpdateFeedbackStatus, [taskId, feedBackReceiverId]);
     return res.json({ success: updateResults[0].affectedRows > 0 });
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 };

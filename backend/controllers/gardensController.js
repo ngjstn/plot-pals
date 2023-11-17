@@ -9,17 +9,17 @@ const getAllGardens = async (req, res, next) => {
   let isApprovedConditionString = '';
 
   if (isApproved === 'true') {
-    isApprovedConditionString = 'AND gardens.isApproved = true';
+    isApprovedConditionString = 'AND gardens.isApproved = true ';
   } else if (isApproved === 'false') {
-    isApprovedConditionString = 'AND gardens.isApproved = false';
+    isApprovedConditionString = 'AND gardens.isApproved = false ';
   }
   const sql = gardenId
-    ? `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.id = ? AND gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`
-    : `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.gardenOwnerId = profiles.id ${isApprovedConditionString} ORDER BY id DESC`;
+    ? `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.id = ? AND gardens.gardenOwnerId = profiles.id ${isApprovedConditionString}ORDER BY id DESC`
+    : `SELECT gardens.*, profiles.displayName AS gardenOwnerName FROM gardens JOIN profiles WHERE gardens.gardenOwnerId = profiles.id ${isApprovedConditionString}ORDER BY id DESC`;
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }

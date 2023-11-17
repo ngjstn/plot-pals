@@ -8,7 +8,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "node server.js"
   },
   "keywords": [],
@@ -31,8 +31,10 @@
   "jest": {
     "verbose": true,
     "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "!**/node_modules/**"
+      "**/controllers/*.{js,jsx}",
+      "!**/node_modules/**",
+      "**/errorHandler.js",
+      "**/authMiddleware.js"
     ],
     "exclude": [
       "node_modules"

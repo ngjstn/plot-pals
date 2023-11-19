@@ -82,7 +82,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("displayName", DisplayNameEditTextView.getText().toString());
 
-        String url = "http://10.0.2.2:8081/profiles";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
@@ -128,7 +128,7 @@ public class CreateProfileActivity extends AppCompatActivity {
      */
     private void skipProfileCreationIfUserProfileAlreadyExists() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

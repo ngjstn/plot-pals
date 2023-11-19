@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void requestProfileInformation() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -113,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
         params.put("displayName", name);
         Log.d(TAG, "Sending name change to " + name);
 
-        String url = "http://10.0.2.2:8081/profiles/";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/profiles/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,

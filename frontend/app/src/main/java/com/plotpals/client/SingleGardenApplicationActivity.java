@@ -86,7 +86,7 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
 
     private void requestGardenApplication() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false&gardenId=" + gardenIdForApplication;
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens/all?isApproved=false&gardenId=" + gardenIdForApplication;
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -141,7 +141,7 @@ public class SingleGardenApplicationActivity extends AppCompatActivity {
         HashMap<String, Boolean> params = new HashMap<>();
         params.put("isApproved", true);
 
-        String url = "http://10.0.2.2:8081/gardens/" + gardenIdForApplication;
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens/" + gardenIdForApplication;
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,

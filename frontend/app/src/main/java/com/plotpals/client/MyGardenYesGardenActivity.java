@@ -63,7 +63,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
     private void loadGardens() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens?isApproved=true";
+        String url = "https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/gardens?isApproved=true";
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

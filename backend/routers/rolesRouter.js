@@ -1,5 +1,11 @@
 const express = require('express');
-const { getRolesForAuthenticatedUser, getAllRoles, addRole, updateRole } = require('../controllers/rolesController');
+const {
+  getRolesForAuthenticatedUser,
+  getAllRoles,
+  addRole,
+  updateRole,
+  deleteRole,
+} = require('../controllers/rolesController');
 
 const authMiddleware = require('../authMiddleware');
 
@@ -13,5 +19,7 @@ router.get('/all', authMiddleware, getAllRoles);
 router.post('/', authMiddleware, addRole);
 
 router.put('/:profileId/:gardenId', authMiddleware, updateRole);
+
+router.delete('/:profileId/:gardenId', authMiddleware, deleteRole);
 
 module.exports = router;

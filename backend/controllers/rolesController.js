@@ -62,9 +62,23 @@ const updateRole = async (req, res, next) => {
   }
 };
 
+const deleteRole = async (req, res, next) => {
+  const { profileId, gardenId } = req.params;
+
+  const sql = `DELETE FROM roles WHERE profileId=? AND gardenId=?`;
+
+  try {
+    const queryResults = await database.query(sql, [profileId, gardenId]);
+    return res.json({ success: queryResults[0].affectedRows > 0 });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   getAllRoles,
   getRolesForAuthenticatedUser,
   addRole,
   updateRole,
+  deleteRole,
 };

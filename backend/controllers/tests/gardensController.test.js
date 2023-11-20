@@ -23,7 +23,7 @@ jest.mock('axios', () => ({
 }));
 
 // Interface GET /gardens/all
-describe('Obtain gardens without discriminating based on req.userId', () => {
+describe('Obtain garden information without discriminating based on req.userId', () => {
   // Input: None
   // Expected status code: 200
   // Expected behavior: will return all gardens
@@ -143,7 +143,7 @@ describe('Obtain gardens without discriminating based on req.userId', () => {
 });
 
 // Interface GET /gardens
-describe('Obtain gardens for user identified by req.userId', () => {
+describe('Obtain garden information in relation to user identified by req.userId', () => {
   // Input: userId from authMiddleware
   // Expected status code: 200
   // Expected behavior: will return all gardens that the user is in

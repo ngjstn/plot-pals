@@ -20,8 +20,8 @@ describe('Obtain admin profiles', () => {
     const next = jest.fn();
     const expectedReturnedData = ['123214123', '124563454'];
 
-    database.query.mockImplementationOnce((sql, profileId) => {
-      expect(profileId).toStrictEqual(null);
+    database.query.mockImplementationOnce((sql, profileIdArr) => {
+      expect(profileIdArr).toStrictEqual(null);
       expect(sql).toBe('SELECT * FROM admin_profiles');
       return [expectedReturnedData];
     });

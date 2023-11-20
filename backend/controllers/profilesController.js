@@ -1,5 +1,6 @@
 const { database } = require('../database');
 const { MAX_RATING, STARTING_COMPETENCE } = require('../constants/profile');
+const { StatusCodes } = require('http-status-codes');
 
 const getAllProfiles = async (req, res, next) => {
   const { profileId } = req.query;
@@ -8,7 +9,7 @@ const getAllProfiles = async (req, res, next) => {
   // EXPLANATION NOTE: usually you want to try/catch await functions in your controllers
   try {
     const queryResults = await database.query(sql, profileId ? [profileId] : null);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     // EXPLANATION NOTE: this forwards error to error handler
     return next(err);
@@ -21,7 +22,7 @@ const updateProfileDisplayNameForAuthenticatedUser = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [displayName, req.userId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }
@@ -32,7 +33,7 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
   const sql = 'INSERT INTO profiles (id, rating, displayName, competence) VALUES (?, ?, ?, ?)';
   try {
     const queryResults = await database.query(sql, [req.userId, MAX_RATING, displayName, STARTING_COMPETENCE]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }

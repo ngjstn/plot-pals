@@ -322,7 +322,7 @@ describe('Create garden (application)', () => {
     database.query.mockRestore();
   });
 
-  // Input: gardenId url param, request body with required fields
+  // Input: gardenId url param, request body with required fields, userId from authMiddleware
   // Expected status code: 200
   // Expected behavior: create a new garden with information derived from request body
   // Expected output: whether the garden creation was successful or not
@@ -382,7 +382,7 @@ describe('Create garden (application)', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: gardenId url param, request body with required fields
+  // Input: gardenId url param, request body with required fields, userId from authMiddleware
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling axios.get and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -412,7 +412,7 @@ describe('Create garden (application)', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: gardenId url param, request body with required fields
+  // Input: gardenId url param, request body with required fields, userId from authMiddleware
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -454,7 +454,7 @@ describe('Create garden (application)', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: gardenId url param, request body with required fields
+  // Input: gardenId url param, request body with required fields, userId from authMiddleware
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -510,7 +510,7 @@ describe('Create garden (application)', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: gardenId url param, request body with required fields
+  // Input: gardenId url param, request body with required fields, userId from authMiddleware
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)

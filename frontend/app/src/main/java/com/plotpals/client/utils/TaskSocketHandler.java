@@ -13,7 +13,7 @@ public class TaskSocketHandler {
 
     public static synchronized void setSocket() {
         try {
-            taskSocket = IO.socket("https://xqx6apo57k.execute-api.us-west-2.amazonaws.com/");
+            taskSocket = IO.socket("http://10.0.2.2:8081/");
         } catch (URISyntaxException e) {
             Log.d(TAG, "Error setting socket");
         }

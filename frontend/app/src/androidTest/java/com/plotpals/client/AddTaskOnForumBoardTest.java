@@ -79,161 +79,170 @@ public class AddTaskOnForumBoardTest {
     @Test
     public void appEntryActivityTest() {
 
-        String taskName = getRandomString();
+        try {
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.button_navbar_garden),
-                        childAtPosition(
-                                allOf(withId(R.id.navbar),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+            String taskName = getRandomString();
 
-        ViewInteraction appCompatButton2 = onView(
-                childAtPosition(
-                        childAtPosition(
-                                withId(R.id.my_garden_scrollview_layout),
-                                0),
-                        2));
-        appCompatButton2.perform(scrollTo(), click());
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.button_navbar_garden),
+                            childAtPosition(
+                                    allOf(withId(R.id.navbar),
+                                            childAtPosition(
+                                                    withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
+            appCompatButton.perform(click());
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.forum_board_plus),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
+            ViewInteraction appCompatButton2 = onView(
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(R.id.my_garden_scrollview_layout),
+                                    0),
+                            2));
+            appCompatButton2.perform(scrollTo(), click());
 
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.forum_board_new_task), withText("New Task"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatTextView.perform(click());
+            ViewInteraction appCompatImageView = onView(
+                    allOf(withId(R.id.forum_board_plus),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    4),
+                            isDisplayed()));
+            appCompatImageView.perform(click());
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.forum_board_new_task_check),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                12),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
+            ViewInteraction appCompatTextView = onView(
+                    allOf(withId(R.id.forum_board_new_task), withText("New Task"),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    6),
+                            isDisplayed()));
+            appCompatTextView.perform(click());
 
-        ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.forum_board_new_task_check),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                12),
-                        isDisplayed()));
-        appCompatImageView3.perform(click());
+            ViewInteraction appCompatImageView2 = onView(
+                    allOf(withId(R.id.forum_board_new_task_check),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    12),
+                            isDisplayed()));
+            appCompatImageView2.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.forum_board_new_task_title),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
+            ViewInteraction appCompatImageView3 = onView(
+                    allOf(withId(R.id.forum_board_new_task_check),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    12),
+                            isDisplayed()));
+            appCompatImageView3.perform(click());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.forum_board_new_task_body),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
+            ViewInteraction appCompatEditText = onView(
+                    allOf(withId(R.id.forum_board_new_task_title),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    3),
+                            isDisplayed()));
+            appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.forum_board_new_task_expected),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
+            ViewInteraction appCompatEditText2 = onView(
+                    allOf(withId(R.id.forum_board_new_task_body),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    5),
+                            isDisplayed()));
+            appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.forum_board_new_task_deadline),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
+            ViewInteraction appCompatEditText3 = onView(
+                    allOf(withId(R.id.forum_board_new_task_expected),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    2),
+                            isDisplayed()));
+            appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.forum_board_new_task_reward),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
+            ViewInteraction appCompatEditText4 = onView(
+                    allOf(withId(R.id.forum_board_new_task_deadline),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    1),
+                            isDisplayed()));
+            appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
 
-        ViewInteraction appCompatImageView4 = onView(
-                allOf(withId(R.id.forum_board_new_task_check),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                12),
-                        isDisplayed()));
-        appCompatImageView4.perform(click());
+            ViewInteraction appCompatEditText5 = onView(
+                    allOf(withId(R.id.forum_board_new_task_reward),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    6),
+                            isDisplayed()));
+            appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("12122222"));
+            ViewInteraction appCompatImageView4 = onView(
+                    allOf(withId(R.id.forum_board_new_task_check),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    12),
+                            isDisplayed()));
+            appCompatImageView4.perform(click());
 
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText7.perform(closeSoftKeyboard());
+            ViewInteraction appCompatEditText6 = onView(
+                    allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    1),
+                            isDisplayed()));
+            appCompatEditText6.perform(replaceText("12122222"));
 
-        ViewInteraction appCompatImageView5 = onView(
-                allOf(withId(R.id.forum_board_new_task_check),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                12),
-                        isDisplayed()));
-        appCompatImageView5.perform(click());
+            ViewInteraction appCompatEditText7 = onView(
+                    allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    1),
+                            isDisplayed()));
+            appCompatEditText7.perform(closeSoftKeyboard());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.forum_board_task_preview_title), withText(taskName),
-                        withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
-        textView.check(matches(withText(taskName)));
+            ViewInteraction appCompatImageView5 = onView(
+                    allOf(withId(R.id.forum_board_new_task_check),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    12),
+                            isDisplayed()));
+            appCompatImageView5.perform(click());
+
+            // Give time for backend to update
+            Thread.sleep(500);
+
+            ViewInteraction textView = onView(
+                    allOf(withId(R.id.forum_board_task_preview_title), withText(taskName),
+                            withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
+            textView.check(matches(withText(taskName)));
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

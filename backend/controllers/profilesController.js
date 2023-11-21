@@ -1,5 +1,6 @@
 const { database } = require('../database');
 const { MAX_RATING, STARTING_COMPETENCE } = require('../constants/profile');
+const { StatusCodes } = require('http-status-codes');
 
 const getAllProfiles = async (req, res, next) => {
   const { profileId } = req.query;
@@ -8,7 +9,7 @@ const getAllProfiles = async (req, res, next) => {
   // EXPLANATION NOTE: usually you want to try/catch await functions in your controllers
   try {
     const queryResults = await database.query(sql, profileId ? [profileId] : null);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     // EXPLANATION NOTE: this forwards error to error handler
     return next(err);
@@ -21,7 +22,7 @@ const updateProfileDisplayNameForAuthenticatedUser = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [displayName, req.userId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }
@@ -32,7 +33,7 @@ const createProfileForAuthenticatedUser = async (req, res, next) => {
   const sql = 'INSERT INTO profiles (id, rating, displayName, competence) VALUES (?, ?, ?, ?)';
   try {
     const queryResults = await database.query(sql, [req.userId, MAX_RATING, displayName, STARTING_COMPETENCE]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }
@@ -59,7 +60,6 @@ const submitFeedback = async (req, res, next) => {
     ratingsChangeDueToCompletionEfficiency =
       (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
@@ -69,23 +69,19 @@ const submitFeedback = async (req, res, next) => {
     const queryResults = await database.query(sqlFindOldRating, [feedBackReceiverId]);
     oldRating = queryResults[0][0].rating;
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
-  console.log('old rating: ' + oldRating);
   // calculate rating based on feedback and completion efficiency while making sure it is between 0 and 5
   calculatedRating = Math.min(
     Math.max(oldRating * 0.8 + newRating * 0.2 + ratingsChangeDueToCompletionEfficiency, 0),
     5
   );
-  console.log('calculated rating: ' + calculatedRating);
   try {
     const sqlUpdateNewRating = `UPDATE profiles SET rating = ? WHERE id = ?`;
     await database.query(sqlUpdateNewRating, [calculatedRating, feedBackReceiverId]);
     // return res.json({ success: updateResults[0].affectedRows > 0 });
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
@@ -93,16 +89,14 @@ const submitFeedback = async (req, res, next) => {
     const sqlDeletePostAssociatedWithTask = `DELETE FROM posts WHERE taskId = ?`;
     await database.query(sqlDeletePostAssociatedWithTask, [taskId]);
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 
   try {
     const sqlDeleteTask = `DELETE FROM tasks WHERE taskId = ?`;
     const deleteResult = await database.query(sqlDeleteTask, [taskId]);
-    return res.json({ success: deleteResult[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: deleteResult[0].affectedRows > 0 });
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 };

@@ -1,4 +1,5 @@
 const { database } = require('../database');
+const { StatusCodes } = require('http-status-codes');
 
 const getAllAdminProfiles = async (req, res, next) => {
   const { profileId } = req.query;
@@ -6,7 +7,7 @@ const getAllAdminProfiles = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, profileId ? [profileId] : null);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }

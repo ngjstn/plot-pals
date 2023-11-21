@@ -31,10 +31,9 @@
   "jest": {
     "verbose": true,
     "collectCoverageFrom": [
-      "**/controllers/*.{js,jsx}",
+      "**/*.{js,jsx}",
       "!**/node_modules/**",
-      "**/errorHandler.js",
-      "**/authMiddleware.js"
+      "!**/coverage/**"
     ],
     "exclude": [
       "node_modules"

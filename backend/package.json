@@ -38,6 +38,9 @@
     ],
     "exclude": [
       "node_modules"
+    ],
+    "setupFiles": [
+      "./setEnvJest.js"
     ]
   }
 }

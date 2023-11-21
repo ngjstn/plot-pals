@@ -5,6 +5,7 @@ const {
   getAllProfiles,
   updateProfileDisplayNameForAuthenticatedUser,
   createProfileForAuthenticatedUser,
+  submitFeedback,
 } = require('../profilesController');
 const { STARTING_COMPETENCE, MAX_RATING } = require('../../constants/profile');
 
@@ -177,4 +178,310 @@ describe('Create profile', () => {
 });
 
 // PUT /rating
-describe('Submit feedback', () => {});
+describe('Submit feedback', () => {
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 200
+  // Expected behavior: create new profile with id equaling req.userId
+  // Expected output: whether operation is successful
+  test('Valid req body, no database error', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [[completedTaskInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([feedBackReceiverId]);
+        return [[feedbackAssigneeInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
+    expect(res.json).toHaveBeenCalledWith({ success: true });
+  });
+
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database error when selecting from task table', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        throw expectedError;
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([feedBackReceiverId]);
+        return [[feedbackAssigneeInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database error when selecting from profiles table', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [[completedTaskInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        throw expectedError;
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database error when updating profiles table', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [[completedTaskInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([feedBackReceiverId]);
+        return [[feedbackAssigneeInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        throw expectedError;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database error when updating profiles table', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [[completedTaskInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([feedBackReceiverId]);
+        return [[feedbackAssigneeInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
+      ) {
+        throw expectedError;
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+});

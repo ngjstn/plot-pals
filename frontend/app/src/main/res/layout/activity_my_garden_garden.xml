@@ -19,10 +19,10 @@
     <TextView
         android:id="@+id/my_garden_name"
         android:layout_width="280dp"
-        android:autoSizeTextType="uniform"
         android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:autoSizeTextType="uniform"
         android:gravity="top"
         android:text="@string/garden_name"
         android:textAppearance="@style/label_text_big"
@@ -61,6 +61,27 @@
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/my_garden_members_button"
         app:layout_constraintVertical_bias="0.333" />
+
+    <ImageView
+        android:id="@+id/my_garden_more_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/my_garden_name"
+        app:layout_constraintEnd_toEndOf="@+id/my_garden_name"
+        app:srcCompat="@drawable/more_dots" />
+
+    <TextView
+        android:id="@+id/my_garden_leave"
+        android:layout_width="141dp"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right"
+        android:text="Leave Garden"
+        android:textAppearance="@style/label_text"
+        android:textColor="#C50000"
+        app:layout_constraintBottom_toTopOf="@+id/my_garden_more_dots"
+        app:layout_constraintEnd_toEndOf="@+id/my_garden_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

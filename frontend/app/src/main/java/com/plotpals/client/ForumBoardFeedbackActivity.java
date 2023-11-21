@@ -1,6 +1,9 @@
 package com.plotpals.client;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -25,6 +28,10 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
     private String taskAssignee;
     private int taskId;
 
+    private String taskGardenName;
+
+    private int taskGardenId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +46,15 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
         check.setOnClickListener(v -> {
 
             sendFeedback();
-            finish();
-
+            Intent intent = new Intent(ForumBoardFeedbackActivity.this, ForumBoardMainActivity.class);
+            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+            intent.putExtra("gardenId", taskGardenId);
+            intent.putExtra("gardenName", taskGardenName);
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                startActivity(intent);
+                finish();
+            }, 1000);
         });
 
         TextView title = findViewById(R.id.forum_board_feedback_title);
@@ -99,6 +113,8 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
             taskTitle = extras.getString("taskTitle");
             taskAssignee = extras.getString("taskAssignee");
             taskId = extras.getInt("taskId");
+            taskGardenName = extras.getString("gardenName");
+            taskGardenId = extras.getInt("gardenId");
         }
     }
 }

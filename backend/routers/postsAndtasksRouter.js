@@ -14,8 +14,6 @@ const authMiddleware = require('../authMiddleware');
 
 const router = express.Router();
 
-router.get('/tasks/all', authMiddleware, getAllTasks);
-
 // accepts query parameter gardenId and postId
 router.get('/all', authMiddleware, getAllPostsAndTasks);
 

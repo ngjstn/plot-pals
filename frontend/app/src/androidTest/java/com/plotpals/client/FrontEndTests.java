@@ -42,7 +42,7 @@ import java.util.Random;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddTaskOnForumBoardTest {
+public class FrontEndTests {
 
     static Intent intent;
     static String LEXICON = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -77,7 +77,7 @@ public class AddTaskOnForumBoardTest {
     }
 
     @Test
-    public void appEntryActivityTest() {
+    public void addTaskForumBoardTest() {
 
         try {
 
@@ -244,6 +244,27 @@ public class AddTaskOnForumBoardTest {
             throw new RuntimeException(e);
         }
 
+    }
+
+    /*
+     * !!! Important !!!
+     *
+     * As this test is testing interaction between two users, manual setup is required,
+     * as mentioned in https://piazza.com/class/lltpo77rrjohx/post/327.
+     *
+     * Set up:
+     * 1. open the app on the emulator using a personal account
+     * 2. if you have not yet, navigate to the map, search, and join "Automated Test Garden"
+     * 3.
+     *
+     */
+    @Test
+    public void completeTaskFeedbackTest() {
+        try {
+            Thread.sleep(9999999);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static Matcher<View> childAtPosition(

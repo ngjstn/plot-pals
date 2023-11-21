@@ -86,9 +86,17 @@ const submitFeedback = async (req, res, next) => {
   }
 
   try {
-    const sqlUpdateFeedbackStatus = `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`;
-    const updateResults = await database.query(sqlUpdateFeedbackStatus, [taskId, feedBackReceiverId]);
-    return res.status(StatusCodes.OK).json({ success: updateResults[0].affectedRows > 0 });
+    const sqlDeletePostAssociatedWithTask = `DELETE FROM posts WHERE taskId = ?`;
+    await database.query(sqlDeletePostAssociatedWithTask, [taskId]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  try {
+    const sqlDeleteTask = `DELETE FROM tasks WHERE taskId = ?`;
+    const deleteResult = await database.query(sqlDeleteTask, [taskId]);
+    return res.status(StatusCodes.OK).json({ success: deleteResult[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }

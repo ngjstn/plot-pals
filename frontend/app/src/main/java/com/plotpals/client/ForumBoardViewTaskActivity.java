@@ -121,6 +121,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                 intent.putExtra("gardenId", task.getPostGardenId());
                 intent.putExtra("gardenName", task.getGardenName());
                 startActivity(intent);
+                finish();
             });
         } else if (task.getTask().isCompleted() ){  // || task.getAssignerId().equals(googleProfileInformation.getAccountUserId())
             button.setVisibility(View.GONE);

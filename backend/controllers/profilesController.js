@@ -89,7 +89,6 @@ const submitFeedback = async (req, res, next) => {
     const sqlDeletePostAssociatedWithTask = `DELETE FROM posts WHERE taskId = ?`;
     await database.query(sqlDeletePostAssociatedWithTask, [taskId]);
   } catch (err) {
-    console.log(err);
     return next(err);
   }
 

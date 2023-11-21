@@ -224,11 +224,11 @@ describe('Submit feedback', () => {
       } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
         expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
         return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
-      ) {
-        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
@@ -286,11 +286,11 @@ describe('Submit feedback', () => {
       } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
         expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
         return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
-      ) {
-        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
@@ -347,11 +347,11 @@ describe('Submit feedback', () => {
       } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
         expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
         return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
-      ) {
-        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
@@ -408,11 +408,11 @@ describe('Submit feedback', () => {
         return [[feedbackAssigneeInfo]];
       } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
         throw expectedError;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
-      ) {
-        expect(sqlInputArr).toStrictEqual([req.body.taskId, feedBackReceiverId]);
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
@@ -428,7 +428,7 @@ describe('Submit feedback', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('Database error when updating profiles table', async () => {
+  test('Database error when deleting from posts table', async () => {
     const req = { body: { newRating: 3.2, taskId: 1 } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -470,10 +470,71 @@ describe('Submit feedback', () => {
       } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
         expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
         return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `UPDATE tasks SET assigneeIsProvidedFeedback = 1 WHERE taskId = ? AND assigneeId = ?`.replace(/\s+/g, ' ')
-      ) {
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        throw expectedError;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await submitFeedback(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('Database error when deleting from tasks table', async () => {
+    const req = { body: { newRating: 3.2, taskId: 1 } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const completedTaskInfo = {
+      taskStartTime: '2023-03-01 10:00:00',
+      taskEndTime: '2023-03-01 10:00:00',
+      expectedTaskDurationInHours: 20,
+      assigneeId: '234231',
+    };
+
+    const feedbackAssigneeInfo = {
+      rating: 5.0,
+    };
+
+    const startTime = completedTaskInfo.taskStartTime;
+    const endTime = completedTaskInfo.taskEndTime;
+    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
+    const feedBackReceiverId = completedTaskInfo.assigneeId;
+    const ratingsChangeDueToCompletionEfficiency =
+      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
+
+    const calculatedRating = Math.min(
+      Math.max(
+        feedbackAssigneeInfo.rating * 0.8 + req.body.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
+        0
+      ),
+      5
+    );
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (sql.replace(/\s+/g, ' ') === `SELECT * FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return [[completedTaskInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `SELECT rating FROM profiles WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([feedBackReceiverId]);
+        return [[feedbackAssigneeInfo]];
+      } else if (sql.replace(/\s+/g, ' ') === `UPDATE profiles SET rating = ? WHERE id = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([calculatedRating, feedBackReceiverId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM posts WHERE taskId = ?`.replace(/\s+/g, ' ')) {
+        expect(sqlInputArr).toStrictEqual([req.body.taskId]);
+        return null;
+      } else if (sql.replace(/\s+/g, ' ') === `DELETE FROM tasks WHERE taskId = ?`.replace(/\s+/g, ' ')) {
         throw expectedError;
       }
       throw Error('It should not get to this point');

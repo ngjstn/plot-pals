@@ -58,7 +58,7 @@ describe('Obtain admin profiles', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { query: { profileId: '123214123' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();

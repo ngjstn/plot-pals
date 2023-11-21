@@ -67,7 +67,7 @@ describe('Obtain plot information without discriminating based on req.userId', (
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { query: { gardenId: '1', plotOwnerId: '123423421' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -140,7 +140,7 @@ describe('Create plot for garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when inserting to plots table', async () => {
+  test('Database error when inserting to plots table', async () => {
     const req = { body: { gardenId: '1', plotOwnerId: '123423421' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -183,7 +183,7 @@ describe('Create plot for garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when updating roles table', async () => {
+  test('Database error when updating roles table', async () => {
     const req = { body: { gardenId: '1', plotOwnerId: '123423421' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -233,7 +233,7 @@ describe('Remove plot From a garden', () => {
   // Expected status code: 200
   // Expected behavior: delete plot specified by plotId in url parameter
   // Expected output: whether the operation was successful or not
-  test('no database error', async () => {
+  test('No database error', async () => {
     const req = { params: { plotId: '1' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -288,7 +288,7 @@ describe('Remove plot From a garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when running select statement on plot table', async () => {
+  test('Database error when running select statement on plot table', async () => {
     const req = { params: { plotId: '1' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -344,63 +344,7 @@ describe('Remove plot From a garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when updating roles table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
-    const expectedError = new Error('Some database error');
-    database.query.mockImplementation((sql, sqlInputArr) => {
-      if (
-        sql.replace(/\s+/g, ' ') ===
-        `
-        SELECT * FROM plots WHERE id = ?;`.replace(/\s+/g, ' ')
-      ) {
-        return [[{ plotOwnerId: '234234213', gardenId: 1 }]];
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `
-        UPDATE roles
-        SET roleNum = 0
-        WHERE gardenId = ? AND profileId = ?;`.replace(/\s+/g, ' ')
-      ) {
-        throw expectedError;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `
-        DELETE FROM posts
-        WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
-      ) {
-        return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `
-        DELETE FROM tasks
-        WHERE plotId = ?;`.replace(/\s+/g, ' ')
-      ) {
-        return null;
-      } else if (
-        sql.replace(/\s+/g, ' ') ===
-        `
-        DELETE FROM plots
-        WHERE id = ?;`.replace(/\s+/g, ' ')
-      ) {
-        return null;
-      }
-      throw Error('It should not get to this point');
-    });
-
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
-  });
-
-  // Input: plotId url parameter
-  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
-  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
-  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when deleting from posts table', async () => {
+  test('Database error when updating roles table', async () => {
     const req = { params: { plotId: '1' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -420,14 +364,14 @@ describe('Remove plot From a garden', () => {
         SET roleNum = 0
         WHERE gardenId = ? AND profileId = ?;`.replace(/\s+/g, ' ')
       ) {
-        return null;
+        throw expectedError;
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `
         DELETE FROM posts
         WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
       ) {
-        throw expectedError;
+        return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `
@@ -456,7 +400,7 @@ describe('Remove plot From a garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when deleting from tasks table', async () => {
+  test('Database error when deleting from posts table', async () => {
     const req = { params: { plotId: '1' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -483,6 +427,62 @@ describe('Remove plot From a garden', () => {
         DELETE FROM posts
         WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
       ) {
+        throw expectedError;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+        DELETE FROM tasks
+        WHERE plotId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+        DELETE FROM plots
+        WHERE id = ?;`.replace(/\s+/g, ' ')
+      ) {
+        return null;
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await removePlot(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: plotId url parameter
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('Database error when deleting from tasks table', async () => {
+    const req = { params: { plotId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+        SELECT * FROM plots WHERE id = ?;`.replace(/\s+/g, ' ')
+      ) {
+        return [[{ plotOwnerId: '234234213', gardenId: 1 }]];
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+        UPDATE roles
+        SET roleNum = 0
+        WHERE gardenId = ? AND profileId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+        DELETE FROM posts
+        WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -512,7 +512,7 @@ describe('Remove plot From a garden', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when deleting from plots table', async () => {
+  test('Database error when deleting from plots table', async () => {
     const req = { params: { plotId: '1' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();

@@ -126,7 +126,7 @@ describe('Obtain garden information without discriminating based on req.userId',
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { query: {} };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -221,7 +221,7 @@ describe('Obtain garden information in relation to user identified by req.userId
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { query: {}, userId: '12353943' };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -293,7 +293,7 @@ describe('Updating gardens', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { params: { gardenId: '1' }, body: { contactEmail: 'bar@gmail.com' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -416,7 +416,7 @@ describe('Create garden (application)', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when inserting to gardens table', async () => {
+  test('Database error when inserting to gardens table', async () => {
     const req = {
       params: { gardenId: '1' },
       body: {
@@ -458,7 +458,7 @@ describe('Create garden (application)', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when getting newly added garden', async () => {
+  test('Database error when getting newly added garden', async () => {
     const req = {
       params: { gardenId: '1' },
       body: {
@@ -514,7 +514,7 @@ describe('Create garden (application)', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when inserting into roles table', async () => {
+  test('Database error when inserting into roles table', async () => {
     const req = {
       params: { gardenId: '1' },
       body: {

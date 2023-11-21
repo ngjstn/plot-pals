@@ -67,7 +67,7 @@ describe('Get profiles without discriminating based on req.userId', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { query: { profileId: '123214123' } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -114,7 +114,7 @@ describe('Update profile for user identified with req.userId', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { body: { displayName: 'foobar' }, userId: '12314123' };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -161,7 +161,7 @@ describe('Create profile', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error', async () => {
+  test('Database error', async () => {
     const req = { body: { displayName: 'foobar' }, userId: '12314123' };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -244,7 +244,7 @@ describe('Submit feedback', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when selecting from task table', async () => {
+  test('Database error when selecting from task table', async () => {
     const req = { body: { newRating: 3.2, taskId: 1 } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -306,7 +306,7 @@ describe('Submit feedback', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when selecting from profiles table', async () => {
+  test('Database error when selecting from profiles table', async () => {
     const req = { body: { newRating: 3.2, taskId: 1 } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -367,7 +367,7 @@ describe('Submit feedback', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when updating profiles table', async () => {
+  test('Database error when updating profiles table', async () => {
     const req = { body: { newRating: 3.2, taskId: 1 } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
@@ -428,7 +428,7 @@ describe('Submit feedback', () => {
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
-  test('database error when updating profiles table', async () => {
+  test('Database error when updating profiles table', async () => {
     const req = { body: { newRating: 3.2, taskId: 1 } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();

@@ -63,7 +63,7 @@ describe('Obtain admin profiles', () => {
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     const next = jest.fn();
     const expectedError = new Error('Some Database Error');
-    database.query.mockImplementationOnce((sql, profileId) => {
+    database.query.mockImplementationOnce((sql, profileIdArr) => {
       throw expectedError;
     });
 

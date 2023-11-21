@@ -253,10 +253,19 @@ public class FrontEndTests {
      * as mentioned in https://piazza.com/class/lltpo77rrjohx/post/327.
      *
      * Set up:
-     * 1. open the app on the emulator using a personal account
-     * 2. if you have not yet, navigate to the map, search, and join "Automated Test Garden"
-     * 3.
+     * 1. Run the addTaskForumBoardTest() test, which will create a task for you.
+     * 2. Open the app on the emulator using a personal account.
+     * 3. Navigate to your account and take a look at your rating. Keep it in mind.
+     * 4. If you have not yet, navigate to the map, search, and join "Automated Test Garden".
+     * 5. Navigate to your gardens, and then to the "Automated Test Garden" forum board.
+     * 6. Click the first (top) task, which should be newly created one.
+     * 7. Accept the task, and then complete the task.
      *
+     * Now, you may run this test.
+     *
+     * After test:
+     * On your personal account, navigate to your account and check the rating.
+     * It should have decreased dramatically (The test gives you a rating of 0).
      */
     @Test
     public void completeTaskFeedbackTest() {

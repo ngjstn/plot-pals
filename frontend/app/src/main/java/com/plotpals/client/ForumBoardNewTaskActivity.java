@@ -86,7 +86,7 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                     googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
                     intent.putExtra("gardenId", currentGardenId);
                     intent.putExtra("gardenName", currentGardenName);
-                    Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted (no backend)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForumBoardNewTaskActivity.this, "Task posted", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG,"------- Posted task -------" +
                             "\nTitle: " + titleText.getText().toString() +

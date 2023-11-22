@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".RatingExplainActivity">
 
+    <include layout="@layout/activity_nav_bar"/>
+
     <TextView
         android:id="@+id/rating_header"
         android:layout_width="325dp"

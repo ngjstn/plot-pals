@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 
-public class GardenApplicationActivity extends AppCompatActivity {
+public class GardenApplicationActivity extends NavBarActivity {
     GoogleProfileInformation googleProfileInformation;
     private EditText gardenName;
     private EditText gardenAddress;
@@ -31,6 +31,7 @@ public class GardenApplicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garden_application);
         loadExtras();
+        activateNavBar();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         TextView contactName = findViewById(R.id.garden_contact_name_loaded);

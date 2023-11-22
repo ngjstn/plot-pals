@@ -1,22 +1,5 @@
+const { StatusCodes } = require('http-status-codes');
 const { database } = require('../database');
-
-const getAllTasks = async (req, res, next) => {
-  let sql = `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
-  FROM posts 
-  LEFT JOIN tasks ON posts.taskId = tasks.taskId 
-  JOIN gardens 
-  LEFT JOIN profiles AS assignerProfiles ON posts.assignerId = assignerProfiles.id
-  LEFT JOIN profiles As assigneeProfiles ON tasks.assigneeId = assigneeProfiles.id
-  WHERE posts.postGardenId = gardens.id AND posts.taskId = tasks.taskId
-  ORDER BY posts.id DESC`;
-
-  try {
-    const queryResults = await database.query(sql);
-    return res.json({ data: queryResults[0] });
-  } catch (err) {
-    return next(err);
-  }
-};
 
 const getAllPostsAndTasks = async (req, res, next) => {
   const { gardenId, postId } = req.query;
@@ -44,7 +27,7 @@ const getAllPostsAndTasks = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, sqlInput);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -87,7 +70,7 @@ const getTasksRelatedToAuthorizedUser = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, sqlInput);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -131,7 +114,7 @@ const getTasksRelatedToAuthorizedUserByGardenId = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, sqlInput);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -217,7 +200,7 @@ const createTask = async (req, res, next) => {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
     VALUES (?, ?, ?, ?, ?)`;
     const insResults = await database.query(sqlInsertPost, [taskTitle, taskDesc, genTaskId, req.userId, gardenId]);
-    return res.json({ success: insResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
@@ -232,7 +215,7 @@ const createPost = async (req, res, next) => {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId)
     VALUES (?, ?, ?, ?, ?)`;
     const insResults = await database.query(sqlInsertPost, [postTitle, postDesc, null, req.userId, gardenId]);
-    return res.json({ success: insResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
@@ -247,7 +230,7 @@ const claimTask = async (req, res, next) => {
     const sqlClaimTask = `UPDATE tasks SET taskStartTime = NOW(), assigneeId = ? 
       WHERE taskId = ? AND taskStartTime IS NULL AND assigneeId IS NULL`;
     const queryResults = await database.query(sqlClaimTask, [req.userId, taskId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
@@ -263,7 +246,7 @@ const completeTask = async (req, res, next) => {
     const sqlCompleteTask = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`;
     const queryResults = await database.query(sqlCompleteTask, [taskId, req.userId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
     return next(err);
@@ -271,7 +254,6 @@ const completeTask = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllTasks,
   getTasksRelatedToAuthorizedUser,
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllPostsAndTasks,

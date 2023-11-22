@@ -1,3 +1,4 @@
+const { StatusCodes } = require('http-status-codes');
 const { database } = require('../database');
 
 const getAllPlots = async (req, res, next) => {
@@ -16,13 +17,11 @@ const getAllPlots = async (req, res, next) => {
     additionalQueries += ' AND plots.plotOwnerId = ?';
   }
 
-  const sql = `SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName 
-  FROM plots JOIN gardens JOIN profiles 
-  WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id${additionalQueries}`;
+  const sql = `SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName FROM plots JOIN gardens JOIN profiles WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id${additionalQueries}`;
 
   try {
     const queryResults = await database.query(sql, sqlInput);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -39,11 +38,7 @@ const addAPlotToAGarden = async (req, res, next) => {
     ?
   );`;
   try {
-    const insertResponse = await database.query(sql, [gardenId, plotOwnerId]);
-
-    if (insertResponse[0].affectedRows <= 0) {
-      return res.json({ success: false });
-    }
+    await database.query(sql, [gardenId, plotOwnerId]);
   } catch (err) {
     return next(err);
   }
@@ -53,16 +48,12 @@ const addAPlotToAGarden = async (req, res, next) => {
   SET roleNum = 1
   WHERE gardenId = ? AND profileId = ?;`;
   try {
-    const updateResponse = await database.query(sql, [gardenId, plotOwnerId]);
-
-    if (updateResponse[0].affectedRows <= 0) {
-      return res.json({ success: false });
-    }
+    await database.query(sql, [gardenId, plotOwnerId]);
   } catch (err) {
     return next(err);
   }
 
-  return res.json({ success: true });
+  return res.status(StatusCodes.OK).json({ success: true });
 };
 
 const removePlot = async (req, res, next) => {
@@ -88,11 +79,7 @@ const removePlot = async (req, res, next) => {
   SET roleNum = 0
   WHERE gardenId = ? AND profileId = ?;`;
   try {
-    const updateResponse = await database.query(sql, [gardenId, plotOwnerId]);
-
-    if (updateResponse[0].affectedRows <= 0) {
-      return res.json({ success: false });
-    }
+    await database.query(sql, [gardenId, plotOwnerId]);
   } catch (err) {
     return next(err);
   }
@@ -127,7 +114,7 @@ const removePlot = async (req, res, next) => {
     return next(err);
   }
 
-  return res.json({ success: true });
+  return res.status(StatusCodes.OK).json({ success: true });
 };
 
 module.exports = {

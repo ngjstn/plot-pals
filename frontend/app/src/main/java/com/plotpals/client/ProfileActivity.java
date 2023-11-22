@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends NavBarActivity {
     final static String TAG = "ProfileActivity";
     GoogleProfileInformation googleProfileInformation;
     ImageView AccountProfilePictureImageView;
@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         loadExtras();
         requestProfileInformation();
+        activateNavBar();
 
         AccountProfileNameEditTextView = findViewById(R.id.account_name_text_view);
 

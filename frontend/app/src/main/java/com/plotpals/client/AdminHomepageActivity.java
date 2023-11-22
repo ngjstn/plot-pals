@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminHomepageActivity extends AppCompatActivity {
+public class AdminHomepageActivity extends NavBarActivity {
 
     final String TAG = "AdminHomepageActivity";
 
@@ -46,6 +46,7 @@ public class AdminHomepageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_homepage);
         loadExtras();
+        activateNavBar();
 
         GardenApplicationsForwardArrow = findViewById(R.id.admin_homepage_garden_applications_forward_arrow);
         GardenApplicationsForwardArrow.setOnClickListener(view -> {

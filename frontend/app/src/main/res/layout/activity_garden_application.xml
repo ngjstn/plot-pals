@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".GardenApplicationActivity">
 
+    <include layout="@layout/activity_nav_bar"/>
+
     <TextView
         android:id="@+id/garden_application_header"
         android:layout_width="183dp"

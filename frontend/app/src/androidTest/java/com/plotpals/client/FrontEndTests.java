@@ -4,6 +4,7 @@ package com.plotpals.client;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -19,7 +20,6 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
@@ -27,6 +27,9 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.test.uiautomator.UiDevice;
 
 import com.plotpals.client.utils.TaskSocketHandler;
 
@@ -65,6 +68,12 @@ public class FrontEndTests {
 
     @Rule
     public ActivityScenarioRule<AppEntryActivity> mActivityScenarioRule = new ActivityScenarioRule<>(intent);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
     @Before
     public void setUp() {
@@ -209,6 +218,76 @@ public class FrontEndTests {
         }
 
     }
+
+    @Test
+    public void joinGardenTest() {
+
+        try {
+
+            UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+            // Click Navbar
+            ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+            appCompatButton.perform(click());
+
+            // Let gardens load
+            Thread.sleep(200);
+
+            // Click Plus
+            ViewInteraction appCompatImageView = onView(
+                    allOf(withId(R.id.my_garden_plus_button),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    1),
+                            isDisplayed()));
+            appCompatImageView.perform(click());
+
+            // Accept location permissions this time
+            device.click(540, 1600);
+
+            // Let Google Maps load
+            Thread.sleep(200);
+
+            // Type in search bar
+            ViewInteraction searchAutoComplete = onView(
+                    allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                            childAtPosition(
+                                    allOf(withClassName(is("android.widget.LinearLayout")),
+                                            childAtPosition(
+                                                    withClassName(is("android.widget.LinearLayout")),
+                                                    1)),
+                                    0),
+                            isDisplayed()));
+            searchAutoComplete.perform(replaceText("test"));
+            searchAutoComplete.perform(pressImeActionButton());
+
+            ViewInteraction button = onView(
+                    allOf(withId(R.id.rectangle_4),
+                            childAtPosition(
+                                    withParent(withId(R.id.garden_list)),
+                                    0),
+                            isDisplayed()));
+            button.perform(click());
+
+            ViewInteraction button2 = onView(
+                    allOf(withId(R.id.rectangle_3),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(android.R.id.content),
+                                            0),
+                                    7),
+                            isDisplayed()));
+            button2.perform(click());
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 
     private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher, final int position) {
 

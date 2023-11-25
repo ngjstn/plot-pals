@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CurrentMembersActivity extends AppCompatActivity {
+public class CurrentMembersActivity extends NavBarActivity {
     final static String TAG = "CurrentMembersActivity";
     ListView plotOwnerListView;
     ArrayList<Role> plotOwnerList;
@@ -55,6 +55,7 @@ public class CurrentMembersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_members);
+        activateNavBar();
         plotsList = new ArrayList<>();
         plotOwnerList = new ArrayList<>();
         plotOwnerListView = findViewById(R.id.plot_owner_list_view);

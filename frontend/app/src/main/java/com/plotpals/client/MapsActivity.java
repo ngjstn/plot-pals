@@ -327,7 +327,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void drawGardenLocationMarker(Garden garden) {
-        Drawable greenMarker = getResources().getDrawable(R.drawable.location_marker_green);
+        Drawable greenMarker = getResources().getDrawable(R.drawable.plant_house);
         BitmapDescriptor markerIcon = getMarkerIconFromDrawable(greenMarker);
 
         Marker marker = mMap.addMarker(new MarkerOptions()

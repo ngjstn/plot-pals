@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class GardenInfoMemberActivity extends AppCompatActivity {
+public class GardenInfoMemberActivity extends NavBarActivity {
     final static String TAG = "GardenInfoMemberActivity";
     ArrayList<Post> tasksList;
     ListView TasksListView;
@@ -49,6 +49,7 @@ public class GardenInfoMemberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garden_info_member);
         loadExtras();
+        activateNavBar();
 
         TasksListView = findViewById(R.id.tasks_list_view);
         tasksList = new ArrayList<Post>();

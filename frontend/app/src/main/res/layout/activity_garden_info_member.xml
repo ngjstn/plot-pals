@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".GardenInfoNonMemberActivity">
 
+    <include layout="@layout/activity_nav_bar"/>
+
     <TextView
         android:id="@+id/garden_name"
         android:layout_width="325dp"
@@ -62,6 +64,7 @@
         app:layout_constraintTop_toTopOf="@+id/rectangle_2"
         app:layout_constraintVertical_bias="0.583" />
 
+
     <Button
         android:id="@+id/rectangle_2"
         android:layout_width="120dp"
@@ -71,11 +74,10 @@
         android:background="@drawable/rectangle_6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.883"
+        app:layout_constraintHorizontal_bias="0.876"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
-
+        app:layout_constraintVertical_bias="0.869" />
 
     <View
         android:id="@+id/rectangle_4"
@@ -270,10 +272,23 @@
         android:background="#D9D9D9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.433" />
+
+    <ListView
+        android:id="@+id/tasks_list_view"
+        android:layout_width="340dp"
+        android:layout_height="260dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455" />
+        app:layout_constraintVertical_bias="0.675" />
 
     <TextView
         android:id="@+id/my_tasks"
@@ -290,19 +305,6 @@
         app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.412" />
-
-    <ListView
-        android:id="@+id/tasks_list_view"
-        android:layout_width="340dp"
-        android:layout_height="260dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709" />
+        app:layout_constraintVertical_bias="0.389" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

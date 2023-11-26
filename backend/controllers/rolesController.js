@@ -66,7 +66,42 @@ const updateRole = async (req, res, next) => {
 const deleteRole = async (req, res, next) => {
   const { profileId, gardenId } = req.params;
 
-  const sql = `DELETE FROM roles WHERE profileId=? AND gardenId=?`;
+  let sql;
+
+  // Delete tasks from user
+  sql = `
+  DELETE tasks FROM tasks
+  INNER JOIN posts
+  ON posts.taskId = tasks.taskId
+  WHERE posts.assignerId = ? AND posts.postGardenId = ?;`;
+  try {
+    await database.query(sql, [profileId, gardenId]);
+  } catch (err) {
+    return next(err);
+  }
+
+  // Delete posts from user
+  sql = `
+  DELETE FROM posts
+  WHERE assignerId = ? AND postGardenId = ?;`;
+  try {
+    await database.query(sql, [profileId, gardenId]);
+  } catch (err) {
+    return next(err);
+  }
+
+  // Delete plots from user
+  sql = `
+  DELETE FROM plots
+  WHERE plotOwnerId = ? AND gardenId = ?;`;
+  try {
+    await database.query(sql, [profileId, gardenId]);
+  } catch (err) {
+    return next(err);
+  }
+
+  // Remove user from garden
+  sql = `DELETE FROM roles WHERE profileId=? AND gardenId=?`;
 
   try {
     const queryResults = await database.query(sql, [profileId, gardenId]);

@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.plotpals.client.data.Post;
+import com.plotpals.client.data.Profile;
 import com.plotpals.client.utils.GoogleProfileInformation;
 
 import org.json.JSONArray;
@@ -51,8 +52,8 @@ public class HomepageActivity extends NavBarActivity {
         loadExtras();
         activateNavBar();
 
-        TextView username = findViewById(R.id.username);
-        username.setText(googleProfileInformation.getAccountGoogleName());
+//        TextView username = findViewById(R.id.username);
+//        username.setText(googleProfileInformation.getAccountGoogleName());
 
         TasksForwardArrowImageView = findViewById(R.id.homepage_tasks_forward_arrow_image_view);
         TasksForwardArrowImageView.setOnClickListener(view -> {
@@ -94,6 +95,7 @@ public class HomepageActivity extends NavBarActivity {
     {
         super.onStart();
         requestTasks();
+        requestProfileInformation();
     }
 
     private void requestTasks() {
@@ -137,6 +139,47 @@ public class HomepageActivity extends NavBarActivity {
             }
         };
 
+        volleyQueue.add(jsonObjectRequest);
+    }
+
+    private void requestProfileInformation() {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Obtaining account profile information");
+                        JSONArray fetchedProfile = (JSONArray)response.get("data");
+
+                        Log.d(TAG, fetchedProfile.toString());
+
+                        if (fetchedProfile.length() > 0) {
+                            /* Use fetched profile information to populate page with relevant account information */
+                            Profile profile = new Profile(fetchedProfile.getJSONObject(0));
+                            TextView username = findViewById(R.id.username);
+                            username.setText(profile.getDisplayName());
+                        }
+
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
         volleyQueue.add(jsonObjectRequest);
     }
 

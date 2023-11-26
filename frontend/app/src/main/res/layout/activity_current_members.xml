@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".CurrentMembersActivity">
 
+    <include layout="@layout/activity_nav_bar"/>
+
     <TextView
         android:id="@+id/garden_name"
         android:layout_width="325dp"

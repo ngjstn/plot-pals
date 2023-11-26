@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManageGardenActivity extends AppCompatActivity {
+public class ManageGardenActivity extends NavBarActivity {
     final static String TAG = "ManageGardenActivity";
     static GoogleProfileInformation googleProfileInformation;
     ArrayList<String> memberNameList;
@@ -43,6 +43,7 @@ public class ManageGardenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_garden);
         loadExtras();
+        activateNavBar();
 
         memberNameList = new ArrayList<>();
 

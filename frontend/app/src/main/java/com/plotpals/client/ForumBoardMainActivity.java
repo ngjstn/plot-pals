@@ -67,12 +67,19 @@ public class ForumBoardMainActivity extends NavBarActivity {
 
         ImageView arrow = findViewById(R.id.forum_board_arrow);
         arrow.setOnClickListener(view -> finish());
-//        arrow.setOnClickListener(view -> {
-//            Log.d(TAG, "Clicking Back Arrow");
-//            Intent myGardenIntent = new Intent(ForumBoardMainActivity.this, MyGardenYesGardenActivity.class);
-//            googleProfileInformation.loadGoogleProfileInformationToIntent(myGardenIntent);
-//            startActivity(myGardenIntent);
-//        });
+
+        View greyScreenOverlay = findViewById(R.id.plus_grey_screen);
+        greyScreenOverlay.setVisibility(View.GONE);
+
+        greyScreenOverlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (greyScreenOverlay.getVisibility() == View.VISIBLE) {
+                    newTaskText.setVisibility(View.GONE);
+                    greyScreenOverlay.setVisibility(View.GONE);
+                }
+            }
+        });
 
         ImageView plus = findViewById(R.id.forum_board_plus);
         plus.setOnClickListener(view -> {
@@ -81,6 +88,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
             // We disable posts for now
             // newPostText.setVisibility(newPostText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             newTaskText.setVisibility(newTaskText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            greyScreenOverlay.setVisibility(greyScreenOverlay.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         });
 
         newPostText.setOnClickListener(view -> {
@@ -124,6 +132,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
         super.onStart();
         requestMembers(currentGardenId);
         loadPosts();
+        findViewById(R.id.forum_board_new_task).setVisibility(View.GONE);
+        findViewById(R.id.plus_grey_screen).setVisibility(View.GONE);
     }
 
     private void loadPosts() {

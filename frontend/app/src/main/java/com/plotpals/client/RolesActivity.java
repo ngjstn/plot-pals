@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RolesActivity extends AppCompatActivity {
+public class RolesActivity extends NavBarActivity {
 
     final String TAG = "RolesActivity";
 
@@ -47,6 +47,7 @@ public class RolesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roles);
         loadExtras();
+        activateNavBar();
 
         BackArrowImageView = findViewById(R.id.roles_back_arrow_image_view);
         BackArrowImageView.setOnClickListener(view -> {

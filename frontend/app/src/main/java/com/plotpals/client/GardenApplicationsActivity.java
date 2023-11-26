@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GardenApplicationsActivity extends AppCompatActivity {
+public class GardenApplicationsActivity extends NavBarActivity {
 
     final String TAG = "GardenApplicationsActivity";
 
@@ -48,6 +48,7 @@ public class GardenApplicationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_garden_applications);
         loadExtras();
+        activateNavBar();
 
         BackArrowImageView = findViewById(R.id.garden_applications_back_arrow);
         BackArrowImageView.setOnClickListener(view -> {

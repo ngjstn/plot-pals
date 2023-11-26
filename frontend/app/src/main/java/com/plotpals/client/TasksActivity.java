@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends NavBarActivity {
 
     final String TAG = "TasksActivity";
 
@@ -48,6 +48,7 @@ public class TasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         loadExtras();
+        activateNavBar();
 
         BackArrowImageView = findViewById(R.id.tasks_back_arrow_image_view);
         BackArrowImageView.setOnClickListener(view -> {

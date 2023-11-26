@@ -28,7 +28,7 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="43dp"
         android:layout_marginTop="76dp"
         android:fontFamily="@font/inter_bold"
         android:gravity="top"
@@ -39,10 +39,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="530dp"
+        android:layout_height="525dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/include3"
-        app:layout_constraintVertical_bias="0.661"
+        app:layout_constraintVertical_bias="0.679"
         tools:layout_editor_absoluteX="0dp">
 
         <RelativeLayout

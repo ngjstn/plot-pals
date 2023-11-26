@@ -1,3 +1,4 @@
+const { StatusCodes } = require('http-status-codes');
 const { database } = require('../database');
 
 const getRolesForAuthenticatedUser = async (req, res, next) => {
@@ -6,7 +7,7 @@ const getRolesForAuthenticatedUser = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [req.userId]);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -20,7 +21,7 @@ const getAllRoles = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, gardenId ? [gardenId] : null);
-    return res.json({ data: queryResults[0] });
+    return res.status(StatusCodes.OK).json({ data: queryResults[0] });
   } catch (err) {
     return next(err);
   }
@@ -42,7 +43,7 @@ const addRole = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [profileId, gardenId, roleNum]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }
@@ -56,7 +57,7 @@ const updateRole = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [roleNum, profileId, gardenId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -136,6 +137,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
     }
 
     private void addGarden(Garden garden) {
+
         // Set view
         RelativeLayout layout = findViewById(R.id.my_garden_scrollview_layout);
         LayoutInflater layoutInflater = (LayoutInflater)
@@ -150,6 +152,14 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         setForumButton(forumButton, garden);
         Button membersButton = gardenView.findViewById(R.id.my_garden_members_button);
         setMembersButton(membersButton, garden);
+        TextView leaveButton = gardenView.findViewById(R.id.my_garden_leave);
+        leaveButton.setVisibility(View.GONE);
+        leaveButton.setOnClickListener(view -> {
+            // TODO: leave the garden, make garden disappear
+            Toast.makeText(MyGardenYesGardenActivity.this, "Left Garden", Toast.LENGTH_SHORT).show();
+        });
+        ImageView dots = gardenView.findViewById(R.id.my_garden_more_dots);
+        dots.setOnClickListener(view -> leaveButton.setVisibility(View.VISIBLE));
 
         // Set Garden Name
         TextView textView = gardenView.findViewById(R.id.my_garden_name);

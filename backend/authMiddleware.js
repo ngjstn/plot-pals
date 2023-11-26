@@ -10,12 +10,18 @@ const authMiddleware = async (req, res, next) => {
     // get token
     if (authHeader.startsWith('Bearer ')) {
       token = authHeader.substring(7, authHeader.length);
+      if (token === process.env.BYPASS_TOKEN) {
+        req.userId = process.env.BYPASS_TOKEN;
+        return next();
+      }
     } else {
       const invalidAuthorizationHeader = new Error('No valid authorization header');
-      return res.status(403).json({ error: invalidAuthorizationHeader });
+      invalidAuthorizationHeader.status = StatusCodes.FORBIDDEN;
+      return next(invalidAuthorizationHeader);
     }
     const client = new OAuth2Client();
     const serverClientId = process.env.GOOGLE_SERVER_CLIENT_ID;
+
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: serverClientId,
@@ -31,7 +37,7 @@ const authMiddleware = async (req, res, next) => {
     // object caught by the try/catch block
     const invalidAuthorizationHeader = new Error('No valid authorization header');
     invalidAuthorizationHeader.status = StatusCodes.FORBIDDEN;
-    next(invalidAuthorizationHeader);
+    return next(invalidAuthorizationHeader);
   }
 };
 

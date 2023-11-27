@@ -99,13 +99,13 @@ public class ForumBoardNewTaskActivity extends NavBarActivity {
                     Log.d(TAG, currentGardenName + currentGardenId);
 
                     sendTaskInformation();
-
-                    startActivity(intent);
+                    finish();
                 }
 
             }
             catch (DateTimeParseException e) {
                 Toast.makeText(ForumBoardNewTaskActivity.this, deadlineText.getText().toString()+"Please enter a valid deadline", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }

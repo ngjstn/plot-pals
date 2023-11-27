@@ -155,8 +155,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
         TextView leaveButton = gardenView.findViewById(R.id.my_garden_leave);
         leaveButton.setVisibility(View.GONE);
         leaveButton.setOnClickListener(view -> {
-            // TODO: leave the garden, make garden disappear
-            Toast.makeText(MyGardenYesGardenActivity.this, "Left Garden", Toast.LENGTH_SHORT).show();
+            leaveGarden(garden.getId());
         });
         ImageView dots = gardenView.findViewById(R.id.my_garden_more_dots);
         dots.setOnClickListener(view -> leaveButton.setVisibility(View.VISIBLE));
@@ -203,6 +202,42 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
             intent.putExtra("gardenName", garden.getGardenName());
             startActivity(intent);
         });
+    }
+
+    private void leaveGarden(int gardenId) {
+        RequestQueue volleyQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8081/roles/" + googleProfileInformation.getAccountUserId() + "/" + gardenId;
+        Request<?> jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                (JSONObject response) -> {
+                    try {
+                        Log.d(TAG, "Attempted removal of user from garden");
+                        boolean leaveGardenIsSuccessful = (boolean)response.get("success");
+                        if (leaveGardenIsSuccessful) {
+                            // Restart activity
+                            finish();
+                            startActivity(getIntent());
+                        } else {
+                            Log.d(TAG, "Removal of user from garden was not successful");
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                },
+                (VolleyError e) -> {
+                    Log.d(TAG, e.toString());
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + googleProfileInformation.getAccountIdToken());
+                return headers;
+            }
+        };
+        volleyQueue.add(jsonObjectRequest);
     }
 
 }

@@ -240,17 +240,41 @@ const claimTask = async (req, res, next) => {
 const completeTask = async (req, res, next) => {
   const { taskId } = req.query;
 
+  let sql;
+
   // update task based on taskid
   // if taskStartTime is not null, update taskEndTime and isCompleted
   try {
-    const sqlCompleteTask = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
+    sql = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`;
-    const queryResults = await database.query(sqlCompleteTask, [taskId, req.userId]);
-    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
+    await database.query(sql, [taskId, req.userId]);
   } catch (err) {
     console.log(err);
     return next(err);
   }
+
+  //  delete tasks assigned to self that has been completed
+  try {
+    sql = `DELETE tasks FROM tasks 
+    JOIN posts ON tasks.taskId = posts.taskId
+    WHERE posts.assignerId = ? AND tasks.assigneeId = ? AND isCompleted = 1`;
+    await database.query(sql, [req.userId, req.userId]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  //  delete post associated with the deleted task from code above
+  try {
+    sql = `DELETE FROM posts 
+    WHERE assignerId = ? AND taskId IS NULL`;
+    await database.query(sql, [req.userId]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  return res.status(StatusCodes.OK).json({ success: true });
 };
 
 module.exports = {

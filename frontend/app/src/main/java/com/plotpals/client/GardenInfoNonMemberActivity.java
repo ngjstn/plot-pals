@@ -2,6 +2,7 @@ package com.plotpals.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,17 @@ public class GardenInfoNonMemberActivity extends AppCompatActivity {
                 Toast.makeText(GardenInfoNonMemberActivity.this, "Join pressed", Toast.LENGTH_SHORT).show();
                 try {
                     joinGardenRole(RoleEnum.CARETAKER);
+                    Intent memberPage = new Intent(GardenInfoNonMemberActivity.this, GardenInfoMemberActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(memberPage);
+                    memberPage.putExtra("gardenId", gardenId);
+                    memberPage.putExtra("gardenName", currentGarden.getGardenName());
+
+                    // used for mapActivity callback to update the garden overlay
+                    Intent resultIntent = new Intent(GardenInfoNonMemberActivity.this, MapsActivity.class);
+                    setResult(RESULT_OK, resultIntent);
+
+                    startActivity(memberPage);
+                    finish();
                 } catch (JSONException e) {
                     Log.d(TAG, "Error joining garden");
                 }

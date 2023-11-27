@@ -1,11 +1,16 @@
 package com.plotpals.client;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -126,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent gardenInfoNonMem = new Intent(MapsActivity.this, GardenInfoNonMemberActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(gardenInfoNonMem);
                     gardenInfoNonMem.putExtra("gardenId", currentGardenSelected.getId());
-                    startActivity(gardenInfoNonMem);
+                    nonMemberActivityResultLauncher.launch(gardenInfoNonMem);
                 }
                 else {
                     Intent gardenInfo = new Intent(MapsActivity.this, GardenInfoMemberActivity.class);
@@ -137,8 +142,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-
     }
+
+    ActivityResultLauncher<Intent> nonMemberActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        updateGardenOverlayContent(currentGardenSelected);
+                        requestMembersAndShowOverlay(currentGardenSelected.getId());
+                    }
+                }
+            }
+    );
 
     /**
      * Manipulates the map once available.
@@ -190,7 +207,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // do nothing
             return;
         }
-
         locationLat = location.getLatitude();
         locationLong = location.getLongitude();
 

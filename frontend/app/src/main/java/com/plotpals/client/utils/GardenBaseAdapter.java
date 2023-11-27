@@ -72,6 +72,7 @@ public class GardenBaseAdapter extends BaseAdapter {
                 mapsIntent.putExtra("moveToSelectedLat", listGarden.get(i).getLocation().latitude);
                 mapsIntent.putExtra("moveToSelectedLong", listGarden.get(i).getLocation().longitude);
                 searchActivity.startActivity(mapsIntent);
+                searchActivity.finish();
             }
         });
 

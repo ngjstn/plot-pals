@@ -72,6 +72,7 @@ public class GardenInfoMemberActivity extends NavBarActivity {
                 forumBoard.putExtra("gardenId", gardenId);
                 forumBoard.putExtra("gardenName", gardenName);
                 startActivity(forumBoard);
+                finish();
             }
         });
 

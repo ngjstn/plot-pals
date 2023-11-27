@@ -40,7 +40,7 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         loadTask();
 
         ImageView arrow = findViewById(R.id.forum_board_task_arrow);
-        arrow.setOnClickListener(v -> finish());
+        arrow.setOnClickListener(view -> finish());
 
     }
 
@@ -110,19 +110,26 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
     private void setButton() {
         Button button = findViewById(R.id.forum_board_task_button);
         if (!task.getTask().isAssigneeIsProvidedFeedback() && task.getTask().isCompleted() && task.getAssignerId().equals(googleProfileInformation.getAccountUserId())) { // task is complete and we made it and no feedback
-            button.setText("Provide Feedback");
-            button.setOnClickListener(view -> {
-                Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
-                googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-                intent.putExtra("taskTitle", task.getTitle());
-                intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
-                intent.putExtra("taskId", task.getTask().getId());
-                intent.putExtra("gardenId", task.getPostGardenId());
-                intent.putExtra("gardenName", task.getGardenName());
-                startActivity(intent);
-                finish();
-            });
+            if (task.getTask().getAssigneeId().equals(task.getAssignerId())) {
+                // owner volunteers for their own task, disable feedback button
+                button.setVisibility(View.GONE);
+            }
+            else {
+                button.setVisibility(View.VISIBLE);
+                button.setText("Provide Feedback");
+                button.setOnClickListener(view -> {
+                    Toast.makeText(ForumBoardViewTaskActivity.this, "Provide Feedback Button Pressed", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ForumBoardViewTaskActivity.this, ForumBoardFeedbackActivity.class);
+                    googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                    intent.putExtra("taskTitle", task.getTitle());
+                    intent.putExtra("taskAssignee", task.getTask().getAssigneeName());
+                    intent.putExtra("taskId", task.getTask().getId());
+                    intent.putExtra("gardenId", task.getPostGardenId());
+                    intent.putExtra("gardenName", task.getGardenName());
+                    startActivity(intent);
+                    finish();
+                });
+            }
         } else if (task.getTask().isCompleted() ){  // || task.getAssignerId().equals(googleProfileInformation.getAccountUserId())
             button.setVisibility(View.GONE);
         } else if (task.getTask().getAssigneeName().equals("null")) { // nobody is assigned

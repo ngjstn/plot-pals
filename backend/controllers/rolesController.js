@@ -105,7 +105,7 @@ const deleteRole = async (req, res, next) => {
 
   try {
     const queryResults = await database.query(sql, [profileId, gardenId]);
-    return res.json({ success: queryResults[0].affectedRows > 0 });
+    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
   } catch (err) {
     return next(err);
   }

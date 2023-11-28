@@ -138,8 +138,6 @@ const createTask = async (req, res, next) => {
     return next(err);
   }
 
-  console.log('gardenRoleNum: ' + gardenRoleNum);
-
   if (gardenRoleNum === 2) {
     plotId = null;
   } else {
@@ -153,21 +151,14 @@ const createTask = async (req, res, next) => {
     }
   }
 
-  console.log('plotId: ' + plotId);
-
   // need to process string for deadline
   let month = taskDeadline.substring(0, 2);
   let day = taskDeadline.substring(2, 4);
   let year = taskDeadline.substring(4, 8);
   let deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
-  console.log('deadlineDate: ' + deadlineDate);
-
   try {
-    const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
-      isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, 
-      taskEndTime, expectedTaskDurationInHours) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, taskEndTime, expectedTaskDurationInHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     await database.query(sqlInsertTask, [
       plotId,
       taskReward,
@@ -194,27 +185,10 @@ const createTask = async (req, res, next) => {
     return next(err);
   }
 
-  console.log(genTaskId);
-
   try {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
     VALUES (?, ?, ?, ?, ?)`;
     const insResults = await database.query(sqlInsertPost, [taskTitle, taskDesc, genTaskId, req.userId, gardenId]);
-    return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
-  } catch (err) {
-    console.log(err);
-    return next(err);
-  }
-};
-
-const createPost = async (req, res, next) => {
-  const { postTitle, postDesc } = req.body;
-  const { gardenId } = req.query;
-
-  try {
-    const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId)
-    VALUES (?, ?, ?, ?, ?)`;
-    const insResults = await database.query(sqlInsertPost, [postTitle, postDesc, null, req.userId, gardenId]);
     return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
@@ -253,7 +227,7 @@ const completeTask = async (req, res, next) => {
     return next(err);
   }
 
-  //  delete tasks assigned to self that has been completed
+  //  delete completed task if it has been assigned to self
   try {
     sql = `DELETE tasks FROM tasks 
     JOIN posts ON tasks.taskId = posts.taskId
@@ -282,7 +256,6 @@ module.exports = {
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllPostsAndTasks,
   createTask,
-  createPost,
   claimTask,
   completeTask,
 };

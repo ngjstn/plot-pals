@@ -91,15 +91,6 @@ public class ForumBoardMainActivity extends NavBarActivity {
             greyScreenOverlay.setVisibility(greyScreenOverlay.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         });
 
-        newPostText.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking New Post");
-            Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewPostActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
-            intent.putExtra("gardenId", currentGardenId);
-            intent.putExtra("gardenName", currentGardenName);
-            startActivity(intent);
-        });
-
         newTaskText.setOnClickListener(view -> {
             Log.d(TAG, "Clicking New Task");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewTaskActivity.class);

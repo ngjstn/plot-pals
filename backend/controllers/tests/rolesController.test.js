@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
 const { randomRoles } = require('./fixtures/roleFixtures');
-const { getRolesForAuthenticatedUser, getAllRoles, addRole, updateRole } = require('../rolesController');
+const { getRolesForAuthenticatedUser, getAllRoles, addRole, updateRole, deleteRole } = require('../rolesController');
 
 jest.mock('../../database', () => ({
   database: {
@@ -228,6 +228,267 @@ describe('Update role (membership) for a garden', () => {
     });
 
     await updateRole(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+});
+
+// DELETE /roles/:profileId/:gardenId
+describe('Delete role (membership) for a garden', () => {
+  beforeEach(() => {
+    database.query.mockRestore();
+  });
+  // Input: profileId and gardenId url params
+  // Expected status code: 200
+  // Expected behavior: delete role (membership) from garden and any posts, tasks and plots that the user owns in the garden
+  // Expected output: whether operation is successful
+  test('No database errors', async () => {
+    const req = { params: { profileId: '123423423', gardenId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE tasks FROM tasks
+      INNER JOIN posts
+      ON posts.taskId = tasks.taskId
+      WHERE posts.assignerId = ? AND posts.postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM posts
+      WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM plots
+      WHERE plotOwnerId = ? AND gardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') === `DELETE FROM roles WHERE profileId=? AND gardenId=?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await deleteRole(req, res, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
+    expect(res.json).toHaveBeenCalledWith({ success: true });
+  });
+
+  // Input: profileId and gardenId url params
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database errors when deleting from tasks table', async () => {
+    const req = { params: { profileId: '123423423', gardenId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE tasks FROM tasks
+      INNER JOIN posts
+      ON posts.taskId = tasks.taskId
+      WHERE posts.assignerId = ? AND posts.postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        throw expectedError;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM posts
+      WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM plots
+      WHERE plotOwnerId = ? AND gardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') === `DELETE FROM roles WHERE profileId=? AND gardenId=?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await deleteRole(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: profileId and gardenId url params
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database errors when deleting from posts table', async () => {
+    const req = { params: { profileId: '123423423', gardenId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE tasks FROM tasks
+      INNER JOIN posts
+      ON posts.taskId = tasks.taskId
+      WHERE posts.assignerId = ? AND posts.postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM posts
+      WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        throw expectedError;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM plots
+      WHERE plotOwnerId = ? AND gardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') === `DELETE FROM roles WHERE profileId=? AND gardenId=?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await deleteRole(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: profileId and gardenId url params
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database errors when deleting from plots table', async () => {
+    const req = { params: { profileId: '123423423', gardenId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE tasks FROM tasks
+      INNER JOIN posts
+      ON posts.taskId = tasks.taskId
+      WHERE posts.assignerId = ? AND posts.postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM posts
+      WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM plots
+      WHERE plotOwnerId = ? AND gardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        throw expectedError;
+      } else if (
+        sql.replace(/\s+/g, ' ') === `DELETE FROM roles WHERE profileId=? AND gardenId=?`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return [{ affectedRows: 1 }];
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await deleteRole(req, res, next);
+    expect(next).toHaveBeenCalledWith(expectedError);
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+  });
+
+  // Input: profileId and gardenId url params
+  // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
+  // Expected behavior: an error is thrown when calling database.query and the error is send through next()
+  // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
+  test('database errors when deleting from roles table', async () => {
+    const req = { params: { profileId: '123423423', gardenId: '1' } };
+    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const next = jest.fn();
+
+    const expectedError = new Error('Some database error');
+    database.query.mockImplementation((sql, sqlInputArr) => {
+      if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE tasks FROM tasks
+      INNER JOIN posts
+      ON posts.taskId = tasks.taskId
+      WHERE posts.assignerId = ? AND posts.postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM posts
+      WHERE assignerId = ? AND postGardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') ===
+        `
+      DELETE FROM plots
+      WHERE plotOwnerId = ? AND gardenId = ?;`.replace(/\s+/g, ' ')
+      ) {
+        expect(sqlInputArr).toStrictEqual([req.params.profileId, req.params.gardenId]);
+        return null;
+      } else if (
+        sql.replace(/\s+/g, ' ') === `DELETE FROM roles WHERE profileId=? AND gardenId=?`.replace(/\s+/g, ' ')
+      ) {
+        throw expectedError;
+      }
+      throw Error('It should not get to this point');
+    });
+
+    await deleteRole(req, res, next);
     expect(next).toHaveBeenCalledWith(expectedError);
     expect(res.status).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();

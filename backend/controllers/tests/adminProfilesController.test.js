@@ -1,6 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
+const { OAuth2Client } = require('google-auth-library');
 const { database } = require('../../database');
 const { getAllAdminProfiles } = require('../adminProfilesController');
+const request = require('supertest');
+const { app } = require('../../server');
 
 jest.mock('../../database', () => ({
   database: {
@@ -8,16 +11,31 @@ jest.mock('../../database', () => ({
   },
 }));
 
+jest.mock('google-auth-library');
+
 // Interface GET /adminProfiles/all
 describe('Obtain admin profiles', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    const expectedUserId = '23412312';
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: None
   // Expected status code: 200
   // Expected behavior: an array of admin profile ids is returned
   // Expected output: admin profile ids or none at all
   test('No profileId query parameter and no database error', async () => {
-    const req = { query: {} };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
     const expectedReturnedData = ['123214123', '124563454'];
 
     database.query.mockImplementationOnce((sql, profileIdArr) => {
@@ -26,10 +44,9 @@ describe('Obtain admin profiles', () => {
       return [expectedReturnedData];
     });
 
-    await getAllAdminProfiles(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/adminProfiles/all').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: profile id of an admin

@@ -12,6 +12,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.plotpals.client.data.Profile;
 import com.plotpals.client.utils.GoogleProfileInformation;
 import com.squareup.picasso.Picasso;
@@ -42,6 +47,10 @@ public class AccountMainActivity extends NavBarActivity {
     View AccountRatingsActivityView;
 
     View AccountRolesActivityView;
+
+    View AccountLogoutButtonView;
+
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +112,24 @@ public class AccountMainActivity extends NavBarActivity {
         AccountProfileNameTextView = findViewById(R.id.account_name_text_view);
         AccountProfileRatingsTextView = findViewById(R.id.account_ratings_text_view);
         requestProfileInformation();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .requestProfile()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        AccountLogoutButtonView = findViewById(R.id.account_logout_button);
+        AccountLogoutButtonView.setOnClickListener(view -> {
+            mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                Intent appEntryIntent = new Intent(this, AppEntryActivity.class);
+                startActivity(appEntryIntent);
+                finish();
+            });
+        }) ;
+
     }
 
     private void requestProfileInformation() {

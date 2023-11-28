@@ -69,7 +69,11 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         TextView reward = findViewById(R.id.forum_Board_task_reward);
         reward.setText(task.getTask().getReward());
         TextView assignee = findViewById(R.id.forum_Board_task_assignee);
-        assignee.setText(task.getTask().getAssigneeName());
+        if (task.getTask().getAssigneeName().equals("null")) {
+            assignee.setText("None");
+        } else {
+            assignee.setText(task.getTask().getAssigneeName());
+        }
     }
 
     private void loadTask() {

@@ -229,14 +229,14 @@ public class FrontEndTests {
             gardens.perform(click());
 
             // Let gardens load
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             // Click Plus
             ViewInteraction plus = onView(allOf(withId(R.id.my_garden_plus_button), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
             plus.perform(click());
 
             // Let Google Maps load
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             // Type in search bar
             ViewInteraction searchAutoComplete = onView(allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), childAtPosition(allOf(withClassName(is("android.widget.LinearLayout")), childAtPosition(withClassName(is("android.widget.LinearLayout")), 1)), 0), isDisplayed()));
@@ -244,7 +244,7 @@ public class FrontEndTests {
             searchAutoComplete.perform(pressImeActionButton());
 
             // Let search bar load
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             /*
              * Note: From now on, we begin to use UI Automator, because Espresso has trouble
@@ -256,31 +256,31 @@ public class FrontEndTests {
             device.click(540, 600);
 
             // Let Google Maps load
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             // Click on the center marker
-            device.click(540, 1200);
+            device.click(540, 1080);
 
             // Let UI Load
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             // Click on the info button
-            device.click(810, 2040);
+            device.click(810, 1800);
 
             // Let UI Load
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             // Click on the join button
-            device.click(810, 2060);
+            device.click(810, 1820);
 
             // Let UI Load
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             // Go back to My Gardens
             gardens.perform(click());
 
             // Let UI Load
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             // Click on dots
             ViewInteraction dots = onView(
@@ -293,7 +293,9 @@ public class FrontEndTests {
             dots.perform(click());
 
             // Leave garden for test repeatability
-            device.click(540, 1250);
+            device.click(580, 1020);
+
+            Thread.sleep(500);
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

@@ -37,10 +37,6 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumBoardViewPostActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".SingleGardenApplicationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -54,10 +50,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForumBoardNewTaskActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ForumBoardNewPostActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

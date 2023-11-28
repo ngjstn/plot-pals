@@ -179,6 +179,9 @@ describe('Create profile', () => {
 
 // PUT /rating
 describe('Submit feedback', () => {
+  beforeEach(() => {
+    database.query.mockRestore();
+  });
   // Input: field for new profile specified in req.body, userId from authMiddleware
   // Expected status code: 200
   // Expected behavior: create new profile with id equaling req.userId

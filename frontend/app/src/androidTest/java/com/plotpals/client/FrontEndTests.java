@@ -110,9 +110,8 @@ public class FrontEndTests {
             ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
             appCompatImageView2.perform(click());
 
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView3 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView3.perform(click());
+            // Give time for toast
+            Thread.sleep(2000);
 
             // Type Title
             ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
@@ -137,6 +136,9 @@ public class FrontEndTests {
             // Attempt to click Checkmark
             ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
             appCompatImageView4.perform(click());
+
+            // Give time for toast
+            Thread.sleep(2000);
 
             // Type Proper Date
             ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));

@@ -2,6 +2,8 @@ package com.plotpals.client;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +69,11 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
         TextView reward = findViewById(R.id.forum_Board_task_reward);
         reward.setText(task.getTask().getReward());
         TextView assignee = findViewById(R.id.forum_Board_task_assignee);
-        assignee.setText(task.getTask().getAssigneeName());
+        if (task.getTask().getAssigneeName().equals("null")) {
+            assignee.setText("None");
+        } else {
+            assignee.setText(task.getTask().getAssigneeName());
+        }
     }
 
     private void loadTask() {
@@ -200,7 +206,19 @@ public class ForumBoardViewTaskActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
-                        loadTask();
+                        if (task.getAssignerId().equals(googleProfileInformation.getAccountUserId())) {
+                            Intent intent = new Intent(this, ForumBoardMainActivity.class);
+                            googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
+                            intent.putExtra("gardenId", task.getPostGardenId());
+                            intent.putExtra("gardenName", task.getGardenName());
+                            final Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(() -> {
+                                startActivity(intent);
+                                finish();
+                            }, 1000);
+                        } else {
+                            loadTask();
+                        }
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }

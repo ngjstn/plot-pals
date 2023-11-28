@@ -138,8 +138,6 @@ const createTask = async (req, res, next) => {
     return next(err);
   }
 
-  console.log('gardenRoleNum: ' + gardenRoleNum);
-
   if (gardenRoleNum === 2) {
     plotId = null;
   } else {
@@ -153,21 +151,14 @@ const createTask = async (req, res, next) => {
     }
   }
 
-  console.log('plotId: ' + plotId);
-
   // need to process string for deadline
   let month = taskDeadline.substring(0, 2);
   let day = taskDeadline.substring(2, 4);
   let year = taskDeadline.substring(4, 8);
   let deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
-  console.log('deadlineDate: ' + deadlineDate);
-
   try {
-    const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, 
-      isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, 
-      taskEndTime, expectedTaskDurationInHours) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sqlInsertTask = `INSERT into tasks (plotId, reward, minimumRating, assigneeId, isCompleted, assigneeIsProvidedFeedback, deadlineDate, taskStartTime, taskEndTime, expectedTaskDurationInHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     await database.query(sqlInsertTask, [
       plotId,
       taskReward,
@@ -194,27 +185,10 @@ const createTask = async (req, res, next) => {
     return next(err);
   }
 
-  console.log(genTaskId);
-
   try {
     const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId) 
     VALUES (?, ?, ?, ?, ?)`;
     const insResults = await database.query(sqlInsertPost, [taskTitle, taskDesc, genTaskId, req.userId, gardenId]);
-    return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
-  } catch (err) {
-    console.log(err);
-    return next(err);
-  }
-};
-
-const createPost = async (req, res, next) => {
-  const { postTitle, postDesc } = req.body;
-  const { gardenId } = req.query;
-
-  try {
-    const sqlInsertPost = `INSERT into posts (title, description, taskId, assignerId, postGardenId)
-    VALUES (?, ?, ?, ?, ?)`;
-    const insResults = await database.query(sqlInsertPost, [postTitle, postDesc, null, req.userId, gardenId]);
     return res.status(StatusCodes.OK).json({ success: insResults[0].affectedRows > 0 });
   } catch (err) {
     console.log(err);
@@ -240,17 +214,41 @@ const claimTask = async (req, res, next) => {
 const completeTask = async (req, res, next) => {
   const { taskId } = req.query;
 
+  let sql;
+
   // update task based on taskid
   // if taskStartTime is not null, update taskEndTime and isCompleted
   try {
-    const sqlCompleteTask = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
+    sql = `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`;
-    const queryResults = await database.query(sqlCompleteTask, [taskId, req.userId]);
-    return res.status(StatusCodes.OK).json({ success: queryResults[0].affectedRows > 0 });
+    await database.query(sql, [taskId, req.userId]);
   } catch (err) {
     console.log(err);
     return next(err);
   }
+
+  //  delete completed task if it has been assigned to self
+  try {
+    sql = `DELETE tasks FROM tasks 
+    JOIN posts ON tasks.taskId = posts.taskId
+    WHERE posts.assignerId = ? AND tasks.assigneeId = ? AND isCompleted = 1`;
+    await database.query(sql, [req.userId, req.userId]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  //  delete post associated with the deleted task from code above
+  try {
+    sql = `DELETE FROM posts 
+    WHERE assignerId = ? AND taskId IS NULL`;
+    await database.query(sql, [req.userId]);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+
+  return res.status(StatusCodes.OK).json({ success: true });
 };
 
 module.exports = {
@@ -258,7 +256,6 @@ module.exports = {
   getTasksRelatedToAuthorizedUserByGardenId,
   getAllPostsAndTasks,
   createTask,
-  createPost,
   claimTask,
   completeTask,
 };

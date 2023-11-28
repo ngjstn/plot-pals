@@ -26,9 +26,6 @@ router.get('/tasks/:gardenId', authMiddleware, getTasksRelatedToAuthorizedUserBy
 // accepts query parameter gardenId
 router.post('/tasks', authMiddleware, createTask);
 
-// accepts query parameter gardenId
-router.post('/', authMiddleware, createPost);
-
 // accepts query parameter
 router.put('/tasks/claim', authMiddleware, claimTask);
 

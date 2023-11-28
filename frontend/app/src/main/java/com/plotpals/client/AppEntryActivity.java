@@ -89,6 +89,11 @@ public class AppEntryActivity extends AppCompatActivity {
         googleSignInActivityResultLauncher.launch(signInIntent);
     }
 
+    @Override
+    public void onBackPressed() {
+        // Disable back button on app entry
+    }
+
     private void updateUI(GoogleSignInAccount account) {
         if(account == null || account.isExpired()) {
             return;

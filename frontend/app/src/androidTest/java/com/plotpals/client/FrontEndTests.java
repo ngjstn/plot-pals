@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -70,10 +71,7 @@ public class FrontEndTests {
     public ActivityScenarioRule<AppEntryActivity> mActivityScenarioRule = new ActivityScenarioRule<>(intent);
 
     @Rule
-    public GrantPermissionRule mGrantPermissionRule =
-            GrantPermissionRule.grant(
-                    "android.permission.ACCESS_FINE_LOCATION",
-                    "android.permission.ACCESS_COARSE_LOCATION");
+    public GrantPermissionRule mGrantPermissionRule = GrantPermissionRule.grant("android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION");
 
     @Before
     public void setUp() {
@@ -97,7 +95,7 @@ public class FrontEndTests {
             appCompatButton.perform(click());
 
             // Click Garden
-            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 2));
+            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
             appCompatButton2.perform(scrollTo(), click());
 
             // Click Plus
@@ -105,16 +103,15 @@ public class FrontEndTests {
             appCompatImageView.perform(click());
 
             // Click New Task
-            ViewInteraction appCompatTextView = onView(allOf(withId(R.id.forum_board_new_task), withText("New Task"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 6), isDisplayed()));
+            ViewInteraction appCompatTextView = onView(allOf(withId(R.id.forum_board_new_task), withText("New Task"), isDisplayed()));
             appCompatTextView.perform(click());
 
             // Attempt to click Checkmark
             ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
             appCompatImageView2.perform(click());
 
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView3 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView3.perform(click());
+            // Give time for toast
+            Thread.sleep(2000);
 
             // Type Title
             ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
@@ -139,6 +136,9 @@ public class FrontEndTests {
             // Attempt to click Checkmark
             ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
             appCompatImageView4.perform(click());
+
+            // Give time for toast
+            Thread.sleep(2000);
 
             // Type Proper Date
             ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
@@ -196,7 +196,7 @@ public class FrontEndTests {
             appCompatButton.perform(click());
 
             // Click Garden
-            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 2));
+            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
             appCompatButton2.perform(scrollTo(), click());
 
             // Click Task
@@ -227,66 +227,83 @@ public class FrontEndTests {
             UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
             // Click Navbar
-            ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
-            appCompatButton.perform(click());
+            ViewInteraction gardens = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+            gardens.perform(click());
 
             // Let gardens load
-            Thread.sleep(200);
+            Thread.sleep(500);
 
             // Click Plus
-            ViewInteraction appCompatImageView = onView(
-                    allOf(withId(R.id.my_garden_plus_button),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    1),
-                            isDisplayed()));
-            appCompatImageView.perform(click());
-
-            // Accept location permissions this time
-            device.click(540, 1600);
+            ViewInteraction plus = onView(allOf(withId(R.id.my_garden_plus_button), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+            plus.perform(click());
 
             // Let Google Maps load
-            Thread.sleep(200);
+            Thread.sleep(500);
 
             // Type in search bar
-            ViewInteraction searchAutoComplete = onView(
-                    allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
-                            childAtPosition(
-                                    allOf(withClassName(is("android.widget.LinearLayout")),
-                                            childAtPosition(
-                                                    withClassName(is("android.widget.LinearLayout")),
-                                                    1)),
-                                    0),
-                            isDisplayed()));
-            searchAutoComplete.perform(replaceText("test"));
+            ViewInteraction searchAutoComplete = onView(allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), childAtPosition(allOf(withClassName(is("android.widget.LinearLayout")), childAtPosition(withClassName(is("android.widget.LinearLayout")), 1)), 0), isDisplayed()));
+            searchAutoComplete.perform(replaceText("Denny's"));
             searchAutoComplete.perform(pressImeActionButton());
 
-            ViewInteraction button = onView(
-                    allOf(withId(R.id.rectangle_4),
-                            childAtPosition(
-                                    withParent(withId(R.id.garden_list)),
-                                    0),
-                            isDisplayed()));
-            button.perform(click());
+            // Let search bar load
+            Thread.sleep(500);
 
-            ViewInteraction button2 = onView(
-                    allOf(withId(R.id.rectangle_3),
+            /*
+             * Note: From now on, we begin to use UI Automator, because Espresso has trouble
+             * recognizing the objects in these views. If the test fails beyond this point,
+             * it may be because you changed the position of a button.
+            */
+
+            // Click on the first option
+            device.click(540, 600);
+
+            // Let Google Maps load
+            Thread.sleep(500);
+
+            // Click on the center marker
+            device.click(540, 1080);
+
+            // Let UI Load
+            Thread.sleep(500);
+
+            // Click on the info button
+            device.click(810, 1800);
+
+            // Let UI Load
+            Thread.sleep(500);
+
+            // Click on the join button
+            device.click(810, 1820);
+
+            // Let UI Load
+            Thread.sleep(500);
+
+            // Go back to My Gardens
+            gardens.perform(click());
+
+            // Let UI Load
+            Thread.sleep(500);
+
+            // Click on dots
+            ViewInteraction dots = onView(
+                    allOf(withId(R.id.my_garden_more_dots),
                             childAtPosition(
                                     childAtPosition(
-                                            withId(android.R.id.content),
-                                            0),
-                                    7),
-                            isDisplayed()));
-            button2.perform(click());
+                                            withId(R.id.my_garden_scrollview_layout),
+                                            1),
+                                    6)));
+            dots.perform(click());
+
+            // Leave garden for test repeatability
+            device.click(580, 1020);
+
+            Thread.sleep(500);
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
     }
-
 
 
     private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher, final int position) {

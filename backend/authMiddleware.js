@@ -1,8 +1,8 @@
-const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client, auth } = require('google-auth-library');
 const { StatusCodes } = require('http-status-codes');
 require('dotenv').config();
 
-// middleware to authenticate user
+// middleware to authenticate user and set req.userId given authorization header
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -33,6 +33,7 @@ const authMiddleware = async (req, res, next) => {
     console.log('User ID: ' + req.userId);
     return next();
   } catch (error) {
+    console.log(error);
     // EXPLANATION NOTE: we create a custom error object here rather than using an error
     // object caught by the try/catch block
     const invalidAuthorizationHeader = new Error('No valid authorization header');

@@ -1,6 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
+const { OAuth2Client } = require('google-auth-library');
 const { getAllPlots, addAPlotToAGarden, removePlot } = require('../plotsController');
+const request = require('supertest');
+const { app } = require('../../server');
 const { randomPlots } = require('./fixtures/plotFixtures');
 
 jest.mock('../../database', () => ({
@@ -9,17 +12,32 @@ jest.mock('../../database', () => ({
   },
 }));
 
+jest.mock('google-auth-library');
+
+const expectedUserId = '23412312';
+
 // GET /plots/all
 describe('Obtain plot information without discriminating based on req.userId', () => {
-  // Input: None
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all plots
   // Expected output: all plots
   test('No gardenId and plotOwner query params, no database error', async () => {
-    const req = { query: {} };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
     const expectedReturnedData = randomPlots;
 
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
@@ -30,13 +48,12 @@ describe('Obtain plot information without discriminating based on req.userId', (
       return [expectedReturnedData];
     });
 
-    await getAllPlots(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/plots/all').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
-  // Input: gardenId and plotOwnerId query params
+  // Input: gardenId and plotOwnerId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return plot identified by gardenId and plotOwnerId query params
   // Expected output: plot identified by gardenId and plotOwnerId query params
@@ -63,7 +80,7 @@ describe('Obtain plot information without discriminating based on req.userId', (
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: gardenId and plotOwnerId query params
+  // Input: gardenId and plotOwnerId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -93,7 +110,7 @@ describe('Create plot for garden', () => {
     database.query.mockRestore();
   });
 
-  // Input: gardenId and plotOwnerId query params
+  // Input: gardenId and plotOwnerId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: create plot
   // Expected output: whether the operation was successful or not
@@ -136,7 +153,7 @@ describe('Create plot for garden', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: gardenId and plotOwnerId query params
+  // Input: gardenId and plotOwnerId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -179,7 +196,7 @@ describe('Create plot for garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: gardenId and plotOwnerId query params
+  // Input: gardenId and plotOwnerId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -229,7 +246,7 @@ describe('Remove plot From a garden', () => {
     database.query.mockRestore();
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 200
   // Expected behavior: delete plot specified by plotId in url parameter
   // Expected output: whether the operation was successful or not
@@ -284,7 +301,7 @@ describe('Remove plot From a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -340,7 +357,7 @@ describe('Remove plot From a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -396,7 +413,7 @@ describe('Remove plot From a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -452,7 +469,7 @@ describe('Remove plot From a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -508,7 +525,7 @@ describe('Remove plot From a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: plotId url parameter
+  // Input: plotId url parameter, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)

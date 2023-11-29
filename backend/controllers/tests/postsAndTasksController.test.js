@@ -18,7 +18,7 @@ jest.mock('../../database', () => ({
 
 // GET /posts/all
 describe('Get all posts and tasks', () => {
-  // Input: gardenId and postId query params
+  // Input: gardenId and postId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks with gardenId and postId field equaling of that specified in query params
   // Expected output: all posts and tasks with gardenId and postId field equaling of that specified in query params
@@ -52,7 +52,7 @@ describe('Get all posts and tasks', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: none
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks
   // Expected output: all posts and tasks
@@ -84,7 +84,7 @@ describe('Get all posts and tasks', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: None
+  // Input: authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -107,7 +107,7 @@ describe('Get all posts and tasks', () => {
 
 // GET posts/tasks
 describe('Get all posts and tasks for authenticated user', () => {
-  // Input: req.userId set by authMiddleware
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId
@@ -138,7 +138,7 @@ describe('Get all posts and tasks for authenticated user', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: userIs query param and req.userId set by authMiddleware
+  // Input: userIs query param, authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId where user is assignee
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId where user is assignee
@@ -171,7 +171,7 @@ describe('Get all posts and tasks for authenticated user', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: userIs query param and req.userId set by authMiddleware
+  // Input: userIs query param, authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId where user is assigner
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId where user is assigner
@@ -204,7 +204,7 @@ describe('Get all posts and tasks for authenticated user', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: userIs query param and req.userId set by authMiddleware
+  // Input: userIs query param, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -227,7 +227,7 @@ describe('Get all posts and tasks for authenticated user', () => {
 
 // GET posts/tasks/:gardenId
 describe('Get all posts and tasks for authenticated user in a garden', () => {
-  // Input: req.userId set by authMiddleware, gardenId url params
+  // Input: authorization token in request header, gardenId url params
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId for a garden identifiable by gardenId
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId for a garden identifiable by gardenId
@@ -258,7 +258,7 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: req.userId set by authMiddleware, gardenId url params, userIs query params
+  // Input: authorization token in request header, gardenId url params, userIs query params
   // Expected status code: 200
   // Expected behavior: get all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assignee
   // Expected output: all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assignee
@@ -289,7 +289,7 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: req.userId set by authMiddleware, gardenId url params, userIs query params
+  // Input: authorization token in request header, gardenId url params, userIs query params
   // Expected status code: 200
   // Expected behavior: get all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assigner
   // Expected output: all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assigner
@@ -320,7 +320,7 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: req.userId set by authMiddleware, gardenId url params, userIs query params
+  // Input: authorization token in request header, gardenId url params, userIs query params
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -355,7 +355,7 @@ describe('create task', () => {
     database.query.mockRestore();
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 200
   // Expected behavior: create task
   // Expected output: whether operation was successful
@@ -437,7 +437,7 @@ describe('create task', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 200
   // Expected behavior: create task
   // Expected output: whether operation was successful
@@ -519,7 +519,7 @@ describe('create task', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -683,7 +683,7 @@ describe('create task', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -754,7 +754,7 @@ describe('create task', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -837,7 +837,7 @@ describe('create task', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
+  // Input: authorization token in request header, valid request body fields, gardenId query param
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -916,7 +916,7 @@ describe('create task', () => {
 
 // PUT /tasks/claim
 describe('Claiming (volunteering) a task', () => {
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: claim a task for user identified by req.userId
   // Expected output: whether operation was successful or not
@@ -940,7 +940,7 @@ describe('Claiming (volunteering) a task', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -966,7 +966,7 @@ describe('Completing a task', () => {
   beforeEach(() => {
     database.query.mockRestore();
   });
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: complete a task for user identified by req.userId
   // Expected output: whether operation was successful or not
@@ -1008,7 +1008,7 @@ describe('Completing a task', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -1050,7 +1050,7 @@ describe('Completing a task', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -1092,7 +1092,7 @@ describe('Completing a task', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: taskId query params, req.userId from authMiddleware
+  // Input: taskId query params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)

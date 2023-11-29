@@ -20,19 +20,19 @@ app.use('/posts', postsAndtasksRouter);
 app.use('/roles', rolesRouter);
 app.use('/plots', plotsRouter);
 
-app.get('/', (req, res) => {
-  return res.json({ message: 'Plot Pals :)' });
-});
-
 // error handling
 app.use(errorHandler);
 
 const PORT = 8081;
 
 // start server
-const server = app.listen(PORT, (req, res) => {
-  console.log('Server running at port: %s', PORT);
-});
+let server;
+
+if (process.env.NODE_ENV !== 'test') {
+  server = app.listen(PORT, (req, res) => {
+    console.log('Server running at port: %s', PORT);
+  });
+}
 
 const io = socket(server);
 
@@ -44,3 +44,5 @@ io.on('connection', (socket) => {
     io.emit('New Task', idOfGardenWithNewTask);
   });
 });
+
+module.exports = { app };

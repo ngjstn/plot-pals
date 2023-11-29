@@ -20,10 +20,6 @@ app.use('/posts', postsAndtasksRouter);
 app.use('/roles', rolesRouter);
 app.use('/plots', plotsRouter);
 
-app.get('/', (req, res) => {
-  return res.json({ message: 'Plot Pals :)' });
-});
-
 // error handling
 app.use(errorHandler);
 

@@ -17,7 +17,7 @@ jest.mock('../../database', () => ({
 
 // GET /profiles/all
 describe('Get profiles without discriminating based on req.userId', () => {
-  // Input: None
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all profiles
   // Expected output: all profiles
@@ -39,7 +39,7 @@ describe('Get profiles without discriminating based on req.userId', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: profileId query param
+  // Input: profileId query param, authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all profiles
   // Expected output: all profiles
@@ -63,7 +63,7 @@ describe('Get profiles without discriminating based on req.userId', () => {
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: None
+  // Input: authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -88,7 +88,7 @@ describe('Get profiles without discriminating based on req.userId', () => {
 //
 // PUT /profiles/
 describe('Update profile for user identified with req.userId', () => {
-  // Input: field changes specified in req.body, userId from authMiddleware
+  // Input: field changes specified in req.body, authorization token in request header
   // Expected status code: 200
   // Expected behavior: updates profile whose id is equal to req.userId
   // Expected output: whether the operation is successful
@@ -110,7 +110,7 @@ describe('Update profile for user identified with req.userId', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: field changes specified in req.body, userId from authMiddleware
+  // Input: field changes specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -135,7 +135,7 @@ describe('Update profile for user identified with req.userId', () => {
 //
 // POST /profiles/
 describe('Create profile', () => {
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 200
   // Expected behavior: create new profile with id equaling req.userId
   // Expected output: whether operation is successful
@@ -157,7 +157,7 @@ describe('Create profile', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -182,7 +182,7 @@ describe('Submit feedback', () => {
   beforeEach(() => {
     database.query.mockRestore();
   });
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 200
   // Expected behavior: create new profile with id equaling req.userId
   // Expected output: whether operation is successful
@@ -243,7 +243,7 @@ describe('Submit feedback', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -305,7 +305,7 @@ describe('Submit feedback', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -366,7 +366,7 @@ describe('Submit feedback', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -427,7 +427,7 @@ describe('Submit feedback', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -488,7 +488,7 @@ describe('Submit feedback', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: field for new profile specified in req.body, userId from authMiddleware
+  // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)

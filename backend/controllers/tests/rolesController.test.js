@@ -11,7 +11,7 @@ jest.mock('../../database', () => ({
 
 // GET /roles
 describe('Get roles (membership of different gardens) of authenticated user identified using req.userId', () => {
-  // Input: userId (from authMiddleware)
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all roles associated with authenticated user
   // Expected output: all roles associated with authenticated user
@@ -35,7 +35,7 @@ describe('Get roles (membership of different gardens) of authenticated user iden
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: userId (from authMiddleware)
+  // Input: authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -58,7 +58,7 @@ describe('Get roles (membership of different gardens) of authenticated user iden
 
 // GET /roles/all
 describe('Get roles (membership of different gardens) without discrimination using req.userId', () => {
-  // Input: None
+  // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all roles associated with authenticated user
   // Expected output: all roles associated with authenticated user
@@ -82,7 +82,7 @@ describe('Get roles (membership of different gardens) without discrimination usi
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: gardenId query param
+  // Input: gardenId query param, authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all roles associated with authenticated user
   // Expected output: all roles associated with authenticated user
@@ -106,7 +106,7 @@ describe('Get roles (membership of different gardens) without discrimination usi
     expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
   });
 
-  // Input: None
+  // Input: authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -134,7 +134,7 @@ describe('Get roles (membership of different gardens) without discrimination usi
 //
 // POST /roles
 describe('Add role (membership) to garden', () => {
-  // Input: required fields in request body
+  // Input: required fields in request body, authorization token in request header
   // Expected status code: 200
   // Expected behavior: add role
   // Expected output: whether operation is successful
@@ -166,7 +166,7 @@ describe('Add role (membership) to garden', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: required fields in request body
+  // Input: required fields in request body, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -192,7 +192,7 @@ describe('Add role (membership) to garden', () => {
 //
 // PUT /roles/:profileId/:gardenId
 describe('Update role (membership) for a garden', () => {
-  // Input: new field values in request body, profileId and gardenId url params
+  // Input: new field values in request body, profileId and gardenId url params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: update role
   // Expected output: whether operation is successful
@@ -213,7 +213,7 @@ describe('Update role (membership) for a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: new field values in request body, profileId and gardenId url params
+  // Input: new field values in request body, profileId and gardenId url params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -239,7 +239,7 @@ describe('Delete role (membership) for a garden', () => {
   beforeEach(() => {
     database.query.mockRestore();
   });
-  // Input: profileId and gardenId url params
+  // Input: profileId and gardenId url params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: delete role (membership) from garden and any posts, tasks and plots that the user owns in the garden
   // Expected output: whether operation is successful
@@ -290,7 +290,7 @@ describe('Delete role (membership) for a garden', () => {
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
-  // Input: profileId and gardenId url params
+  // Input: profileId and gardenId url params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -341,7 +341,7 @@ describe('Delete role (membership) for a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: profileId and gardenId url params
+  // Input: profileId and gardenId url params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -392,7 +392,7 @@ describe('Delete role (membership) for a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: profileId and gardenId url params
+  // Input: profileId and gardenId url params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
@@ -443,7 +443,7 @@ describe('Delete role (membership) for a garden', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Input: profileId and gardenId url params
+  // Input: profileId and gardenId url params, authorization token in request header
   // Expected status code: 500 (Set using errorHandler which we test in errorHandler.test.js)
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)

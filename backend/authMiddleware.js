@@ -2,11 +2,10 @@ const { OAuth2Client, auth } = require('google-auth-library');
 const { StatusCodes } = require('http-status-codes');
 require('dotenv').config();
 
-// middleware to authenticate user
+// middleware to authenticate user and set req.userId given authorization header
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
     let token;
     // get token
     if (authHeader.startsWith('Bearer ')) {
@@ -16,7 +15,6 @@ const authMiddleware = async (req, res, next) => {
         return next();
       }
     } else {
-      console.log('foo');
       const invalidAuthorizationHeader = new Error('No valid authorization header');
       invalidAuthorizationHeader.status = StatusCodes.FORBIDDEN;
       return next(invalidAuthorizationHeader);

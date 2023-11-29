@@ -8,6 +8,9 @@ const {
   submitFeedback,
 } = require('../profilesController');
 const { STARTING_COMPETENCE, MAX_RATING } = require('../../constants/profile');
+const request = require('supertest');
+const { app } = require('../../server');
+const { OAuth2Client } = require('google-auth-library');
 
 jest.mock('../../database', () => ({
   database: {
@@ -15,16 +18,32 @@ jest.mock('../../database', () => ({
   },
 }));
 
+jest.mock('google-auth-library');
+
+const expectedUserId = '23412312';
+
 // GET /profiles/all
 describe('Get profiles without discriminating based on req.userId', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: will return all profiles
   // Expected output: all profiles
   test('No profileId query param, no database error', async () => {
-    const req = { query: {} };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
     const expectedReturnedData = randomProfiles;
 
     database.query.mockImplementationOnce((sql, profileIdArr) => {
@@ -33,10 +52,9 @@ describe('Get profiles without discriminating based on req.userId', () => {
       return [expectedReturnedData];
     });
 
-    await getAllProfiles(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/profiles/all').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: profileId query param, authorization token in request header

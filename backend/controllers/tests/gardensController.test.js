@@ -4,12 +4,7 @@ const { database } = require('../../database');
 const request = require('supertest');
 const { app } = require('../../server');
 const axios = require('axios');
-const {
-  getAllGardens,
-  getGardensForAuthorizedUser,
-  updateGarden,
-  createGardenApplication,
-} = require('../gardensController');
+
 const {
   randomGardensWithoutAuthorizedUserDiscrimination,
   randomGardensWithAuthorizedUserDiscrimination,

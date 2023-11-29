@@ -1,12 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
 const { randomProfiles } = require('./fixtures/profileFixtures');
-const {
-  getAllProfiles,
-  updateProfileDisplayNameForAuthenticatedUser,
-  createProfileForAuthenticatedUser,
-  submitFeedback,
-} = require('../profilesController');
 const { STARTING_COMPETENCE, MAX_RATING } = require('../../constants/profile');
 const request = require('supertest');
 const { app } = require('../../server');
@@ -132,10 +126,7 @@ describe('Update profile for user identified with req.userId', () => {
       return [expectedReturnedData];
     });
 
-    const res = await request(app)
-      .put('/profiles')
-      .set({ Authorization: 'Bearer some token' })
-      .send(requestBody);
+    const res = await request(app).put('/profiles').set({ Authorization: 'Bearer some token' }).send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);
     expect(res.body.success).toStrictEqual(true);
   });
@@ -152,10 +143,7 @@ describe('Update profile for user identified with req.userId', () => {
       throw expectedError;
     });
 
-    const res = await request(app)
-      .put('/profiles')
-      .set({ Authorization: 'Bearer some token' })
-      .send(requestBody);
+    const res = await request(app).put('/profiles').set({ Authorization: 'Bearer some token' }).send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     expect(res.body.error).toStrictEqual(expectedError.message);
   });
@@ -195,10 +183,7 @@ describe('Create profile', () => {
       return [expectedReturnedData];
     });
 
-    const res = await request(app)
-      .post('/profiles')
-      .set({ Authorization: 'Bearer some token' })
-      .send(requestBody);
+    const res = await request(app).post('/profiles').set({ Authorization: 'Bearer some token' }).send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);
     expect(res.body.success).toStrictEqual(true);
   });
@@ -209,16 +194,13 @@ describe('Create profile', () => {
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error', async () => {
     const requestBody = { displayName: 'foobar' };
-    
+
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementationOnce((sql, profileIdArr) => {
       throw expectedError;
     });
 
-    const res = await request(app)
-      .post('/profiles')
-      .set({ Authorization: 'Bearer some token' })
-      .send(requestBody);
+    const res = await request(app).post('/profiles').set({ Authorization: 'Bearer some token' }).send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     expect(res.body.error).toStrictEqual(expectedError.message);
   });
@@ -229,7 +211,7 @@ describe('Submit feedback', () => {
   beforeEach(() => {
     database.query.mockRestore();
 
-     // Mocking auth middleware input
+    // Mocking auth middleware input
     OAuth2Client.mockImplementationOnce(() => {
       return {
         verifyIdToken: jest.fn().mockImplementationOnce(() => {
@@ -241,7 +223,6 @@ describe('Submit feedback', () => {
         }),
       };
     });
-
   });
   // Input: field for new profile specified in req.body, authorization token in request header
   // Expected status code: 200

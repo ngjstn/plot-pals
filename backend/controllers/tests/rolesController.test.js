@@ -1,7 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
 const { randomRoles } = require('./fixtures/roleFixtures');
-const { getRolesForAuthenticatedUser, getAllRoles, addRole, updateRole, deleteRole } = require('../rolesController');
 const { OAuth2Client } = require('google-auth-library');
 const request = require('supertest');
 const { app } = require('../../server');

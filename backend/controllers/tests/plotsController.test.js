@@ -1,7 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
 const { OAuth2Client } = require('google-auth-library');
-const { getAllPlots, addAPlotToAGarden, removePlot } = require('../plotsController');
 const request = require('supertest');
 const { app } = require('../../server');
 const { randomPlots } = require('./fixtures/plotFixtures');
@@ -117,7 +116,6 @@ describe('Create plot for garden', () => {
         }),
       };
     });
-
   });
 
   // Input: gardenId and plotOwnerId query params, authorization token in request header
@@ -258,7 +256,6 @@ describe('Remove plot From a garden', () => {
         }),
       };
     });
-
   });
 
   // Input: plotId url parameter, authorization token in request header

@@ -93,7 +93,7 @@ describe('Get profiles without discriminating based on req.userId', () => {
 
     const res = await request(app).get('/profiles/all').set({ Authorization: 'Bearer some token' }).query(queryParam);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.body.message).toStrictEqual(expectedError.message);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
@@ -134,7 +134,7 @@ describe('Update profile for user identified with req.userId', () => {
     const res = await request(app)
       .put('/profiles')
       .set({ Authorization: 'Bearer some token' })
-      .send(queryParams);
+      .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);
     expect(res.body.success).toStrictEqual(true);
   });
@@ -154,7 +154,7 @@ describe('Update profile for user identified with req.userId', () => {
     const res = await request(app)
       .put('/profiles')
       .set({ Authorization: 'Bearer some token' })
-      .send(queryParams);
+      .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     expect(res.body.error).toStrictEqual(expectedError.message);
   });
@@ -213,11 +213,6 @@ describe('Create profile', () => {
     database.query.mockImplementationOnce((sql, profileIdArr) => {
       throw expectedError;
     });
-
-    await createProfileForAuthenticatedUser(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
 
     const res = await request(app)
       .post('/profiles')

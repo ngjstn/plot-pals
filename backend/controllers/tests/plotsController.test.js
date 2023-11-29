@@ -72,7 +72,7 @@ describe('Obtain plot information without discriminating based on req.userId', (
       return [expectedReturnedData];
     });
 
-    const res = (await request(app).get('/plots/all')).set({ Authorization: 'Bearer some token' }).query(requestBody);
+    const res = await request(app).get('/plots/all').set({ Authorization: 'Bearer some token' }).query(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);
     expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
@@ -89,7 +89,7 @@ describe('Obtain plot information without discriminating based on req.userId', (
       throw expectedError;
     });
 
-    const res = (await request(app).get('/plots/all')).set({ Authorization: 'Bearer some token' }).query(requestBody);
+    const res = await request(app).get('/plots/all').set({ Authorization: 'Bearer some token' }).query(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
     expect(res.body.error).toStrictEqual(expectedError.message);
   });
@@ -153,11 +153,6 @@ describe('Create plot for garden', () => {
 
       throw Error('It should not get to this point');
     });
-
-    await addAPlotToAGarden(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
 
     const res = await request(app).post(`/plots`).set({ Authorization: 'Bearer some token' }).send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);

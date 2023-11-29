@@ -1,14 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 const { database } = require('../../database');
-const {
-  getTasksRelatedToAuthorizedUser,
-  getAllPostsAndTasks,
-  getTasksRelatedToAuthorizedUserByGardenId,
-  createTask,
-  claimTask,
-  completeTask,
-} = require('../postsAndtasksController');
 const { randomPostsAndTasks } = require('./fixtures/postAndTaskFixtures');
+const { OAuth2Client } = require('google-auth-library');
+const request = require('supertest');
+const { app } = require('../../server');
 
 jest.mock('../../database', () => ({
   database: {
@@ -16,23 +11,41 @@ jest.mock('../../database', () => ({
   },
 }));
 
+jest.mock('google-auth-library');
+
+// This will be the value of req.userId for all tests
+const expectedUserId = '23412312';
+
 // GET /posts/all
 describe('Get all posts and tasks', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: gardenId and postId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks with gardenId and postId field equaling of that specified in query params
   // Expected output: all posts and tasks with gardenId and postId field equaling of that specified in query params
   test('Valid gardenId and postId query params, no database error', async () => {
-    const req = { query: { gardenId: '1', postId: '5' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { gardenId: '1', postId: '5' };
 
     const expectedReturnedData = randomPostsAndTasks.map((post) => {
-      return toString(post.gardenId) === req.query.gardenId && toString(post.id) === req.query.postId;
+      return toString(post.gardenId) === queryParams.gardenId && toString(post.id) === queryParams.postId;
     });
 
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.query.postId]);
+      expect(sqlInputArr).toStrictEqual([queryParams.gardenId, queryParams.postId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
       FROM posts 
@@ -46,10 +59,9 @@ describe('Get all posts and tasks', () => {
       return [expectedReturnedData];
     });
 
-    await getAllPostsAndTasks(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/posts/all').set({ Authorization: 'Bearer some token' }).query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: authorization token in request header
@@ -57,10 +69,6 @@ describe('Get all posts and tasks', () => {
   // Expected behavior: get all posts and tasks
   // Expected output: all posts and tasks
   test('No gardenId and postId query params, no database error', async () => {
-    const req = { query: {} };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
     const expectedReturnedData = randomPostsAndTasks;
 
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
@@ -78,10 +86,9 @@ describe('Get all posts and tasks', () => {
       return [expectedReturnedData];
     });
 
-    await getAllPostsAndTasks(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/posts/all').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: authorization token in request header
@@ -89,36 +96,42 @@ describe('Get all posts and tasks', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error', async () => {
-    const req = { query: {} };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       throw expectedError;
     });
 
-    await getAllPostsAndTasks(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app).get('/posts/all').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
 // GET posts/tasks
 describe('Get all posts and tasks for authenticated user', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: authorization token in request header
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId
   test('No query param, no database error', async () => {
-    const req = { query: {}, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
     const expectedReturnedData = randomPostsAndTasks;
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.userId, req.userId]);
+      expect(sqlInputArr).toStrictEqual([expectedUserId, expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -132,10 +145,9 @@ describe('Get all posts and tasks for authenticated user', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUser(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/posts/tasks').set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: userIs query param, authorization token in request header
@@ -143,15 +155,13 @@ describe('Get all posts and tasks for authenticated user', () => {
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId where user is assignee
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId where user is assignee
   test('userIs = assignee query param, no database error', async () => {
-    const req = { query: { userIs: 'assignee' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { userIs: 'assignee' };
 
     const expectedReturnedData = randomPostsAndTasks.map((post) => {
-      return post.assigneeId === req.userId;
+      return post.assigneeId === expectedUserId;
     });
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.userId]);
+      expect(sqlInputArr).toStrictEqual([expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -165,10 +175,9 @@ describe('Get all posts and tasks for authenticated user', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUser(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/posts/tasks').set({ Authorization: 'Bearer some token' }).query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: userIs query param, authorization token in request header
@@ -176,15 +185,13 @@ describe('Get all posts and tasks for authenticated user', () => {
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId where user is assigner
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId where user is assigner
   test('userIs = assigner query param, no database error', async () => {
-    const req = { query: { userIs: 'assigner' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { userIs: 'assigner' };
 
     const expectedReturnedData = randomPostsAndTasks.map((post) => {
-      return post.assignerId === req.userId;
+      return post.assignerId === expectedUserId;
     });
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.userId]);
+      expect(sqlInputArr).toStrictEqual([expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -198,10 +205,9 @@ describe('Get all posts and tasks for authenticated user', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUser(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/posts/tasks').set({ Authorization: 'Bearer some token' }).query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: userIs query param, authorization token in request header
@@ -209,36 +215,45 @@ describe('Get all posts and tasks for authenticated user', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('userIs = assigner query param, no database error', async () => {
-    const req = { query: { userIs: 'assigner' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
-
+    const queryParams = { userIs: 'assigner' };
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       throw expectedError;
     });
 
-    await getTasksRelatedToAuthorizedUser(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app).get('/posts/tasks').set({ Authorization: 'Bearer some token' }).query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
 // GET posts/tasks/:gardenId
 describe('Get all posts and tasks for authenticated user in a garden', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: authorization token in request header, gardenId url params
   // Expected status code: 200
   // Expected behavior: get all posts and tasks related to authorized user identifiable by req.userId for a garden identifiable by gardenId
   // Expected output: all posts and tasks related to authorized user identifiable by req.userId for a garden identifiable by gardenId
   test('No query param, no database error', async () => {
-    const req = { query: {}, userId: '234123123', params: { gardenId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const urlParams = { gardenId: '1' };
 
     const expectedReturnedData = randomPostsAndTasks;
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.params.gardenId, req.userId, req.userId]);
+      expect(sqlInputArr).toStrictEqual([urlParams.gardenId, expectedUserId, expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -252,10 +267,11 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUserByGardenId(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app)
+      .get(`/posts/tasks/${urlParams.gardenId}`)
+      .set({ Authorization: 'Bearer some token' });
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: authorization token in request header, gardenId url params, userIs query params
@@ -263,13 +279,12 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
   // Expected behavior: get all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assignee
   // Expected output: all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assignee
   test('userIs=assignee query param, no database error', async () => {
-    const req = { query: { userIs: 'assignee' }, userId: '234123123', params: { gardenId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const urlParams = { gardenId: '1' };
+    const queryParams = { userIs: 'assignee' };
 
     const expectedReturnedData = randomPostsAndTasks;
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.params.gardenId, req.userId]);
+      expect(sqlInputArr).toStrictEqual([urlParams.gardenId, expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -283,10 +298,12 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUserByGardenId(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app)
+      .get(`/posts/tasks/${urlParams.gardenId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: authorization token in request header, gardenId url params, userIs query params
@@ -294,13 +311,12 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
   // Expected behavior: get all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assigner
   // Expected output: all posts and tasks where authorized user, identifiable by req.userId for a garden identifiable by gardenId, is an assigner
   test('userIs=assigner , no database error', async () => {
-    const req = { query: { userIs: 'assigner' }, userId: '234123123', params: { gardenId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const urlParams = { gardenId: '1' };
+    const queryParams = { userIs: 'assigner' };
 
     const expectedReturnedData = randomPostsAndTasks;
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.params.gardenId, req.userId]);
+      expect(sqlInputArr).toStrictEqual([urlParams.gardenId, expectedUserId]);
       expect(sql.replace(/\s+/g, ' ')).toBe(
         `SELECT posts.*, tasks.*, gardens.gardenName, assignerProfiles.displayName AS assignerName, assigneeProfiles.displayName AS assigneeName 
         FROM posts 
@@ -314,10 +330,12 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
       return [expectedReturnedData];
     });
 
-    await getTasksRelatedToAuthorizedUserByGardenId(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app)
+      .get(`/posts/tasks/${urlParams.gardenId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: authorization token in request header, gardenId url params, userIs query params
@@ -325,19 +343,20 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error', async () => {
-    const req = { query: { userIs: 'assigner' }, userId: '234123123', params: { gardenId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const urlParams = { gardenId: '1' };
+    const queryParams = { userIs: 'assigner' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       throw expectedError;
     });
 
-    await getTasksRelatedToAuthorizedUserByGardenId(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .get(`/posts/tasks/${urlParams.gardenId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
@@ -353,6 +372,19 @@ describe('Get all posts and tasks for authenticated user in a garden', () => {
 describe('create task', () => {
   beforeEach(() => {
     database.query.mockRestore();
+
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -360,24 +392,20 @@ describe('create task', () => {
   // Expected behavior: create task
   // Expected output: whether operation was successful
   test('poster is garden owner, no database error', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = null;
@@ -387,13 +415,13 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 2 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -401,15 +429,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -420,21 +448,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -442,24 +473,20 @@ describe('create task', () => {
   // Expected behavior: create task
   // Expected output: whether operation was successful
   test('poster is not garden owner, no database error', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -469,13 +496,13 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 1 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -483,15 +510,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -502,21 +529,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -524,24 +554,20 @@ describe('create task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when checking roles table to see if requester is a garden owner', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -557,7 +583,7 @@ describe('create task', () => {
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -565,15 +591,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -584,21 +610,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: req.userId from authMiddleware, valid request body fields, gardenId query param
@@ -606,24 +635,20 @@ describe('create task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when checking for plot id of requester', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -634,7 +659,7 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 1 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -647,15 +672,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -666,21 +691,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -688,24 +716,20 @@ describe('create task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when inserting to task table', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -716,13 +740,13 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 1 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -737,21 +761,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -759,24 +786,20 @@ describe('create task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when getting last inserted id to tasks table', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -787,13 +810,13 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 1 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -801,15 +824,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -820,21 +843,24 @@ describe('create task', () => {
       VALUES (?, ?, ?, ?, ?)`.replace(/\s+/g, ' ')
       ) {
         expect(sqlInputArr).toStrictEqual([
-          req.body.taskTitle,
-          req.body.taskDesc,
+          requestBody.taskTitle,
+          requestBody.taskDesc,
           expectedLastInsertId,
-          req.userId,
-          req.query.gardenId,
+          expectedUserId,
+          queryParams.gardenId,
         ]);
         return [{ affectedRows: 1 }];
       }
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: authorization token in request header, valid request body fields, gardenId query param
@@ -842,24 +868,20 @@ describe('create task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when inserting into posts table', async () => {
-    const req = {
-      query: { gardenId: '1' },
-      userId: '234123123',
-      body: {
-        taskTitle: 'some title',
-        taskDesc: 'desc',
-        taskRating: 1.1,
-        taskDuration: 3,
-        taskDeadline: '01012025',
-        taskReward: 'potato',
-      },
+    const requestBody = {
+      taskTitle: 'some title',
+      taskDesc: 'desc',
+      taskRating: 1.1,
+      taskDuration: 3,
+      taskDeadline: '01012025',
+      taskReward: 'potato',
     };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
 
-    const month = req.body.taskDeadline.substring(0, 2);
-    const day = req.body.taskDeadline.substring(2, 4);
-    const year = req.body.taskDeadline.substring(4, 8);
+    const queryParams = { gardenId: '1' };
+
+    const month = requestBody.taskDeadline.substring(0, 2);
+    const day = requestBody.taskDeadline.substring(2, 4);
+    const year = requestBody.taskDeadline.substring(4, 8);
     const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
 
     const expectedPlotId = 1;
@@ -870,13 +892,13 @@ describe('create task', () => {
       if (
         sql.replace(/\s+/g, ' ') === `SELECT * FROM roles WHERE profileId = ? AND gardenId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.query.gardenId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.gardenId]);
         return [[{ roleNum: 1 }]];
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `SELECT plots.id FROM plots WHERE plots.gardenId = ? AND plotOwnerId = ?`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.gardenId, expectedUserId]);
         return [[{ id: expectedPlotId }]];
       } else if (
         sql ===
@@ -884,15 +906,15 @@ describe('create task', () => {
       ) {
         expect(sqlInputArr).toStrictEqual([
           expectedPlotId,
-          req.body.taskReward,
-          req.body.taskRating,
+          requestBody.taskReward,
+          requestBody.taskRating,
           null,
           0,
           0,
           deadlineDate,
           null,
           null,
-          req.body.taskDuration,
+          requestBody.taskDuration,
         ]);
         return null;
       } else if (sql.replace(/\s+/g, ' ') === `SELECT LAST_INSERT_ID();`.replace(/\s+/g, ' ')) {
@@ -907,37 +929,55 @@ describe('create task', () => {
       throw Error('It should not get to this point');
     });
 
-    await createTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .post(`/posts/tasks`)
+      .send(requestBody)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
-// PUT /tasks/claim
+// PUT posts/tasks/claim
 describe('Claiming (volunteering) a task', () => {
+  beforeEach(() => {
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+  });
+
   // Input: taskId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: claim a task for user identified by req.userId
   // Expected output: whether operation was successful or not
   test('no database error', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       expect(sql.replace(/\s+/g, ' ')).toStrictEqual(
         `UPDATE tasks SET taskStartTime = NOW(), assigneeId = ? 
       WHERE taskId = ? AND taskStartTime IS NULL AND assigneeId IS NULL`.replace(/\s+/g, ' ')
       );
-      expect(sqlInputArr).toStrictEqual([req.userId, req.query.taskId]);
+      expect(sqlInputArr).toStrictEqual([expectedUserId, queryParams.taskId]);
       return [{ affectedRows: 1 }];
     });
 
-    await claimTask(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app)
+      .put(`/posts/tasks/claim`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: taskId query params, authorization token in request header
@@ -945,35 +985,46 @@ describe('Claiming (volunteering) a task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       throw expectedError;
     });
 
-    await claimTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .put(`/posts/tasks/claim`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
-// PUT /tasks/complete
+// PUT posts/tasks/complete
 describe('Completing a task', () => {
   beforeEach(() => {
     database.query.mockRestore();
+
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
   });
   // Input: taskId query params, authorization token in request header
   // Expected status code: 200
   // Expected behavior: complete a task for user identified by req.userId
   // Expected output: whether operation was successful or not
   test('no database error', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     database.query.mockImplementation((sql, sqlInputArr) => {
       if (
@@ -981,7 +1032,7 @@ describe('Completing a task', () => {
         `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1 
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.taskId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.taskId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -989,23 +1040,25 @@ describe('Completing a task', () => {
     JOIN posts ON tasks.taskId = posts.taskId
     WHERE posts.assignerId = ? AND tasks.assigneeId = ? AND isCompleted = 1`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `DELETE FROM posts 
     WHERE assignerId = ? AND taskId IS NULL`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId]);
         return null;
       }
       throw Error('It should not get to this point');
     });
 
-    await completeTask(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app)
+      .put(`/posts/tasks/complete`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: taskId query params, authorization token in request header
@@ -1013,9 +1066,7 @@ describe('Completing a task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when updating tasks table', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -1031,23 +1082,25 @@ describe('Completing a task', () => {
     JOIN posts ON tasks.taskId = posts.taskId
     WHERE posts.assignerId = ? AND tasks.assigneeId = ? AND isCompleted = 1`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
         `DELETE FROM posts
     WHERE assignerId = ? AND taskId IS NULL`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId]);
         return null;
       }
       throw Error('It should not get to this point');
     });
 
-    await completeTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .put(`/posts/tasks/complete`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: taskId query params, authorization token in request header
@@ -1055,9 +1108,7 @@ describe('Completing a task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when deleting from tasks table', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -1066,7 +1117,7 @@ describe('Completing a task', () => {
         `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.taskId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.taskId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -1080,16 +1131,18 @@ describe('Completing a task', () => {
         `DELETE FROM posts
     WHERE assignerId = ? AND taskId IS NULL`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId]);
         return null;
       }
       throw Error('It should not get to this point');
     });
 
-    await completeTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .put(`/posts/tasks/complete`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: taskId query params, authorization token in request header
@@ -1097,9 +1150,7 @@ describe('Completing a task', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('database error when deleting from posts table', async () => {
-    const req = { query: { taskId: '1' }, userId: '234123123' };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { taskId: '1' };
 
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -1108,7 +1159,7 @@ describe('Completing a task', () => {
         `UPDATE tasks SET taskEndTime = NOW(), isCompleted = 1
       WHERE taskId = ? AND taskStartTime IS NOT NULL AND assigneeId = ? AND isCompleted = 0`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.query.taskId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([queryParams.taskId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -1116,7 +1167,7 @@ describe('Completing a task', () => {
     JOIN posts ON tasks.taskId = posts.taskId
     WHERE posts.assignerId = ? AND tasks.assigneeId = ? AND isCompleted = 1`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.userId, req.userId]);
+        expect(sqlInputArr).toStrictEqual([expectedUserId, expectedUserId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -1128,9 +1179,11 @@ describe('Completing a task', () => {
       throw Error('It should not get to this point');
     });
 
-    await completeTask(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .put(`/posts/tasks/complete`)
+      .set({ Authorization: 'Bearer some token' })
+      .query(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });

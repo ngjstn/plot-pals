@@ -30,6 +30,7 @@
     "dotenv": "^16.3.1"
   },
   "jest": {
+    "testTimeout": 15000,
     "verbose": true,
     "collectCoverageFrom": [
       "**/*.{js,jsx}",

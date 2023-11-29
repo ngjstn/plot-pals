@@ -12,6 +12,7 @@ jest.mock('../../database', () => ({
 
 jest.mock('google-auth-library');
 
+// This will be the value of req.userId for all tests
 const expectedUserId = '23412312';
 
 // Interface GET /adminProfiles/all

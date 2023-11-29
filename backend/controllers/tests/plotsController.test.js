@@ -58,26 +58,23 @@ describe('Obtain plot information without discriminating based on req.userId', (
   // Expected behavior: will return plot identified by gardenId and plotOwnerId query params
   // Expected output: plot identified by gardenId and plotOwnerId query params
   test('Valid gardenId and plotOwner query params, no database error', async () => {
-    const req = { query: { gardenId: '1', plotOwnerId: '123423421' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const requestBody = { gardenId: '1', plotOwnerId: '123423421' };
 
     const expectedReturnedData = randomPlots.map((plot) => {
-      return toString(plot.gardenId) === req.query.gardenId && req.query.plotOwnerId === plot.plotOwnerId;
+      return toString(plot.gardenId) === requestBody.gardenId && requestBody.plotOwnerId === plot.plotOwnerId;
     });
 
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
-      expect(sqlInputArr).toStrictEqual([req.query.gardenId, req.query.plotOwnerId]);
+      expect(sqlInputArr).toStrictEqual([requestBody.gardenId, requestBody.plotOwnerId]);
       expect(sql).toBe(
         'SELECT profiles.displayName as plotOwnerName, plots.*, gardens.gardenName FROM plots JOIN gardens JOIN profiles WHERE plots.gardenId = gardens.id AND plots.plotOwnerId = profiles.id AND plots.gardenId = ? AND plots.plotOwnerId = ?'
       );
       return [expectedReturnedData];
     });
 
-    await getAllPlots(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ data: expectedReturnedData });
+    const res = await request(app).get('/plots/all').set({ Authorization: 'Bearer some token' }).query(requestBody);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.data).toStrictEqual(expectedReturnedData);
   });
 
   // Input: gardenId and plotOwnerId query params, authorization token in request header
@@ -85,18 +82,16 @@ describe('Obtain plot information without discriminating based on req.userId', (
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error', async () => {
-    const req = { query: { gardenId: '1', plotOwnerId: '123423421' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const requestBody = { gardenId: '1', plotOwnerId: '123423421' };
+
     const expectedError = new Error('Some Database Error');
     database.query.mockImplementationOnce((sql, sqlInputArr) => {
       throw expectedError;
     });
 
-    await getAllPlots(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app).get('/plots/all').set({ Authorization: 'Bearer some token' }).query(requestBody);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
@@ -108,6 +103,20 @@ describe('Obtain plot information without discriminating based on req.userId', (
 describe('Create plot for garden', () => {
   beforeEach(() => {
     database.query.mockRestore();
+
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+
   });
 
   // Input: gardenId and plotOwnerId query params, authorization token in request header
@@ -115,9 +124,7 @@ describe('Create plot for garden', () => {
   // Expected behavior: create plot
   // Expected output: whether the operation was successful or not
   test('Valid gardenId and plotOwner fields in request body, no database error', async () => {
-    const req = { body: { gardenId: '1', plotOwnerId: '123423421' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const requestBody = { gardenId: '1', plotOwnerId: '123423421' };
 
     database.query.mockImplementation((sql, sqlInputArr) => {
       if (
@@ -131,7 +138,7 @@ describe('Create plot for garden', () => {
           ?
         );`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.body.gardenId, req.body.plotOwnerId]);
+        expect(sqlInputArr).toStrictEqual([requestBody.gardenId, requestBody.plotOwnerId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -140,17 +147,16 @@ describe('Create plot for garden', () => {
       SET roleNum = 1
       WHERE gardenId = ? AND profileId = ?;`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.body.gardenId, req.body.plotOwnerId]);
+        expect(sqlInputArr).toStrictEqual([requestBody.gardenId, requestBody.plotOwnerId]);
         return null;
       }
 
       throw Error('It should not get to this point');
     });
 
-    await addAPlotToAGarden(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app).post(`/plots`).set({ Authorization: 'Bearer some token' }).send(requestBody);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: gardenId and plotOwnerId query params, authorization token in request header
@@ -158,9 +164,7 @@ describe('Create plot for garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when inserting to plots table', async () => {
-    const req = { body: { gardenId: '1', plotOwnerId: '123423421' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const requestBody = { gardenId: '1', plotOwnerId: '123423421' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -183,17 +187,16 @@ describe('Create plot for garden', () => {
       SET roleNum = 1
       WHERE gardenId = ? AND profileId = ?;`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.body.gardenId, req.body.plotOwnerId]);
+        expect(sqlInputArr).toStrictEqual([requestBody.gardenId, requestBody.plotOwnerId]);
         return null;
       }
 
       throw Error('It should not get to this point');
     });
 
-    await addAPlotToAGarden(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app).post(`/plots`).set({ Authorization: 'Bearer some token' }).send(requestBody);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: gardenId and plotOwnerId query params, authorization token in request header
@@ -201,9 +204,7 @@ describe('Create plot for garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when updating roles table', async () => {
-    const req = { body: { gardenId: '1', plotOwnerId: '123423421' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const requestBody = { gardenId: '1', plotOwnerId: '123423421' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -218,7 +219,7 @@ describe('Create plot for garden', () => {
           ?
         );`.replace(/\s+/g, ' ')
       ) {
-        expect(sqlInputArr).toStrictEqual([req.body.gardenId, req.body.plotOwnerId]);
+        expect(sqlInputArr).toStrictEqual([requestBody.gardenId, requestBody.plotOwnerId]);
         return null;
       } else if (
         sql.replace(/\s+/g, ' ') ===
@@ -233,17 +234,30 @@ describe('Create plot for garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await addAPlotToAGarden(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app).post(`/plots`).set({ Authorization: 'Bearer some token' }).send(requestBody);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });
 
-// DELETE /:plotId
+// DELETE /plots/:plotId
 describe('Remove plot From a garden', () => {
   beforeEach(() => {
     database.query.mockRestore();
+
+    // Mocking auth middleware input
+    OAuth2Client.mockImplementationOnce(() => {
+      return {
+        verifyIdToken: jest.fn().mockImplementationOnce(() => {
+          return {
+            getPayload: jest.fn().mockImplementationOnce(() => {
+              return { sub: expectedUserId };
+            }),
+          };
+        }),
+      };
+    });
+
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -251,9 +265,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: delete plot specified by plotId in url parameter
   // Expected output: whether the operation was successful or not
   test('No database error', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     database.query.mockImplementation((sql, sqlInputArr) => {
       if (
@@ -295,10 +307,12 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(res.json).toHaveBeenCalledWith({ success: true });
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.OK);
+    expect(res.body.success).toStrictEqual(true);
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -306,9 +320,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when running select statement on plot table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -351,10 +363,12 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -362,9 +376,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when updating roles table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -407,10 +419,12 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -418,9 +432,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when deleting from posts table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -463,10 +475,12 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -474,9 +488,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when deleting from tasks table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -519,10 +531,12 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 
   // Input: plotId url parameter, authorization token in request header
@@ -530,9 +544,7 @@ describe('Remove plot From a garden', () => {
   // Expected behavior: an error is thrown when calling database.query and the error is send through next()
   // Expected output: an error message (Set using errorHandler which we test in errorHandler.test.js)
   test('Database error when deleting from plots table', async () => {
-    const req = { params: { plotId: '1' } };
-    const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const next = jest.fn();
+    const queryParams = { plotId: '1' };
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {
@@ -575,9 +587,11 @@ describe('Remove plot From a garden', () => {
       throw Error('It should not get to this point');
     });
 
-    await removePlot(req, res, next);
-    expect(next).toHaveBeenCalledWith(expectedError);
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
+    const res = await request(app)
+      .delete(`/plots/${queryParams.plotId}`)
+      .set({ Authorization: 'Bearer some token' })
+      .send(queryParams);
+    expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body.error).toStrictEqual(expectedError.message);
   });
 });

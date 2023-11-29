@@ -223,7 +223,7 @@ describe('Create profile', () => {
   });
 });
 
-// PUT /rating
+// PUT /profiles/rating
 describe('Submit feedback', () => {
   beforeEach(() => {
     database.query.mockRestore();
@@ -296,7 +296,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.OK);
@@ -358,7 +358,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -419,7 +419,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -480,7 +480,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -541,7 +541,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -602,7 +602,7 @@ describe('Submit feedback', () => {
     });
 
     const res = await request(app)
-      .put(`/rating`)
+      .put(`/profiles/rating`)
       .set({ Authorization: 'Bearer some token' })
       .send(requestBody);
     expect(res.statusCode).toStrictEqual(StatusCodes.INTERNAL_SERVER_ERROR);

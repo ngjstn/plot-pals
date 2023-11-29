@@ -132,7 +132,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
 
         Log.d(TAG, "Current Garden: " + currentGardenId);
-        String gardenUrl = "http://10.0.2.2:8081/posts/all?gardenId="+ currentGardenId;
+        String gardenUrl = BuildConfig.API_URL + "/posts/all?gardenId="+ currentGardenId;
         Request<?> jsonObjectGardenRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 gardenUrl,
@@ -178,7 +178,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
             }
         };
 
-        String profileUrl = "http://10.0.2.2:8081/profiles/all?profileId="+ googleProfileInformation.getAccountUserId();
+        String profileUrl = BuildConfig.API_URL + "/profiles/all?profileId="+ googleProfileInformation.getAccountUserId();
         Request<?> jsonObjectProfileRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 profileUrl,
@@ -215,7 +215,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

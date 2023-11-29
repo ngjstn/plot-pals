@@ -88,7 +88,7 @@ public class GardenApplicationsActivity extends NavBarActivity {
 
     private void requestGardenApplications() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens/all?isApproved=false";
+        String url = BuildConfig.API_URL + "/gardens/all?isApproved=false";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

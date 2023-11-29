@@ -64,7 +64,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
     private void loadGardens() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/gardens?isApproved=true";
+        String url = BuildConfig.API_URL + "/gardens?isApproved=true";
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -206,7 +206,7 @@ public class MyGardenYesGardenActivity extends NavBarActivity {
 
     private void leaveGarden(int gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/roles/" + googleProfileInformation.getAccountUserId() + "/" + gardenId;
+        String url = BuildConfig.API_URL + "/roles/" + googleProfileInformation.getAccountUserId() + "/" + gardenId;
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,

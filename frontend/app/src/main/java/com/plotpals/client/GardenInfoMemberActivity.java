@@ -92,7 +92,7 @@ public class GardenInfoMemberActivity extends NavBarActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
+        String url = BuildConfig.API_URL + "/posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -135,7 +135,7 @@ public class GardenInfoMemberActivity extends NavBarActivity {
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -193,7 +193,7 @@ public class GardenInfoMemberActivity extends NavBarActivity {
 
     private void requestPlotOwnerId() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/plots/all?plotOwnerId=%s&gardenId=%s", googleProfileInformation.getAccountUserId(), gardenId);
+        String url = String.format(BuildConfig.API_URL + "/plots/all?plotOwnerId=%s&gardenId=%s", googleProfileInformation.getAccountUserId(), gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

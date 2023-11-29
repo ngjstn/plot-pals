@@ -36,15 +36,11 @@ public class AccountMainActivity extends NavBarActivity {
 
     ImageView AccountProfilePictureImageView;
 
-    View AccountAdminModeView;
-
     TextView AccountProfileNameTextView;
 
     TextView AccountProfileRatingsTextView;
 
     View AccountProfileActivityView;
-
-    View AccountRatingsActivityView;
 
     View AccountRolesActivityView;
 
@@ -59,13 +55,6 @@ public class AccountMainActivity extends NavBarActivity {
         loadExtras();
 
         activateNavBar();
-
-        AccountAdminModeView = findViewById(R.id.account_admin_mode_button);
-        AccountAdminModeView.setOnClickListener(view -> {
-            Intent AdminHomepageIntent = new Intent(AccountMainActivity.this, AdminHomepageActivity.class);
-            googleProfileInformation.loadGoogleProfileInformationToIntent(AdminHomepageIntent);
-            startActivity(AdminHomepageIntent);
-        });
 
         AccountProfileActivityView = findViewById(R.id.account_profile_button_view);
         AccountProfileActivityView.setOnClickListener(view -> {
@@ -134,7 +123,7 @@ public class AccountMainActivity extends NavBarActivity {
 
     private void requestProfileInformation() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = BuildConfig.API_URL + "/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

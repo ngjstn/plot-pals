@@ -1,7 +1,12 @@
 package com.plotpals.client;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,7 +73,8 @@ public class ManageGardenActivity extends NavBarActivity {
                 Toast.makeText(ManageGardenActivity.this, "edit pressed", Toast.LENGTH_SHORT).show();
                 Intent editActivity = new Intent(ManageGardenActivity.this, EditGardenActivity.class);
                 googleProfileInformation.loadGoogleProfileInformationToIntent(editActivity);
-                startActivity(editActivity);
+                editActivity.putExtra("gardenId", currentGardenId);
+                EditActivityResultLauncher.launch(editActivity);
             }
         });
 
@@ -83,6 +89,18 @@ public class ManageGardenActivity extends NavBarActivity {
         });
 
     }
+
+    ActivityResultLauncher<Intent> EditActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        requestGardenInfo(currentGardenId);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onStart() {
@@ -182,11 +200,13 @@ public class ManageGardenActivity extends NavBarActivity {
     }
 
     private void updateGardenOverlayContent(Garden garden) {
+        TextView gardenName = findViewById(R.id.general_inf);
         TextView address = findViewById(R.id.something_r);
         TextView contactName = findViewById(R.id.contact_nam);
         TextView contactEmail = findViewById(R.id.name_email_);
         TextView contactPhone = findViewById(R.id.some_id);
 
+        gardenName.setText(garden.getGardenName());
         address.setText(garden.getAddress());
         contactName.setText(garden.getGardenOwnerName());
         contactEmail.setText(garden.getContactEmail());

@@ -6,19 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".EditGardenActivity">
 
-    <View
-        android:id="@+id/line_"
-        android:layout_width="320dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/edit_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+    <include layout="@layout/activity_nav_bar"/>
 
     <TextView
         android:id="@+id/garden_name"
@@ -97,70 +85,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.375" />
 
-    <TextView
+    <EditText
         android:id="@+id/garden_name_temp"
         android:layout_width="300dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
         android:fontFamily="@font/inter"
-        android:gravity="top"
         android:text="@string/garden_name"
+        android:inputType="text"
         android:textAppearance="@style/existing_ga"
+        android:textColorHint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.405"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.416" />
-
-    <View
-        android:id="@+id/line_10"
-        android:layout_width="320dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/edit_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438" />
-
-    <TextView
-        android:id="@+id/garden_address_body"
-        android:layout_width="140dp"
-        android:layout_height="19dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="top"
-        android:text="@string/garden_address_body"
-        android:textAppearance="@style/garden_name_body"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/contact_addr"
-        android:layout_width="300dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/something_r"
-        android:textAppearance="@style/existing_ga"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547" />
+        app:layout_constraintVertical_bias="0.429" />
 
     <TextView
         android:id="@+id/plot_number_body"
@@ -176,39 +116,25 @@
         app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
+        app:layout_constraintVertical_bias="0.519" />
 
-    <TextView
+    <EditText
         android:id="@+id/garden_plot_num"
         android:layout_width="300dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
         android:fontFamily="@font/inter"
         android:gravity="top"
-        android:text="5"
+        android:inputType="number"
+        android:text="1"
         android:textAppearance="@style/existing_ga"
+        android:textColorHint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.405"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.677" />
-
-    <View
-        android:id="@+id/line_2"
-        android:layout_width="320dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/edit_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
+        app:layout_constraintVertical_bias="0.572" />
 
     <TextView
         android:id="@+id/contact_inf_body"
@@ -224,7 +150,43 @@
         app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.755" />
+        app:layout_constraintVertical_bias="0.662" />
+
+    <EditText
+        android:id="@+id/contact_email"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/inter"
+        android:gravity="top"
+        android:inputType="textEmailAddress"
+        android:text="@string/name_email_"
+        android:textAppearance="@style/existing_ga"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.673"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.792" />
+
+    <EditText
+        android:id="@+id/contact_phone"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/inter"
+        android:gravity="top"
+        android:inputType="phone"
+        android:text="@string/some_id"
+        android:textAppearance="@style/existing_ga"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.673"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.724" />
 
     <View
         android:id="@+id/call"
@@ -232,13 +194,14 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:background="@drawable/call"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintVertical_bias="0.713" />
 
     <View
         android:id="@+id/mail"
@@ -246,78 +209,13 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:background="@drawable/mail"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.883" />
-
-    <View
-        android:id="@+id/line_4"
-        android:layout_width="270dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/edit_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.821" />
-
-    <View
-        android:id="@+id/line_5"
-        android:layout_width="270dp"
-        android:layout_height="2dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/edit_line"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.887" />
-
-    <TextView
-        android:id="@+id/contact_phone"
-        android:layout_width="270dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/some_id"
-        android:textAppearance="@style/existing_ga"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.723"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.806" />
-
-    <TextView
-        android:id="@+id/contact_email"
-        android:layout_width="270dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/inter"
-        android:gravity="top"
-        android:text="@string/name_email_"
-        android:textAppearance="@style/existing_ga"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.723"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.874" />
+        app:layout_constraintVertical_bias="0.78" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

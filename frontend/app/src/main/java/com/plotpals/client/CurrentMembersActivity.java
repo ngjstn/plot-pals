@@ -1,8 +1,5 @@
 package com.plotpals.client;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +12,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -69,16 +68,16 @@ public class CurrentMembersActivity extends NavBarActivity {
             @NonNull
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
+                View newView = inflater.inflate(R.layout.current_plot_owner_list_view, viewGroup, false);
 
-                TextView plotIdentifier = view.findViewById(R.id.plot_id);
+                TextView plotIdentifier = newView.findViewById(R.id.plot_id);
 
                 for(int j = 0; j < plotsList.size(); j++) {
                     if(plotsList.get(j).getPlotOwnerId().equals(plotOwnerList.get(i).getProfileId())){
                         int plotIdOfCurrentPlotOwner = plotsList.get(j).getId();
                         plotIdentifier.setText(plotIdOfCurrentPlotOwner+ ":");
 
-                        View horizontalDots = view.findViewById(R.id.more_horiz);
+                        View horizontalDots = newView.findViewById(R.id.more_horiz);
                         horizontalDots.setOnClickListener(horizontalDotsView -> {
                             PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
                             menu.getMenuInflater().inflate(R.menu.management_menu_for_plotowners, menu.getMenu());
@@ -92,10 +91,10 @@ public class CurrentMembersActivity extends NavBarActivity {
                     }
                 }
 
-                TextView name = view.findViewById(R.id.name);
+                TextView name = newView.findViewById(R.id.name);
                 name.setText(plotOwnerList.get(i).getGardenMemberName());
 
-                return view;
+                return newView;
             }
         };
         plotOwnerListView.setAdapter(plotOwnerAdapter);
@@ -107,9 +106,9 @@ public class CurrentMembersActivity extends NavBarActivity {
             @NonNull
             public View getView(int i, View view, ViewGroup viewGroup) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
+                View newView = inflater.inflate(R.layout.current_caretaker_list_view, viewGroup, false);
 
-                View horizontalDots = view.findViewById(R.id.more_horiz);
+                View horizontalDots = newView.findViewById(R.id.more_horiz);
                 horizontalDots.setOnClickListener(horizontalDotsView -> {
                     PopupMenu menu = new PopupMenu(CurrentMembersActivity.this, horizontalDotsView);
                     menu.getMenuInflater().inflate(R.menu.management_menu_for_caretakers, menu.getMenu());
@@ -129,10 +128,10 @@ public class CurrentMembersActivity extends NavBarActivity {
                     menu.show();
                 });
 
-                TextView name = view.findViewById(R.id.name);
+                TextView name = newView.findViewById(R.id.name);
                 name.setText(caretakerList.get(i).getGardenMemberName());
 
-                return view;
+                return newView;
             }
         };
         caretakerListView.setAdapter(caretakerAdapter);

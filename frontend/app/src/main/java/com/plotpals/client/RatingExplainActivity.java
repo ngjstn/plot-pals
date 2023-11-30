@@ -1,7 +1,5 @@
 package com.plotpals.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 public class RatingExplainActivity extends NavBarActivity {

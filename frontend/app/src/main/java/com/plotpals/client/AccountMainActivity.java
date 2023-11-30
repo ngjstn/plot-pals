@@ -15,8 +15,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.plotpals.client.data.Profile;
 import com.plotpals.client.utils.GoogleProfileInformation;
 import com.squareup.picasso.Picasso;

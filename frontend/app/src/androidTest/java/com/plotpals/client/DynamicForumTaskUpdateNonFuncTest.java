@@ -80,77 +80,55 @@ public class DynamicForumTaskUpdateNonFuncTest {
     }
 
     @Test
-    public void addTaskForumBoardTest() {
-
-        try {
-            // Click Navbar
-            ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
-            appCompatButton.perform(click());
-
-            // Click Garden
-            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
-            appCompatButton2.perform(scrollTo(), click());
-
-            // Click Plus
-            ViewInteraction appCompatImageView = onView(allOf(withId(R.id.forum_board_plus), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 4), isDisplayed()));
-            appCompatImageView.perform(click());
-
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView2.perform(click());
-
-            // Give time for toast
-            Thread.sleep(2000);
-
-            // Type Title
-            ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
-            appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
-
-            // Type Description
-            ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.forum_board_new_task_body), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 5), isDisplayed()));
-            appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
-
-            // Type Days
-            ViewInteraction appCompatEditText3 = onView(allOf(withId(R.id.forum_board_new_task_expected), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
-            appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
-
-            // Type Faulty Date
-            ViewInteraction appCompatEditText4 = onView(allOf(withId(R.id.forum_board_new_task_deadline), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
-
-            // Type Reward
-            ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.forum_board_new_task_reward), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 6), isDisplayed()));
-            appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
-
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView4.perform(click());
-
-            // Give time for toast
-            Thread.sleep(2000);
-
-            // Type Proper Date
-            ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText6.perform(replaceText("12122222"));
-
-            // Close Keyboard
-            ViewInteraction appCompatEditText7 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText7.perform(closeSoftKeyboard());
-
-            // Click Checkmark
-            ViewInteraction appCompatImageView5 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView5.perform(click());
-
-            // Give time for backend to update
-            Thread.sleep(500);
-
-            // Check that new task is there
-            ViewInteraction textView = onView(allOf(withId(R.id.forum_board_task_preview_title), withText(taskName), withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
-            textView.check(matches(withText(taskName)));
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public void addTaskForumBoardTest() throws InterruptedException {
+        // Click Navbar
+        ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+        appCompatButton.perform(click());
+        // Click Garden
+        ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
+        appCompatButton2.perform(scrollTo(), click());
+        // Click Plus
+        ViewInteraction appCompatImageView = onView(allOf(withId(R.id.forum_board_plus), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 4), isDisplayed()));
+        appCompatImageView.perform(click());
+        // Attempt to click Checkmark
+        ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView2.perform(click());
+        // Give time for toast
+        Thread.sleep(2000);
+        // Type Title
+        ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
+        appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
+        // Type Description
+        ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.forum_board_new_task_body), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 5), isDisplayed()));
+        appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
+        // Type Days
+        ViewInteraction appCompatEditText3 = onView(allOf(withId(R.id.forum_board_new_task_expected), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
+        appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
+        // Type Faulty Date
+        ViewInteraction appCompatEditText4 = onView(allOf(withId(R.id.forum_board_new_task_deadline), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
+        // Type Reward
+        ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.forum_board_new_task_reward), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 6), isDisplayed()));
+        appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
+        // Attempt to click Checkmark
+        ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView4.perform(click());
+        // Give time for toast
+        Thread.sleep(2000);
+        // Type Proper Date
+        ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText6.perform(replaceText("12122222"));
+        // Close Keyboard
+        ViewInteraction appCompatEditText7 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText7.perform(closeSoftKeyboard());
+        // Click Checkmark
+        ViewInteraction appCompatImageView5 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView5.perform(click());
+        // Give time for backend to update
+        Thread.sleep(500);
+        // Check that new task is there
+        ViewInteraction textView = onView(allOf(withId(R.id.forum_board_task_preview_title), withText(taskName), withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
+        textView.check(matches(withText(taskName)));
     }
 
     @Test

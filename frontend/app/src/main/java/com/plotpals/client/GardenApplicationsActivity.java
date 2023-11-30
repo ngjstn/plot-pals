@@ -59,10 +59,10 @@ public class GardenApplicationsActivity extends NavBarActivity {
 
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.activity_single_text_with_forward_arrow_list_view, parent, false);
+                View newView = inflater.inflate(R.layout.activity_single_text_with_forward_arrow_list_view, parent, false);
 
-                TextView listTextView = convertView.findViewById(R.id.list_text_view);
-                ImageView listImageView = convertView.findViewById(R.id.list_forward_arrow);
+                TextView listTextView = newView.findViewById(R.id.list_text_view);
+                ImageView listImageView = newView.findViewById(R.id.list_forward_arrow);
                 listImageView.setOnClickListener(view -> {
                     Intent SingleGardenApplicationIntent = new Intent(GardenApplicationsActivity.this, SingleGardenApplicationActivity.class);
                     googleProfileInformation.loadGoogleProfileInformationToIntent(SingleGardenApplicationIntent);
@@ -71,7 +71,7 @@ public class GardenApplicationsActivity extends NavBarActivity {
                 });
 
                 listTextView.setText("\"" + gardenApplicationsList.get(position).getGardenName() + "\"" + " [" + gardenApplicationsList.get(position).getId() + "]");
-                return convertView;
+                return newView;
             }
         };
         GardenApplicationsListView.setAdapter(gardenApplicationsListAdapter);

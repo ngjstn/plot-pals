@@ -83,81 +83,72 @@ public class FrontEndTests {
     }
 
     @Test
-    public void addTaskForumBoardTest() {
+    public void addTaskForumBoardTest() throws InterruptedException {
+        String taskName = getRandomString();
+        // Click Navbar
+        ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+        appCompatButton.perform(click());
 
-        try {
+        // Click Garden
+        ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
+        appCompatButton2.perform(scrollTo(), click());
 
-            String taskName = getRandomString();
+        // Click Plus
+        ViewInteraction appCompatImageView = onView(allOf(withId(R.id.forum_board_plus), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 4), isDisplayed()));
+        appCompatImageView.perform(click());
 
-            // Click Navbar
-            ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
-            appCompatButton.perform(click());
+        // Attempt to click Checkmark
+        ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView2.perform(click());
 
-            // Click Garden
-            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
-            appCompatButton2.perform(scrollTo(), click());
+        // Give time for toast
+        Thread.sleep(2000);
 
-            // Click Plus
-            ViewInteraction appCompatImageView = onView(allOf(withId(R.id.forum_board_plus), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 4), isDisplayed()));
-            appCompatImageView.perform(click());
+        // Type Title
+        ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
+        appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
 
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView2.perform(click());
+        // Type Description
+        ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.forum_board_new_task_body), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 5), isDisplayed()));
+        appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
 
-            // Give time for toast
-            Thread.sleep(2000);
+        // Type Days
+        ViewInteraction appCompatEditText3 = onView(allOf(withId(R.id.forum_board_new_task_expected), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
+        appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
 
-            // Type Title
-            ViewInteraction appCompatEditText = onView(allOf(withId(R.id.forum_board_new_task_title), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 3), isDisplayed()));
-            appCompatEditText.perform(replaceText(taskName), closeSoftKeyboard());
+        // Type Faulty Date
+        ViewInteraction appCompatEditText4 = onView(allOf(withId(R.id.forum_board_new_task_deadline), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
 
-            // Type Description
-            ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.forum_board_new_task_body), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 5), isDisplayed()));
-            appCompatEditText2.perform(replaceText("Testing 123"), closeSoftKeyboard());
+        // Type Reward
+        ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.forum_board_new_task_reward), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 6), isDisplayed()));
+        appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
 
-            // Type Days
-            ViewInteraction appCompatEditText3 = onView(allOf(withId(R.id.forum_board_new_task_expected), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
-            appCompatEditText3.perform(replaceText("12"), closeSoftKeyboard());
+        // Attempt to click Checkmark
+        ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView4.perform(click());
 
-            // Type Faulty Date
-            ViewInteraction appCompatEditText4 = onView(allOf(withId(R.id.forum_board_new_task_deadline), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText4.perform(replaceText("12122002"), closeSoftKeyboard());
+        // Give time for toast
+        Thread.sleep(2000);
 
-            // Type Reward
-            ViewInteraction appCompatEditText5 = onView(allOf(withId(R.id.forum_board_new_task_reward), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 6), isDisplayed()));
-            appCompatEditText5.perform(replaceText("Pizza!"), closeSoftKeyboard());
+        // Type Proper Date
+        ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText6.perform(replaceText("12122222"));
 
-            // Attempt to click Checkmark
-            ViewInteraction appCompatImageView4 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView4.perform(click());
+        // Close Keyboard
+        ViewInteraction appCompatEditText7 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        appCompatEditText7.perform(closeSoftKeyboard());
 
-            // Give time for toast
-            Thread.sleep(2000);
+        // Click Checkmark
+        ViewInteraction appCompatImageView5 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
+        appCompatImageView5.perform(click());
 
-            // Type Proper Date
-            ViewInteraction appCompatEditText6 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122002"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText6.perform(replaceText("12122222"));
+        // Give time for backend to update
+        Thread.sleep(500);
 
-            // Close Keyboard
-            ViewInteraction appCompatEditText7 = onView(allOf(withId(R.id.forum_board_new_task_deadline), withText("12122222"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            appCompatEditText7.perform(closeSoftKeyboard());
-
-            // Click Checkmark
-            ViewInteraction appCompatImageView5 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
-            appCompatImageView5.perform(click());
-
-            // Give time for backend to update
-            Thread.sleep(500);
-
-            // Check that new task is there
-            ViewInteraction textView = onView(allOf(withId(R.id.forum_board_task_preview_title), withText(taskName), withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
-            textView.check(matches(withText(taskName)));
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Check that new task is there
+        ViewInteraction textView = onView(allOf(withId(R.id.forum_board_task_preview_title), withText(taskName), withParent(withParent(withId(R.id.forum_board_scrollview_layout)))));
+        textView.check(matches(withText(taskName)));
     }
 
     /*
@@ -182,122 +173,104 @@ public class FrontEndTests {
      * It should have decreased dramatically (The test gives you a rating of 0).
      */
     @Test
-    public void completeTaskFeedbackTest() {
+    public void completeTaskFeedbackTest() throws InterruptedException {
+        // Click Navbar
+        ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+        appCompatButton.perform(click());
 
-        try {
+        // Click Garden
+        ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
+        appCompatButton2.perform(scrollTo(), click());
 
-            // Click Navbar
-            ViewInteraction appCompatButton = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
-            appCompatButton.perform(click());
+        // Click Task
+        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.forum_board_task_preview_title), childAtPosition(childAtPosition(withId(R.id.forum_board_scrollview_layout), 0), 1)));
+        appCompatTextView.perform(scrollTo(), click());
 
-            // Click Garden
-            ViewInteraction appCompatButton2 = onView(childAtPosition(childAtPosition(withId(R.id.my_garden_scrollview_layout), 0), 3));
-            appCompatButton2.perform(scrollTo(), click());
+        // Click Feedback Button
+        ViewInteraction appCompatButton3 = onView(allOf(withId(R.id.forum_board_task_button), withText("Provide Feedback"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 18), isDisplayed()));
+        appCompatButton3.perform(click());
 
-            // Click Task
-            ViewInteraction appCompatTextView = onView(allOf(withId(R.id.forum_board_task_preview_title), childAtPosition(childAtPosition(withId(R.id.forum_board_scrollview_layout), 0), 1)));
-            appCompatTextView.perform(scrollTo(), click());
-
-            // Click Feedback Button
-            ViewInteraction appCompatButton3 = onView(allOf(withId(R.id.forum_board_task_button), withText("Provide Feedback"), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 18), isDisplayed()));
-            appCompatButton3.perform(click());
-
-            // Click Checkmark
-            ViewInteraction appCompatImageView = onView(withId(R.id.forum_board_feedback_check));
-            appCompatImageView.perform(click());
-
-            Thread.sleep(100);
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Click Checkmark
+        ViewInteraction appCompatImageView = onView(withId(R.id.forum_board_feedback_check));
+        appCompatImageView.perform(click());
+        Thread.sleep(100);
     }
 
     @Test
-    public void joinGardenTest() {
+    public void joinGardenTest() throws InterruptedException {
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
-        try {
+        // Click Navbar
+        ViewInteraction gardens = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
+        gardens.perform(click());
 
-            UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        // Let gardens load
+        Thread.sleep(500);
 
-            // Click Navbar
-            ViewInteraction gardens = onView(allOf(withId(R.id.button_navbar_garden), childAtPosition(allOf(withId(R.id.navbar), childAtPosition(withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")), 0)), 1), isDisplayed()));
-            gardens.perform(click());
+        // Click Plus
+        ViewInteraction plus = onView(allOf(withId(R.id.my_garden_plus_button), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+        plus.perform(click());
 
-            // Let gardens load
-            Thread.sleep(500);
+        // Let Google Maps load
+        Thread.sleep(500);
 
-            // Click Plus
-            ViewInteraction plus = onView(allOf(withId(R.id.my_garden_plus_button), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
-            plus.perform(click());
+        // Type in search bar
+        ViewInteraction searchAutoComplete = onView(allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), childAtPosition(allOf(withClassName(is("android.widget.LinearLayout")), childAtPosition(withClassName(is("android.widget.LinearLayout")), 1)), 0), isDisplayed()));
+        searchAutoComplete.perform(replaceText("Denny's"));
+        searchAutoComplete.perform(pressImeActionButton());
 
-            // Let Google Maps load
-            Thread.sleep(500);
+        // Let search bar load
+        Thread.sleep(500);
 
-            // Type in search bar
-            ViewInteraction searchAutoComplete = onView(allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), childAtPosition(allOf(withClassName(is("android.widget.LinearLayout")), childAtPosition(withClassName(is("android.widget.LinearLayout")), 1)), 0), isDisplayed()));
-            searchAutoComplete.perform(replaceText("Denny's"));
-            searchAutoComplete.perform(pressImeActionButton());
+        /*
+            * Note: From now on, we begin to use UI Automator, because Espresso has trouble
+            * recognizing the objects in these views. If the test fails beyond this point,
+            * it may be because you changed the position of a button.
+           */
 
-            // Let search bar load
-            Thread.sleep(500);
+        // Click on the first option
+        device.click(540, 600);
 
-            /*
-             * Note: From now on, we begin to use UI Automator, because Espresso has trouble
-             * recognizing the objects in these views. If the test fails beyond this point,
-             * it may be because you changed the position of a button.
-            */
+        // Let Google Maps load
+        Thread.sleep(500);
 
-            // Click on the first option
-            device.click(540, 600);
+        // Click on the center marker
+        device.click(540, 1080);
 
-            // Let Google Maps load
-            Thread.sleep(500);
+        // Let UI Load
+        Thread.sleep(500);
 
-            // Click on the center marker
-            device.click(540, 1080);
+        // Click on the info button
+        device.click(810, 1800);
 
-            // Let UI Load
-            Thread.sleep(500);
+        // Let UI Load
+        Thread.sleep(500);
 
-            // Click on the info button
-            device.click(810, 1800);
+        // Click on the join button
+        device.click(810, 1820);
 
-            // Let UI Load
-            Thread.sleep(500);
+        // Let UI Load
+        Thread.sleep(500);
 
-            // Click on the join button
-            device.click(810, 1820);
+        // Go back to My Gardens
+        gardens.perform(click());
 
-            // Let UI Load
-            Thread.sleep(500);
+        // Let UI Load
+        Thread.sleep(500);
 
-            // Go back to My Gardens
-            gardens.perform(click());
+        // Click on dots
+        ViewInteraction dots = onView(
+                allOf(withId(R.id.my_garden_more_dots),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.my_garden_scrollview_layout),
+                                        1),
+                                6)));
+        dots.perform(click());
 
-            // Let UI Load
-            Thread.sleep(500);
-
-            // Click on dots
-            ViewInteraction dots = onView(
-                    allOf(withId(R.id.my_garden_more_dots),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(R.id.my_garden_scrollview_layout),
-                                            1),
-                                    6)));
-            dots.perform(click());
-
-            // Leave garden for test repeatability
-            device.click(580, 1020);
-
-            Thread.sleep(500);
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Leave garden for test repeatability
+        device.click(580, 1020);
+        Thread.sleep(500);
     }
 
 

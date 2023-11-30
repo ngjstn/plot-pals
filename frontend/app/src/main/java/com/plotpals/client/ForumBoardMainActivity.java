@@ -56,11 +56,6 @@ public class ForumBoardMainActivity extends NavBarActivity {
         taskSocket = TaskSocketHandler.getSocket();
         taskSocket.connect();
 
-        TextView newPostText = findViewById(R.id.forum_board_new_post);
-        TextView newTaskText = findViewById(R.id.forum_board_new_task);
-        newPostText.setVisibility(View.GONE);
-        newTaskText.setVisibility(View.GONE);
-
         Log.d(TAG, "Garden Name:" + currentGardenName);
         TextView name = findViewById(R.id.forum_board_garden_name);
         name.setText(currentGardenName);
@@ -68,30 +63,8 @@ public class ForumBoardMainActivity extends NavBarActivity {
         ImageView arrow = findViewById(R.id.forum_board_arrow);
         arrow.setOnClickListener(view -> finish());
 
-        View greyScreenOverlay = findViewById(R.id.plus_grey_screen);
-        greyScreenOverlay.setVisibility(View.GONE);
-
-        greyScreenOverlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (greyScreenOverlay.getVisibility() == View.VISIBLE) {
-                    newTaskText.setVisibility(View.GONE);
-                    greyScreenOverlay.setVisibility(View.GONE);
-                }
-            }
-        });
-
         ImageView plus = findViewById(R.id.forum_board_plus);
         plus.setOnClickListener(view -> {
-            Log.d(TAG, "Clicking Plus Sign");
-            // TODO: make invisible when clicked elsewhere
-            // We disable posts for now
-            // newPostText.setVisibility(newPostText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            newTaskText.setVisibility(newTaskText.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            greyScreenOverlay.setVisibility(greyScreenOverlay.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        });
-
-        newTaskText.setOnClickListener(view -> {
             Log.d(TAG, "Clicking New Task");
             Intent intent = new Intent(ForumBoardMainActivity.this, ForumBoardNewTaskActivity.class);
             googleProfileInformation.loadGoogleProfileInformationToIntent(intent);
@@ -99,6 +72,7 @@ public class ForumBoardMainActivity extends NavBarActivity {
             intent.putExtra("gardenName", currentGardenName);
             startActivity(intent);
         });
+
         findViewById(R.id.forum_board_plus).setVisibility(View.GONE);
 
         taskSocket.on("New Task", args -> {
@@ -123,8 +97,6 @@ public class ForumBoardMainActivity extends NavBarActivity {
         super.onStart();
         requestMembers(currentGardenId);
         loadPosts();
-        findViewById(R.id.forum_board_new_task).setVisibility(View.GONE);
-        findViewById(R.id.plus_grey_screen).setVisibility(View.GONE);
     }
 
     private void loadPosts() {

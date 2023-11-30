@@ -124,7 +124,7 @@ public class AppEntryActivity extends AppCompatActivity {
      */
     private void checkIfUserIsAdminAndRedirect() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/adminProfiles/all?profileId=" + googleProfileInformation.getAccountUserId();;
+        String url = BuildConfig.API_URL + "/adminProfiles/all?profileId=" + googleProfileInformation.getAccountUserId();;
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -167,7 +167,7 @@ public class AppEntryActivity extends AppCompatActivity {
      */
     private void redirectToProfileCreationOrSkipIt() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = BuildConfig.API_URL + "/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -211,7 +211,7 @@ public class AppEntryActivity extends AppCompatActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
 
-        String url = "http://10.0.2.2:8081/";
+        String url = BuildConfig.API_URL + "/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

@@ -88,7 +88,7 @@ public class TasksActivity extends NavBarActivity {
 
     private void requestTasks() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/posts/tasks?userIs=assignee";
+        String url = BuildConfig.API_URL + "/posts/tasks?userIs=assignee";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

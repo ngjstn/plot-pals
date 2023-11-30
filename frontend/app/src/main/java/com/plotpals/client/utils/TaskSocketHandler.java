@@ -2,6 +2,8 @@ package com.plotpals.client.utils;
 
 import android.util.Log;
 
+import com.plotpals.client.BuildConfig;
+
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -13,7 +15,7 @@ public class TaskSocketHandler {
 
     public static synchronized void setSocket() {
         try {
-            taskSocket = IO.socket("http://10.0.2.2:8081/");
+            taskSocket = IO.socket(BuildConfig.API_URL + "/");
         } catch (URISyntaxException e) {
             Log.d(TAG, "Error setting socket");
         }

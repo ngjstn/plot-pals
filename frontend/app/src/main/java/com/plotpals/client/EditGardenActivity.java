@@ -72,7 +72,7 @@ public class EditGardenActivity extends NavBarActivity {
         params.put("numberOfPlots", plotAmount.getText().toString());
         params.put("gardenName", gardenName.getText().toString());
 
-        String url = String.format("http://10.0.2.2:8081/gardens/%s", currentGardenId);
+        String url = String.format(BuildConfig.API_URL + "/gardens/%s", currentGardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,
@@ -103,7 +103,7 @@ public class EditGardenActivity extends NavBarActivity {
 
     private void requestGardenInfo(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/gardens/all?isApproved=true&gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/gardens/all?isApproved=true&gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

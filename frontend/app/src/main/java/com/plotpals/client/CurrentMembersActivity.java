@@ -157,7 +157,7 @@ public class CurrentMembersActivity extends NavBarActivity {
 
     private void requestPlots(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/plots/all?gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/plots/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -199,7 +199,7 @@ public class CurrentMembersActivity extends NavBarActivity {
 
     private void requestMembers(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/roles/all?gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/roles/all?gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -264,7 +264,7 @@ public class CurrentMembersActivity extends NavBarActivity {
 
     private void requestGardenInfo(Integer gardenId) {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = String.format("http://10.0.2.2:8081/gardens/all?isApproved=true&gardenId=%s", gardenId);
+        String url = String.format(BuildConfig.API_URL + "/gardens/all?isApproved=true&gardenId=%s", gardenId);
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -300,7 +300,7 @@ public class CurrentMembersActivity extends NavBarActivity {
 
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
 
-        String url = "http://10.0.2.2:8081/plots/" + plotId;
+        String url = BuildConfig.API_URL + "/plots/" + plotId;
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,
@@ -342,7 +342,7 @@ public class CurrentMembersActivity extends NavBarActivity {
             jsonRequestBody.put("gardenId", gardenId);
             jsonRequestBody.put("plotOwnerId", caretakerId);
 
-            String url = "http://10.0.2.2:8081/plots";
+            String url = BuildConfig.API_URL + "/plots";
             Request<?> jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     url,

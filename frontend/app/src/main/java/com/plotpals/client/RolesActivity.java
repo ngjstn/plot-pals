@@ -84,7 +84,7 @@ public class RolesActivity extends NavBarActivity {
 
     private void requestRoles() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/roles/";
+        String url = BuildConfig.API_URL + "/roles/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

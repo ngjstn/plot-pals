@@ -51,18 +51,18 @@ public class GardenBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.activity_garden_list_view, viewGroup, false);
+        View newView = inflater.inflate(R.layout.activity_garden_list_view, viewGroup, false);
 
-        TextView gardenName = (TextView) view.findViewById(R.id.textView_garden);
+        TextView gardenName = (TextView) newView.findViewById(R.id.textView_garden);
         gardenName.setText(listGarden.get(i).getGardenName());
 
-        TextView address = (TextView) view.findViewById(R.id.textView3);
+        TextView address = (TextView) newView.findViewById(R.id.textView3);
         address.setText(listGarden.get(i).getAddress());
 
 //        View gardenImg = view.findViewById(R.id.textView_garden);
 //        gardenImg.setBackground(listImages[i]);
 
-        view.findViewById(R.id.rectangle_4).setOnClickListener(new View.OnClickListener() {
+        newView.findViewById(R.id.rectangle_4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, String.format("View on map pressed for %s", listGarden.get(i).getGardenName()));
@@ -76,6 +76,6 @@ public class GardenBaseAdapter extends BaseAdapter {
             }
         });
 
-        return view;
+        return newView;
     }
 }

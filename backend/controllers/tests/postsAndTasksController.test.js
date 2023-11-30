@@ -727,11 +727,6 @@ describe('create task', () => {
 
     const queryParams = { gardenId: '1' };
 
-    const month = requestBody.taskDeadline.substring(0, 2);
-    const day = requestBody.taskDeadline.substring(2, 4);
-    const year = requestBody.taskDeadline.substring(4, 8);
-    const deadlineDate = year + '-' + month + '-' + day + ' 00:00:00';
-
     const expectedPlotId = 1;
     const expectedLastInsertId = 10;
 

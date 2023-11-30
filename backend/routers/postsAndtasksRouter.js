@@ -2,10 +2,8 @@ const express = require('express');
 const {
   getTasksRelatedToAuthorizedUser,
   getTasksRelatedToAuthorizedUserByGardenId,
-  getAllTasks,
   getAllPostsAndTasks,
   createTask,
-  createPost,
   claimTask,
   completeTask,
 } = require('../controllers/postsAndtasksController');

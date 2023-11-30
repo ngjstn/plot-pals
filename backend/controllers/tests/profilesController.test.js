@@ -426,20 +426,7 @@ describe('Submit feedback', () => {
       rating: 5.0,
     };
 
-    const startTime = completedTaskInfo.taskStartTime;
-    const endTime = completedTaskInfo.taskEndTime;
-    const expectedTaskDurationInHours = completedTaskInfo.expectedTaskDurationInHours;
     const feedBackReceiverId = completedTaskInfo.assigneeId;
-    const ratingsChangeDueToCompletionEfficiency =
-      (expectedTaskDurationInHours - (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60)) / 100;
-
-    const calculatedRating = Math.min(
-      Math.max(
-        feedbackAssigneeInfo.rating * 0.8 + requestBody.newRating * 0.2 + ratingsChangeDueToCompletionEfficiency,
-        0
-      ),
-      5
-    );
 
     const expectedError = new Error('Some database error');
     database.query.mockImplementation((sql, sqlInputArr) => {

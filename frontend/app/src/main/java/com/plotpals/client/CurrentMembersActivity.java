@@ -41,11 +41,15 @@ public class CurrentMembersActivity extends NavBarActivity {
     ArrayList<Role> plotOwnerList;
     ArrayAdapter<Role> plotOwnerAdapter;
 
+    TextView noPlotOwnerTextView;
+
     ListView caretakerListView;
     ArrayList<Role> caretakerList;
 
     ArrayList<Plot> plotsList;
     ArrayAdapter<Role> caretakerAdapter;
+
+    TextView noCaretakerTextView;
     int gardenId;
     Garden currentGarden;
 
@@ -54,6 +58,7 @@ public class CurrentMembersActivity extends NavBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_current_members);
         activateNavBar();
         plotsList = new ArrayList<>();
@@ -225,6 +230,16 @@ public class CurrentMembersActivity extends NavBarActivity {
                                     TextView ownerName = findViewById(R.id.garden_owner_name);
                                     ownerName.setText(role.getGardenMemberName());
                                 }
+                            }
+
+                            noPlotOwnerTextView = findViewById(R.id.current_members_no_plot_text_view);
+                            noCaretakerTextView = findViewById(R.id.current_members_no_caretaker_text_view);
+                            
+                            if (plotOwnerList.size() > 0) {
+                                noPlotOwnerTextView.setVisibility(View.INVISIBLE);
+                            }
+                            if (caretakerList.size() > 0) {
+                                noCaretakerTextView.setVisibility(View.INVISIBLE);
                             }
                             plotOwnerAdapter.notifyDataSetChanged();
                             caretakerAdapter.notifyDataSetChanged();

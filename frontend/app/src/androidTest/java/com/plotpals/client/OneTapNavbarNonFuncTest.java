@@ -11,7 +11,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import android.content.Intent;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -21,11 +20,9 @@ import com.plotpals.client.utils.TaskSocketHandler;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -63,117 +60,101 @@ public class OneTapNavbarNonFuncTest {
     }
 
     @Test
-    public void homepageSubPagesTest() {
-        try {
-            Thread.sleep(3000);
-            // starting with homepage entry
-            onView(withId(R.id.homepage_tasks_list_view)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.homepage_tasks_list_view)).check(matches(isDisplayed()));
+    public void homepageSubPagesTest() throws InterruptedException {
+        Thread.sleep(3000);
+        // starting with homepage entry
+        onView(withId(R.id.homepage_tasks_list_view)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.homepage_tasks_list_view)).check(matches(isDisplayed()));
 
-            // homepage -> tasks list
-            onView(withId(R.id.homepage_tasks_forward_arrow_image_view)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.tasks_title_text_view)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.tasks_title_text_view)).check(matches(isDisplayed()));
-
-        }
-        catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        // homepage -> tasks list
+        onView(withId(R.id.homepage_tasks_forward_arrow_image_view)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.tasks_title_text_view)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.tasks_title_text_view)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void myGardenSubPagesTest() {
-        try {
-            Thread.sleep(3000);
-            // my garden
-            onView(withId(R.id.button_navbar_garden)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.my_garden_plus_button)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.my_garden_plus_button)).check(matches(isDisplayed()));
-        }
-        catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public void myGardenSubPagesTest() throws InterruptedException {
+        Thread.sleep(3000);
+        // my garden
+        onView(withId(R.id.button_navbar_garden)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.my_garden_plus_button)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.my_garden_plus_button)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void accountSubPagesTest() {
-        try {
-            Thread.sleep(3000);
-            // my account
-            onView(withId(R.id.button_navbar_account)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.account_header_text)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.account_header_text)).check(matches(isDisplayed()));
+    public void accountSubPagesTest() throws InterruptedException {
+        Thread.sleep(3000);
+        // my account
+        onView(withId(R.id.button_navbar_account)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.account_header_text)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.account_header_text)).check(matches(isDisplayed()));
 
-            // my account -> profile
-            onView(withId(R.id.account_profile_button_view)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.edit_profile_header)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.edit_profile_header)).check(matches(isDisplayed()));
+        // my account -> profile
+        onView(withId(R.id.account_profile_button_view)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.edit_profile_header)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.edit_profile_header)).check(matches(isDisplayed()));
 
-            // my account -> roles
-            onView(withId(R.id.button_navbar_account)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.account_roles_button_view)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.roles_title_text_view)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.roles_title_text_view)).check(matches(isDisplayed()));
+        // my account -> roles
+        onView(withId(R.id.button_navbar_account)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.account_roles_button_view)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.roles_title_text_view)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.roles_title_text_view)).check(matches(isDisplayed()));
 
-            // my account -> rating
-            onView(withId(R.id.button_navbar_account)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.rating_button)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.rating_header)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.rating_header)).check(matches(isDisplayed()));
+        // my account -> rating
+        onView(withId(R.id.button_navbar_account)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.rating_button)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.rating_header)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.rating_header)).check(matches(isDisplayed()));
 
-            // my account -> new garden application
-            onView(withId(R.id.button_navbar_account)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.account_apply_button)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.garden_application_header)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.garden_application_header)).check(matches(isDisplayed()));
+        // my account -> new garden application
+        onView(withId(R.id.button_navbar_account)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.account_apply_button)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.garden_application_header)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.garden_application_header)).check(matches(isDisplayed()));
 
-            // my account -> admin mode
-            onView(withId(R.id.button_navbar_account)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.account_admin_mode_button)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
+        // my account -> admin mode
+        onView(withId(R.id.button_navbar_account)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.account_admin_mode_button)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
 
-            // admin mode -> garden applications
-            onView(withId(R.id.admin_homepage_garden_applications_forward_arrow)).perform(click());
-            Thread.sleep(1000);
-            onView(withId(R.id.garden_applications_back_arrow)).check(matches(isDisplayed()));
-            OneTapNavBarCheck();
-            Thread.sleep(1000);
-            onView(withId(R.id.garden_applications_back_arrow)).check(matches(isDisplayed()));
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        // admin mode -> garden applications
+        onView(withId(R.id.admin_homepage_garden_applications_forward_arrow)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.garden_applications_back_arrow)).check(matches(isDisplayed()));
+        OneTapNavBarCheck();
+        Thread.sleep(1000);
+        onView(withId(R.id.garden_applications_back_arrow)).check(matches(isDisplayed()));
     }
 
 

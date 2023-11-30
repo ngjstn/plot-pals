@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -86,7 +87,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
                 (JSONObject response) -> {
                     try {
                         Log.d(TAG, "Response for submitting form: \n" + response.getString("success"));
-                        // confirmation toast
+                        Toast.makeText(this, "Form has been submitted for approval", Toast.LENGTH_LONG).show();
                         finish();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -83,6 +84,7 @@ public class ForumBoardFeedbackActivity extends NavBarActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n"
                                 + response.getString("success"));
+                        Toast.makeText(this, "Feedback has been successfully submitted", Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         Log.d(TAG, e.toString());
                     }

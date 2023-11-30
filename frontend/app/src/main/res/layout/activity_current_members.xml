@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".CurrentMembersActivity">
 
-    <include layout="@layout/activity_nav_bar"/>
+    <include
+        layout="@layout/activity_nav_bar"
+        tools:layout_editor_absoluteX="-53dp"
+        tools:layout_editor_absoluteY="34dp" />
 
     <TextView
         android:id="@+id/garden_name"
@@ -152,5 +155,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.836" />
+
+    <TextView
+        android:id="@+id/current_members_no_plot_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/inter"
+        android:text="@string/current_members_no_plotowners_text"
+        android:textAppearance="@style/existing_ga"
+        app:layout_constraintBottom_toBottomOf="@+id/plot_owner_list_view"
+        app:layout_constraintEnd_toEndOf="@+id/plot_owner_list_view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/plot_owner_list_view"
+        app:layout_constraintTop_toTopOf="@+id/plot_owner_list_view"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/current_members_no_caretaker_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/current_members_no_caretakers_text"
+        android:textAppearance="@style/existing_ga"
+        app:layout_constraintBottom_toBottomOf="@+id/caretaker_list_view"
+        app:layout_constraintEnd_toEndOf="@+id/caretaker_list_view"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/caretaker_list_view"
+        app:layout_constraintTop_toTopOf="@+id/caretaker_list_view"
+        app:layout_constraintVertical_bias="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

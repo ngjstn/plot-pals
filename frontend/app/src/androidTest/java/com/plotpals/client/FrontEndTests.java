@@ -101,10 +101,6 @@ public class FrontEndTests {
             ViewInteraction appCompatImageView = onView(allOf(withId(R.id.forum_board_plus), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 4), isDisplayed()));
             appCompatImageView.perform(click());
 
-            // Click New Task
-            ViewInteraction appCompatTextView = onView(allOf(withId(R.id.forum_board_new_task), withText("New Task"), isDisplayed()));
-            appCompatTextView.perform(click());
-
             // Attempt to click Checkmark
             ViewInteraction appCompatImageView2 = onView(allOf(withId(R.id.forum_board_new_task_check), childAtPosition(childAtPosition(withId(android.R.id.content), 0), 12), isDisplayed()));
             appCompatImageView2.perform(click());

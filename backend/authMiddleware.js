@@ -1,5 +1,6 @@
 const { OAuth2Client } = require('google-auth-library');
 const { StatusCodes } = require('http-status-codes');
+const crypto = require('crypto');
 require('dotenv').config();
 
 // middleware to authenticate user and set req.userId given authorization header
@@ -10,7 +11,10 @@ const authMiddleware = async (req, res, next) => {
     // get token
     if (authHeader.startsWith('Bearer ')) {
       token = authHeader.substring(7, authHeader.length);
-      if (token === process.env.BYPASS_TOKEN) {
+      if (
+        Buffer.byteLength(token) === Buffer.byteLength(process.env.BYPASS_TOKEN) &&
+        crypto.timingSafeEqual(Buffer.from(token), Buffer.from(process.env.BYPASS_TOKEN))
+      ) {
         req.userId = process.env.BYPASS_TOKEN;
         return next();
       }
@@ -33,6 +37,7 @@ const authMiddleware = async (req, res, next) => {
     console.log('User ID: ' + req.userId);
     return next();
   } catch (error) {
+    console.log(error);
     // EXPLANATION NOTE: we create a custom error object here rather than using an error
     // object caught by the try/catch block
     const invalidAuthorizationHeader = new Error('No valid authorization header');

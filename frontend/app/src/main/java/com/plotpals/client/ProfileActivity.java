@@ -64,7 +64,7 @@ public class ProfileActivity extends NavBarActivity {
 
     private void requestProfileInformation() {
         RequestQueue volleyQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8081/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
+        String url = BuildConfig.API_URL + "/profiles/all?profileId=" + googleProfileInformation.getAccountUserId();
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -110,7 +110,7 @@ public class ProfileActivity extends NavBarActivity {
         params.put("displayName", name);
         Log.d(TAG, "Sending name change to " + name);
 
-        String url = "http://10.0.2.2:8081/profiles/";
+        String url = BuildConfig.API_URL + "/profiles/";
 
         Request<?> jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.PUT,

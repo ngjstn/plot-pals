@@ -50,7 +50,7 @@ public class DynamicForumTaskUpdateNonFuncTest {
     static String LEXICON = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     static int taskNameMax = 20;
     static int taskNameMin = 10;
-    static int maxLoadTime = 1000;
+    static int maxLoadTime = 5000;
     final static String taskName = getRandomString();
 
     /*

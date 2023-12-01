@@ -1,5 +1,6 @@
 package com.plotpals.client;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.plotpals.client.utils.GoogleProfileInformation;
 
@@ -32,8 +38,7 @@ public class GardenApplicationActivity extends NavBarActivity {
         activateNavBar();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        TextView contactName = findViewById(R.id.garden_contact_name_loaded);
-        contactName.setText(googleProfileInformation.getAccountGoogleName());
+        findViewById(R.id.close_icon).setOnClickListener(view -> finish());
 
         gardenName = findViewById(R.id.garden_name_input);
         gardenAddress = findViewById(R.id.garden_address_input);
@@ -61,12 +66,23 @@ public class GardenApplicationActivity extends NavBarActivity {
                     gardenAppConfIntent.putExtra("gardenPhone", gardenPhone.getText().toString());
                     gardenAppConfIntent.putExtra("gardenEmail", gardenEmail.getText().toString());
                     googleProfileInformation.loadGoogleProfileInformationToIntent(gardenAppConfIntent);
-                    startActivity(gardenAppConfIntent);
-                    finish();
+                    confirmAppResultLauncher.launch(gardenAppConfIntent);
                 }
             }
         });
     }
+
+    ActivityResultLauncher<Intent> confirmAppResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        finish();
+                    }
+                }
+            }
+    );
 
     private boolean parseGardenInformation() {
         boolean checkStatus = true;

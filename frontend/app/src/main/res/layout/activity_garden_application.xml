@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".GardenApplicationActivity">
 
-    <include layout="@layout/activity_nav_bar"/>
+    <include
+        android:id="@+id/include7"
+        layout="@layout/activity_nav_bar" />
 
     <TextView
         android:id="@+id/garden_application_header"
@@ -14,8 +16,9 @@
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="76dp"
         android:layout_marginTop="56dp"
+        android:fontFamily="@font/inter_bold"
         android:gravity="top"
         android:text="@string/garden_application_header"
         android:textAppearance="@style/page_header"
@@ -24,15 +27,34 @@
 
     <Button
         android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="276dp"
-        android:layout_marginTop="68dp"
-        android:text="Submit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/arrow_forward_ios"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/include7"
+        app:layout_constraintVertical_bias="0.096" />
+
+    <View
+        android:id="@+id/close_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/close_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.096" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,27 +64,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:orientation="vertical"
             android:paddingLeft="36dp"
-            android:paddingRight="36dp"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:orientation="vertical">
+            android:paddingRight="36dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/garden_name_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
                 android:paddingBottom="4dp"
                 android:text="@string/garden_application_input_name"
-                android:textAppearance="@style/label_text" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/garden_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:fontFamily="@font/inter"
                 android:hint="New garden name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/garden_name_error"
@@ -70,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/garden_application_placeholder"
                 android:textAppearance="@style/label_text"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/garden_address_label"
@@ -78,19 +104,24 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="top"
                 android:paddingTop="24dp"
                 android:paddingBottom="4dp"
-                android:gravity="top"
                 android:text="@string/garden_application_input_address"
-                android:textAppearance="@style/label_text" />
+                android:textAppearance="@style/label_text"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/garden_address_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:fontFamily="@font/inter"
                 android:hint="New garden address"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/garden_address_error"
@@ -109,20 +140,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="top"
                 android:paddingTop="24dp"
                 android:paddingBottom="4dp"
-                android:gravity="top"
                 android:text="@string/garden_application_input_plots"
-                android:textAppearance="@style/label_text" />
+                android:textAppearance="@style/label_text"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/garden_num_plots_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
                 android:ems="10"
+                android:fontFamily="@font/inter"
                 android:hint="New garden individual plots"
-                android:inputType="text" />
+                android:inputType="number"
+                android:paddingBottom="16dp"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/garden_num_plots_error"
@@ -139,33 +175,26 @@
                 android:id="@+id/garden_contact_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="top"
                 android:paddingTop="24dp"
                 android:paddingBottom="4dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="top"
                 android:text="@string/garden_application_input_contact"
-                android:textAppearance="@style/label_text" />
-
-            <TextView
-                android:id="@+id/garden_contact_name_loaded"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:paddingBottom="4dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="top"
-                android:text="@string/garden_application_placeholder"
-                android:textAppearance="@style/label_text" />
+                android:textAppearance="@style/label_text"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/garden_phone_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:fontFamily="@font/inter"
                 android:hint="Phone number"
-                android:inputType="text" />
+                android:inputType="phone"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/garden_phone_error"
@@ -183,8 +212,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:fontFamily="@font/inter"
                 android:hint="Email address"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="#000000"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/garden_email_error"

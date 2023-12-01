@@ -1,7 +1,6 @@
 package com.plotpals.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +21,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GardenApplicationConfirmActivity extends AppCompatActivity {
+public class GardenApplicationConfirmActivity extends NavBarActivity {
     final static String TAG = "GardenApplicationConfActivity";
     GoogleProfileInformation googleProfileInformation;
     private String gardenName;
@@ -35,6 +34,7 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadExtras();
+        activateNavBar();
         setContentView(R.layout.activity_garden_application_confirm);
 
         Bundle applicationExtras = getIntent().getExtras();
@@ -57,6 +57,8 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
         gardenPhoneDisplay.setText(gardenPhone);
         gardenEmailDisplay.setText(gardenEmail);
         gardenContactNameDisplay.setText(googleProfileInformation.getAccountGoogleName());
+
+        findViewById(R.id.arrow_back_).setOnClickListener(view -> finish());
 
         Button confirmButton = findViewById(R.id.confirm_application_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +90,16 @@ public class GardenApplicationConfirmActivity extends AppCompatActivity {
                     try {
                         Log.d(TAG, "Response for submitting form: \n" + response.getString("success"));
                         Toast.makeText(this, "Form has been submitted for approval", Toast.LENGTH_LONG).show();
+                        Intent resultIntent = new Intent(GardenApplicationConfirmActivity.this, GardenApplicationActivity.class);
+                        setResult(RESULT_OK, resultIntent);
                         finish();
                     } catch (JSONException e) {
+                        Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
                         Log.d(TAG, e.toString());
                     }
                 },
                 (VolleyError e) -> {
+                    Toast.makeText(this, "Failed to submit form; address is likely invalid. Do not use abbreviations, eg. use Street instead of St", Toast.LENGTH_LONG).show();
                     Log.d(TAG, e.toString());
                 }
         ) {

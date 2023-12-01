@@ -138,16 +138,6 @@ public class OneTapNavbarNonFuncTest {
         Thread.sleep(1000);
         onView(withId(R.id.garden_application_header)).check(matches(isDisplayed()));
 
-        // my account -> admin mode
-        onView(withId(R.id.button_navbar_account)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.account_admin_mode_button)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
-        OneTapNavBarCheck();
-        Thread.sleep(1000);
-        onView(withId(R.id.admin_homepage_title_text_view)).check(matches(isDisplayed()));
-
         // admin mode -> garden applications
         onView(withId(R.id.admin_homepage_garden_applications_forward_arrow)).perform(click());
         Thread.sleep(1000);

@@ -50,6 +50,7 @@ public class DynamicForumTaskUpdateNonFuncTest {
     static String LEXICON = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     static int taskNameMax = 20;
     static int taskNameMin = 10;
+    static int maxLoadTime = 1000;
     final static String taskName = getRandomString();
 
     /*
@@ -174,8 +175,8 @@ public class DynamicForumTaskUpdateNonFuncTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        // max 5 seconds to wait for the task to dynamically update via socket
-        Thread.sleep(5000);
+        // max seconds to wait for the task to dynamically update via socket
+        Thread.sleep(maxLoadTime);
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.forum_Board_task_assignee), withText("alan"),
